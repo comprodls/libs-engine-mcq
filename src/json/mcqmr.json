@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "type": "MCQMR",
+    "score": {
+      "default": 0,
+      "max": 1,
+      "min": 0
+    }
+  },
+  "content": {
+    "instructions": [
+      {
+        "tag": ""
+      } 
+    ],
+    "stimulus": [
+      {
+        "tag": ""
+      }
+    ],
+    "canvas": {
+      "layout": "MCQMR",
+      "data": {
+        "questiondata": [
+          {
+            "text": "   What's the matter with this patient? <a href='http://www.comprodls.com/m1.0/interaction/mcqmr'>i1</a> "
+          }
+        ]
+      },
+      "raw": ""
+    },     
+    "interactions": {
+      "i1": {
+        "type": "MCQMR",
+        "MCQMR": [
+          {
+            "choiceA": "She has the flu." 
+          },
+          {
+            "choiceB": "She has the measles."
+          },
+          {
+            "choiceC": "She has malaria."
+          },
+          {
+            "choiceD": "She has a toothache."
+          }          
+        ]
+      }
+    },
+    "hint": {}
+  },
+  "feedback": {
+    "global": {
+      "correct": "",
+      "incorrect": "",
+      "empty": ""
+    }
+  },
+  "responses": {
+    "i1": {
+      "correct": "choiceC"
+    }
+  },
+  "learning-objectives": [],
+  "tags": [
+    "test"
+  ]
+}

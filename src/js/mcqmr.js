@@ -103,7 +103,8 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
         "callback" :->      To inform the shell that init is complete.
     */
     /********************************************************/  
-    function init(elRoot, params, adaptor, htmlLayout, jsonContentObj, callback) {        
+    function init(elRoot, params, adaptor, htmlLayout, jsonContentObj, callback) {      
+        console.log("Welcome to the init world! ++++++++++++++++++++++++++++");  
 
         /* ---------------------- BEGIN OF INIT ---------------------------------*/
         //Store the adaptor  

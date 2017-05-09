@@ -45,7 +45,7 @@ Readme.md
 .gitignore
 ```
 4. Rename all the files (as shown above) containing `<CODE>` appropriately. For example if your `CODE` is `QUESTION_TYPE_X` then files under the `js` folder would be renamed to `QUESTION_TYPE_X.js` and `QUESTION_TYPE_X-editor.js`
-5. Open the files listed below and replace all references of `MCQSR` (all uppercase) with your unique code i.e. `QUESTION_TYPE_X`(all uppercase) and all references of `mcqsr`(all lowercase) with your unique code i.e. `question_type_x`(all lowercase)
+5. Open the files listed below and replace all references of `MCQMR` (all uppercase) with your unique code i.e. `QUESTION_TYPE_X`(all uppercase) and all references of `mcqmr`(all lowercase) with your unique code i.e. `question_type_x`(all lowercase)
 ```
 src
      js
@@ -70,10 +70,10 @@ If everything worked fine, you should see an output as follows:
 
 ```
 Running "requirejs:engine" (requirejs) task
-Completed requirejs optimization for mcqsr renderer successfully.
+Completed requirejs optimization for mcqmr renderer successfully.
 
 Running "requirejs:engineEditor" (requirejs) task
-Completed requirejs optimization for mcqsr editor successfully.
+Completed requirejs optimization for mcqmr editor successfully.
 
 Running "copy:images" (copy) task
 Copied 1 file
@@ -103,7 +103,7 @@ If you're developing your first assessment type, its strongly recommended that y
 ```json
 {
     "meta": { 
-        "type": "MCQSR",
+        "type": "MCQMR",
         "title": "Island Survival Test 1",
         "score": {
             "default": 0,
@@ -117,7 +117,7 @@ If you're developing your first assessment type, its strongly recommended that y
             "html": "Please read the question carefully, and select ONE option as your answer."
         }],
         "canvas": {
-            "layout": "MCQSR",
+            "layout": "MCQMR",
             "data": {
                 "questiondata": [{
                     "text": "You are alone in a deserted island and about to die. God appears and gives one wish with pre-defined options. Choose the correct answer?"
@@ -143,7 +143,7 @@ For more information on the standard comproDLS&trade; schema elements and their 
 
 * Based on your UX, define the default layout for your assessment type - `html/<CODE>.html`. Include basic or first-level templating snippets (see http://rivetsjs.com/docs/guide/#usage for details on the RIVETS templating engine) for linking your **question JSON** to your template. Start with the standard schema elements like `content.instructions`, `meta.title` etc. You could use following vanilla template as a starting point.
 ```html
-<div class="well" id="mcqsr-engine">  <!-- the "id" attribute must set as shown. -->
+<div class="well" id="mcqmr-engine">  <!-- the "id" attribute must set as shown. -->
    <!-- Displaying the Title -->
    <h1 rv-text="jsonContent.meta.title"></h1>
    <!-- Displaying Instructions -->
@@ -166,8 +166,8 @@ For more information on the standard comproDLS&trade; schema elements and their 
  * Engine Module
  * -------------
  * 
- * Item Type: MCQSR Single Choice Quesion engine
- * Code: MCQSR
+ * Item Type: MCQMR Single Choice Quesion engine
+ * Code: MCQMR
  * Interface: ENGINE
  
  *  ENGINE Interface public functions
@@ -190,12 +190,12 @@ For more information on the standard comproDLS&trade; schema elements and their 
  * 1. JQuery (2.1.1)
  * 2. Boostrap (3.3.7) 
  */
-define(['text!../html/mcqsr.html', //layout(s) template representing the UX
+define(['text!../html/mcqmr.html', //layout(s) template representing the UX
         'rivets',  // Rivets for data binding
         'sightglass'], //Required by Rivets
-        function (mcqsrTemplateRef) {
+        function (mcqmrTemplateRef) {
 
-    mcqsr = function() {
+    mcqmr = function() {
     
     "use strict";
         
@@ -227,8 +227,8 @@ define(['text!../html/mcqsr.html', //layout(s) template representing the UX
      */
     var __constants = {
         TEMPLATES: {
-            /* Regular MCQSR Layout */
-            MCQSR: mcqsrTemplateRef
+            /* Regular MCQMR Layout */
+            MCQMR: mcqmrTemplateRef
         }
     };
         
@@ -254,7 +254,7 @@ define(['text!../html/mcqsr.html', //layout(s) template representing the UX
         $(elRoot).html(__constants.TEMPLATES[htmlLayout]);
 
         /* Process the template by initializing RIVETs */
-         rivets.bind($('#mcqsr-engine'), {
+         rivets.bind($('#mcqmr-engine'), {
             jsonContent: jsonContent
         });
         

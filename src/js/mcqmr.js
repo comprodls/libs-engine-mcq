@@ -120,7 +120,6 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
         //Clone the JSON so that original is preserved.
         var jsonContent = jQuery.extend(true, {}, jsonContentObj);
         
-        console.log(jsonContent);
         /* ------ VALIDATION BLOCK START -------- */    
         if (jsonContent.content === undefined) {
             if(callback) {
@@ -398,8 +397,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
          * interaction so that rivets can iterate over it.
          */
         rivets.formatters.getArray = function(obj, interaction){ 
-            console.log("interactions ", interaction);
-                       return obj[interaction].MCQMR;
+               return obj[interaction].MCQMR;
         }
 
          /* This formatter is used to return  customized  indexed base string
@@ -436,11 +434,8 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
         // if current choice checked
         if(currentTarget.checked) {
             __content.userAnswersJSON.push(currentTarget.getAttribute('name'));  
-            alert(JSON.stringify(__content.userAnswersJSON, null, 4))          
         } else {
-           
             remove(__content.userAnswersJSON, currentTarget.getAttribute('name')); 
-            alert(JSON.stringify(__content.userAnswersJSON, null, 4))   
         }
         // then addd
         // else remove from user answer

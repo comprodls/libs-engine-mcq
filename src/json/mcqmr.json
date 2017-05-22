@@ -10,8 +10,9 @@
   "content": {
     "instructions": [
       {
-        "tag": ""
-      } 
+        "tag": "text",
+        "text": "This question has multiple correct answers. Choose the correct options and click Submit."
+      }
     ],
     "stimulus": [
       {
@@ -23,28 +24,28 @@
       "data": {
         "questiondata": [
           {
-            "text": "   What's the matter with this patient? <a href='http://www.comprodls.com/m1.0/interaction/mcqmr'>i1</a> "
+            "text": " Identify the major cities in India in the list below? <a href='http://www.comprodls.com/m1.0/interaction/mcqmr'>i1</a> "
           }
         ]
       },
       "raw": ""
-    },     
+    },
     "interactions": {
       "i1": {
         "type": "MCQMR",
         "MCQMR": [
           {
-            "choiceA": "She has the flu." 
+            "choiceA": "Delhi"
           },
           {
-            "choiceB": "She has the measles."
+            "choiceB": "Paris"
           },
           {
-            "choiceC": "She has malaria."
+            "choiceC": "Mumbai"
           },
           {
-            "choiceD": "She has a toothache."
-          }          
+            "choiceD": "New York"
+          }
         ]
       }
     },
@@ -59,7 +60,10 @@
   },
   "responses": {
     "i1": {
-      "correct": "choiceC"
+      "correct": [
+        "choiceA",
+        "choiceC"
+      ]
     }
   },
   "learning-objectives": [],

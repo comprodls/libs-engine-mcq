@@ -2,14 +2,19 @@
 <!-- Engine Renderer Template -->
 
 <div class="mcqmr-body" id="mcqmr-engine"> 
+	
    <div class="row" rv-each-interact="content.interactions | propertyList">   
       <div class="col-sm-12">      
          <div class="form">      
- <!-- Paint the instructions or question text -->    
+		 
+ 	    <!-- Instructions or question text -->    
             <div rv-text="content.canvas.data.questiondata | appendInteraction %interact%"></div>     
-			<!-- Paint the options -->
-            <img rv-src="content.stimulus.mediaContent" class="col-sm-6 mcqmr-img" rv-show="isMCQMRImageEngine"></img>
-            <ul class="list-unstyled nested-list col-sm-6">
+	    
+            <!-- Image Stimulae -->
+	    <img rv-src="content.stimulus.mediaContent" class="col-sm-6 mcqmr-img" rv-show="isMCQMRImageEngine"></img>
+            <!-- Option List -->
+	    <ul class="list-unstyled nested-list col-sm-6">
+    	       <!-- Option -->
                <li rv-each-element="content.interactions | getArray interact.key">
                    <label class="checkbox checkbox-lg">                
                         <span rv-id="%element% | idcreator 'answer'" class="answer invisible wrong state-error pull-left"></span>                    
@@ -17,16 +22,13 @@
                         <i></i>    
                         <span class="content" rv-text="element.customAttribs.value"></span>
                     </label>
-                    <!-- div class="checkbox">
-                        <label><input id="option" rv-name="element.customAttribs.key" type="checkbox" rv-value="element.customAttribs.value"></label>
-                        <span class="content" rv-text="element.customAttribs.value"></span>
-                    </div -->
                </li>                
             </ul> 
          </div>   
       </div>  
    </div>
-      <div class="row">
+    <!-- Feedback -->    
+   <div class="row">
       <div class="col-sm-12">
          <div rv-show="showFeedback.correct" class="jumbotron pr-2" rv-text="feedback.global.correct"></div>
          <div rv-show="showFeedback.incorrect" class="jumbotron pr-2" rv-text="feedback.global.incorrect"></div>

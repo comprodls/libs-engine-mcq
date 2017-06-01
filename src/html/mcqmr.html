@@ -13,7 +13,7 @@
                <li rv-each-element="content.interactions | getArray interact.key">
                    <label class="checkbox checkbox-lg">                
                         <span rv-id="%element% | idcreator 'answer'" class="answer invisible wrong state-error pull-left"></span>                    
-                        <input type="checkbox"  rv-name="element.customAttribs.key" class="option" rv-id="%element%   | idcreator 'option'" rv-value="element.customAttribs.value">
+                        <input type="checkbox"  rv-name="element.customAttribs.key" class="option" rv-id="%element%   | idcreator 'option'">
                         <i></i>    
                         <span class="content" rv-text="element.customAttribs.value"></span>
                     </label>

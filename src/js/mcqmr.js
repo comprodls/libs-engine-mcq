@@ -60,19 +60,45 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
         currentTries: 0, /* Current try of sending results to platform */
         activityPariallySubmitted: false, /* State whether activity has been partially submitted. Possible Values: true/false(Boolean) */
         activitySubmitted: false, /* State whether activity has been submitted. Possible Values: true/false(Boolean) */
-        radioButtonClicked: false /* State whether radio button is clicked.  Possible Values: true/false(Boolean) */   
+        checkBoxClicked: [] /* State whether radio button is clicked.  Possible Values: true/false(Boolean) */   
     };  
     
     /*
      * Content (loaded / initialized during init() ).
      */ 
     var __content = {
-        directionsJSON: "",
+        directionsJSON: "", //NOT USED
+	activityType: null,  //NOT USED
+	    
+	/**
+	  FORMAT - SAME AS DEFINTION.JSON
+	*/
         questionsJSON: [], /* Contains the question obtained from content JSON. */
+    
+	/**
+	  FORMAT - SAME AS DEFINTION.JSON
+	*/	    
         optionsJSON: [], /* Contains all the options for a particular question obtained from content JSON. */
+	    
+	/**
+	  FORMAT - SAME AS DEFINTION.JSON
+	*/	    
         answersJSON: [], /* Contains the answer for a particular question obtained from content JSON. */
+	    
+	/**
+	  FORMAT - SAME AS DEFINTION.JSON
+	*/	    
         userAnswersJSON: [], /* Contains the user answer for a particular question. */
-        activityType: null  /* Type of FIB activity. Possible Values :- FIBPassage.  */    
+	    
+        /**
+	  FORMAT - SAME AS DEFINTION.JSON
+	*/
+        scoreJSON : null,
+	   
+	/**
+	  FORMAT - SAME AS DEFINTION.JSON
+	*/	    
+        feedbackJSON : null
     };
 
     /*
@@ -89,6 +115,11 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
     // Array of all interaction tags in question
     var __interactionIds = [];
     var __processedJsonContent;
+    var __feedback = {
+        'correct' : false,
+        'incorrect' : false,
+        'empty' : false
+    };
         
     /********************************************************/
     /*                  ENGINE-SHELL INIT FUNCTION
@@ -137,7 +168,9 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
         __initRivets();
         /* ---------------------- SETUP EVENTHANDLER STARTS----------------------------*/
             
-        $('input[id^=option]').change(__handleRadioButtonClick); 
+       // $('input[id^=option]').change(__handleRadioButtonClick); 
+       
+       $('input[id^=option]').change(__handleCheckboxClick); 
 
         $(document).bind('userAnswered', function() {
             __saveResults(false);
@@ -235,10 +268,14 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
             if(this.tag === "image") {
                 jsonContent.content.stimulus.mediaContent = params.questionMediaBasePath + this.image;
             }
-        });
+        });    
+        __content.scoreJSON = jsonContent.meta.score;
+        __content.feedbackJSON = jsonContent.feedback; 
+        console.log(__content.feedbackJSON) ;      
         __parseAndUpdateQuestionSetTypeJSON(jsonContent);
         
         /* Returning processed JSON. */
+        console.log("contyent obj ",__content);
         return jsonContent; 
     }
 
@@ -267,6 +304,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
         jsonContent.content.canvas.data.questiondata[0].text = jsonContent.content.canvas.data.questiondata[0].text.replace(interactionTag,"");
         var questionText = "1.  " + jsonContent.content.canvas.data.questiondata[0].text;
         var correctAnswerNumber = jsonContent.responses[interactionId].correct;
+        console.log("correct answers : ", correctAnswerNumber);
         var interactionType = jsonContent.content.interactions[interactionId].type;
         var optionCount = jsonContent.content.interactions[interactionId][interactionType].length;
 
@@ -278,11 +316,12 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
             optionObject[Object.keys(optionObject)] = option;
             /* Update JSON after updating option. */
             jsonContent.content.interactions[interactionId][interactionType][i] = optionObject;
-            if(Object.keys(optionObject) == correctAnswerNumber) {
-                __content.answersJSON[0] = optionObject[Object.keys(optionObject)];
-            }
+           // if(Object.keys(optionObject) == correctAnswerNumber) {
+                __content.answersJSON = correctAnswerNumber;
+           // }
         }
         __content.questionsJSON[0] = questionText + " ^^ " + __content.optionsJSON.toString() + " ^^ " + interactionId;       
+
     }
     
     /**
@@ -381,8 +420,14 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
         /* This formatter is used to return the array of options for a particular
          * interaction so that rivets can iterate over it.
          */
-        rivets.formatters.getArray = function(obj, interaction){
-            return obj[interaction].MCQMR;
+        rivets.formatters.getArray = function(obj, interaction){ 
+               return obj[interaction].MCQMR;
+        }
+
+         /* This formatter is used to return  customized  indexed base string
+         */
+        rivets.formatters.idcreator = function(index, idvalue) {
+          return idvalue + index;
         }
 
         var isMCQImageEngine = false;
@@ -394,9 +439,41 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
         /*Bind the data to template using rivets*/
         rivets.bind($('#mcqmr-engine'), {
             content: __processedJsonContent.content,
-            isMCQImageEngine: isMCQImageEngine
+            isMCQImageEngine: isMCQImageEngine,
+            feedback : __processedJsonContent.feedback,
+            showFeedback : __feedback
         });
     }
+
+    /*------------------------RIVETS END-------------------------------*/
+
+    /* ---------------------- JQUERY BINDINGS ---------------------------------*/
+    /**
+    * Function to handle radio button click.
+    */
+    function __handleCheckboxClick(event){
+       // alert("  I m clicked ");
+        var currentTarget = event.currentTarget;
+        var currentchoice = currentTarget.getAttribute('name'); 
+        // if current choice checked
+        if(currentTarget.checked) {
+            __content.userAnswersJSON.push(currentTarget.getAttribute('name'));  
+        } else {
+            remove(__content.userAnswersJSON, currentTarget.getAttribute('name')); 
+        }
+        // then addd
+        // else remove from user answer
+        $(document).triggerHandler('userAnswered');
+    }
+
+    function remove(arr, value) {
+        var found = arr.indexOf(value);
+        if (found !== -1) {
+            arr.splice(found, 1);
+        //    found = arr.indexOf(value);
+        }
+    }
+
 
     /*------------------------RIVETS END-------------------------------*/
 
@@ -408,17 +485,18 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
         /*
          * Soft save here
          */
+        alert("  I m clicked ");
         var currentTarget = event.currentTarget;
         
-        $("label.radio").parent().removeClass("highlight");
-        $(currentTarget).parent().parent("li").addClass("highlight");  
+        //$("label.radio").parent().removeClass("highlight");
+        //$(currentTarget).parent().parent("li").addClass("highlight");  
         
         var newAnswer = currentTarget.value.replace(/^\s+|\s+$/g, '');
             
         /* Save new Answer in memory. */
         __content.userAnswersJSON[0] = newAnswer.replace(/^\s+|\s+$/g, '');  
         
-        __state.radioButtonClicked = true;
+        __state.checkBoxClicked = true;
         
         var interactionId = __content.questionsJSON[0].split("^^")[2].trim();
 
@@ -474,26 +552,47 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
      * Function to show correct Answers to User, called on click of Show Answers Button.
      */ 
     function __markAnswers(){
-        var radioNo = "";
-        /* Looping through answers to show correct answer. */
-        for(var i = 0; i < __content.optionsJSON.length; i++){
-           radioNo = "" + i;
-           __markRadio(radioNo, __content.answersJSON[0], __content.optionsJSON[i]);
-        }
-        
+           __markCheckBox();
+           __generateFeedback();
     }
+
     /* Add correct or wrong answer classes*/
-    function __markRadio(optionNo, correctAnswer, userAnswer) {    
-        if(userAnswer.trim() === correctAnswer.trim()) {
-            $($(".answer")[optionNo]).removeClass("wrong");
-            $($(".answer")[optionNo]).addClass("correct");
-            $($(".answer")[optionNo]).parent().addClass("state-success");
-        } else {
-            $($(".answer")[optionNo]).removeClass("correct");
-            $($(".answer")[optionNo]).addClass("wrong");
-            $($(".answer")[optionNo]).parent().addClass("state-error");
+    function __markCheckBox() {    
+       for(var j=0;j<__content.answersJSON.length;j++) {
+           $("[id^=answer]").removeClass("invisible");
+           for(var j=0;j<__content.answersJSON.length;j++){
+                $("input[name='"+__content.answersJSON[j]+"']").prev('span').removeClass("wrong")    
+                $("input[name='"+__content.answersJSON[j]+"']").prev('span').removeClass("state-error")
+                $("input[name='"+__content.answersJSON[j]+"']").prev('span').addClass("correct")
+                $("input[name='"+__content.answersJSON[j]+"']").prev('span').addClass("state-success")
+           }
+
+       }
+    }
+
+    function __generateFeedback() {
+    //    __feedback.incorrect = true;
+         for(var prop in __feedback){
+            __feedback[prop] = false;
         }
-        $(".answer" + optionNo).removeClass("invisible");
+        if(__content.userAnswersJSON.length <= 0){
+            __feedback.empty = true;
+        } else if(isCorrect(__content.answersJSON , __content.userAnswersJSON)){
+            __feedback.correct = true;
+        } else{
+            __feedback.incorrect = true;
+        }
+
+        function isCorrect(answerjson, useranswerjson) {
+            var isCorrect = false;
+            if (answerjson == null || useranswerjson == null) return isCorrect = false;
+            if(answerjson.length != useranswerjson.length){
+                return isCorrect=false;
+            }
+            if(answerjson.sort().join("") === useranswerjson.sort().join("")) return isCorrect = true;;
+            return isCorrect;
+        }
+     
     }
     
     /**
@@ -504,25 +603,36 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
      */  
     function __getAnswersJSON(skipQuestion){
 
-        var score = 0;
+        var score = __content.scoreJSON.default || 0;
+        var maxscore = __content.scoreJSON.max || 1;
         var answer = "";
         var results = {};
+        var correct = true;
         
         /*Setup results array */
         var resultArray = new Array(1);
         /* Split questionJSON to get interactionId. */
         var questionData = __content.questionsJSON[0].split("^^");
         var interactionId = questionData[2].trim();
-
         if (skipQuestion) {
             answer = "Not Answered";
         } else {
-            answer = __content.userAnswersJSON[0];
-
-            /* Calculating scores.*/
-            if(__content.answersJSON[0] === __content.userAnswersJSON[0]){
-                score++;
+            var flag = true;
+            answer = __content.userAnswersJSON;
+            if(__content.answersJSON.length === __content.userAnswersJSON.length){
+                for(var i=0; i < __content.answersJSON.length; i++) {
+                    if($.inArray(__content.userAnswersJSON[i], __content.answersJSON) === -1) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if(flag === true) {
+                    score += maxscore;
+                } else {
+					correct = false;
+                }
             }
+
         }   
         
         results = {
@@ -549,3 +659,6 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
     };
     };
 });
+
+
+

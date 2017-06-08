@@ -1,36 +1,29 @@
-
 <!-- Engine Renderer Template -->
-
-<div class="mcqmr-body" id="mcqmr-engine"> 
-   <div class="row" rv-each-interact="content.interactions | propertyList">   
-      <div class="col-sm-12">      
-         <div class="form">      
- <!-- Paint the instructions or question text -->    
-            <div rv-text="content.canvas.data.questiondata | appendInteraction %interact%"></div>     
-			<!-- Paint the options -->
-            <img rv-src="content.stimulus.mediaContent" class="col-sm-6 mcqmr-img" rv-show="isMCQMRImageEngine"></img>
-            <ul class="list-unstyled nested-list col-sm-6">
-               <li rv-each-element="content.interactions | getArray interact.key">
-                   <label class="checkbox checkbox-lg">                
-                        <span rv-id="%element% | idcreator 'answer'" class="answer invisible wrong state-error pull-left"></span>                    
-                        <input type="checkbox"  rv-name="element.customAttribs.key" class="option" rv-id="%element%   | idcreator 'option'">
-                        <i></i>    
-                        <span class="content" rv-text="element.customAttribs.value"></span>
-                    </label>
-                    <!-- div class="checkbox">
-                        <label><input id="option" rv-name="element.customAttribs.key" type="checkbox" rv-value="element.customAttribs.value"></label>
-                        <span class="content" rv-text="element.customAttribs.value"></span>
-                    </div -->
-               </li>                
-            </ul> 
-         </div>   
-      </div>  
-   </div>
-      <div class="row">
-      <div class="col-sm-12">
-         <div rv-show="showFeedback.correct" class="jumbotron pr-2" rv-text="feedback.global.correct"></div>
-         <div rv-show="showFeedback.incorrect" class="jumbotron pr-2" rv-text="feedback.global.incorrect"></div>
-         <div rv-show="showFeedback.empty" class="jumbotron pr-2" rv-text="feedback.global.empty"></div>
-      </div>      
-   </div>
+<div class="mcqmr-body" id="mcqmr-engine">
+  <main id="question_id">
+    <section rv-each-instruction="content.instructions">
+      <p class="instructions" rv-text="instruction"></p>
+    </section>
+    <div class="stimuli">
+      <figure></figure>
+    </div>
+    <section class="interactions">
+      <section rv-id="interaction.id" rv-each-interaction="content.interactions" class="interaction">
+        <p class="question-text" rv-text="interaction.questiontext"></p>
+        <!-- prompt Will be shown only if prompt text is available for interaction /-->
+        <p class="prompt"></p>
+        <ul id="options">
+          <li id="option" rv-each-optionitem="interaction.options | propertyList">
+            <label> 
+                  <span rv-id="%optionitem% | idcreator 'rejoinder'" class="rejoinder invisible pull-left"></span>
+                  <input class="option-input" rv-id="%optionitem%   | idcreator 'option'" type="checkbox" 
+                          rv-name="optionitem.key" rv-id="optionitem.key" data-val="{optionitem.key}"autocomplete="off" />
+                          <span class='option-content' rv-text="optionitem.value">{optionitem.value}</span>
+             </label>
+          </li>
+        </ul>
+      </section>
+    </section>
+    <section id="feedback-section"></section>
+  </main>
 </div>

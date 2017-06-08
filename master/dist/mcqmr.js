@@ -373,7 +373,7 @@ define('text',['module'], function (module) {
 });
 
 
-define('text!../html/mcqmr.html',[],function () { return '<!-- Engine Renderer Template -->\r\n<div class="mcqmr-body" id="mcqmr-engine">\r\n  <main id="question_id">\r\n    <section rv-each-instruction="content.instructions">\r\n      <p class="instructions" rv-text="instruction"></p>\r\n    </section>\r\n    <div class="stimuli">\r\n      <figure></figure>\r\n    </div>\r\n    <section class="interactions">\r\n      <section rv-id="interaction.id" rv-each-interaction="content.interactions" class="interaction">\r\n        <p class="question-text" rv-text="interaction.questiontext"></p>\r\n        <!-- prompt Will be shown only if prompt text is available for interaction /-->\r\n        <p class="prompt"></p>\r\n        <ul id="options">\r\n          <li id="option" rv-each-optionitem="interaction.options | propertyList">\r\n            <label> \r\n                  <span rv-id="%optionitem% | idcreator \'rejoinder\'" class="rejoinder invisible pull-left"></span>\r\n                  <input class="option-input" rv-id="%optionitem%   | idcreator \'option\'" type="checkbox" \r\n                          rv-name="optionitem.key" rv-id="optionitem.key" data-val="{optionitem.key}"autocomplete="off" />\r\n                          <span class=\'option-content\' rv-text="optionitem.value">{optionitem.value}</span>\r\n             </label>\r\n          </li>\r\n        </ul>\r\n      </section>\r\n    </section>\r\n    <section id="feedback-section"></section>\r\n  </main>\r\n</div>';});
+define('text!../html/mcqmr.html',[],function () { return '<!-- Engine Renderer Template -->\r\n<div class="mcqmr-body" id="mcqmr-engine">\r\n  <main id="question_id">\r\n    <section rv-each-instruction="content.instructions">\r\n      <p class="instructions" rv-text="instruction"></p>\r\n    </section>\r\n    <div class="stimuli">\r\n      <figure></figure>\r\n    </div>\r\n    <section class="interactions">\r\n      <section rv-id="interaction.id" rv-each-interaction="content.interactions" class="interaction">\r\n        <p class="question-text" rv-text="interaction.questiontext"></p>\r\n        <!-- prompt Will be shown only if prompt text is available for interaction /-->\r\n        <p class="prompt"></p>\r\n        <ul id="options">\r\n          <li id="option" rv-each-optionitem="interaction.options | propertyList">\r\n            <label> \r\n                  <span rv-id="%optionitem% | idcreator \'rejoinder\'" class="rejoinder invisible pull-left"></span>\r\n                  <input class="option-input" rv-id="%optionitem%   | idcreator \'option\'" type="checkbox" \r\n                          rv-name="optionitem.key" rv-id="optionitem.key" data-val="{optionitem.key}"autocomplete="off" />\r\n                          <span class=\'option-content\' rv-text="optionitem.value">{optionitem.value}</span>\r\n             </label>\r\n          </li>\r\n        </ul>\r\n      </section>\r\n    </section>\r\n    <section id="feedback-section">\r\n      <div class="row">\r\n        <div class="col-sm-12">\r\n         <div rv-show="showFeedback.correct" class="" rv-text="feedback.global.correct">sdsfsdf</div>\r\n         <div rv-show="showFeedback.incorrect" class="" rv-text="feedback.global.incorrect">wyyyy</div>\r\n         <div rv-show="showFeedback.empty" class="" rv-text="feedback.global.empty">yyyyfcf</div>\r\n      </div>      \r\n   </div>\r\n\r\n    </section>\r\n  </main>\r\n</div>';});
 
 /*
  * Require-CSS RequireJS css! loader plugin
@@ -2239,6 +2239,11 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
             var __correct_answers = {};
             var __scoring = {};
             var __feedback = {};
+            var __feedbackState = {
+                'correct' : false,
+                'incorrect' : false,
+                'empty' : false
+            };
             var INTERACTION_REFERENCE_STR = "http://www.comprodls.com/m1.0/interaction/mcqmr";
 
             /*
@@ -2341,9 +2346,10 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
                 __saveResults(true);
 
                 /* Marking Answers. */
-                 if (activityAdaptor.showAnswers) {
+                if (activityAdaptor.showAnswers) {
                     __markAnswers();
-                 }
+                    showfeedback();
+                }
                 $('input[id^=option]').attr("disabled", true);
             }
 
@@ -2366,29 +2372,54 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
              */
             function updateLastSavedResults(lastResults) {
                 // Read data and populate answerjson.
+                __content.user_answers = {};
+                for(var interaction in lastResults.response){
+                    __content.user_answers[interaction]  = lastResults.response[interaction]; 
+                    for (var j = 0; j < __content.user_answers[interaction].length; j++) {
+                            $("#" + interaction + " input[name='" + __content.user_answers[interaction][j] + "']").checked = true;
+                    }
+                }
             }
-
+            /** Default feedback. This feedback will be shown if app doesn't wan't to override it by its own Feedback. */
             function showfeedback() {
+                console.log("Show feedback is executed");
                 for (var prop in __feedback) {
-                    __feedback[prop] = false;
+                    __feedbackState[prop] = false;
                 }
                 if (__content.user_answers.length <= 0) {
-                    __feedback.empty = true;
+                    __feedbackState.empty = true;
                 } else if (isCorrect(__correct_answers, __content.user_answers)) {
-                    __feedback.correct = true;
+                    __feedbackState.correct = true;
                 } else {
-                    __feedback.incorrect = true;
+                    __feedbackState.incorrect = true;
                 }
 
                 function isCorrect(answerjson, useranswerjson) {
                     var isCorrect = false;
                     if (answerjson == null || useranswerjson == null) return isCorrect = false;
-                    if (answerjson.length != useranswerjson.length) {
+                    
+                    if (Object.keys(answerjson).length != Object.keys(useranswerjson).length) {
                         return isCorrect = false;
                     }
-                    if (answerjson.sort().join("") === useranswerjson.sort().join("")) return isCorrect = true;
-                    return isCorrect;
-                }
+                    
+                    var countCorrectInteractionAttempt = 0;
+                    
+                    for (var key in __content.user_answers) {
+                        var score = 0;
+                        var interactionResult = {};
+                        if (__content.user_answers.hasOwnProperty(key)) {
+                            if (__content.user_answers[key].length === __correct_answers[key]['correct'].length) {
+                                if (__content.user_answers[key].sort().join("") === __correct_answers[key]['correct'].sort().join(""))
+                                    countCorrectInteractionAttempt++;
+                            }
+                        }
+                    }
+
+                    if(countCorrectInteractionAttempt === Object.keys(__correct_answers).length) return isCorrect = true;
+                    if(countCorrectInteractionAttempt !== Object.keys(__correct_answers).length) return isCorrect = true;
+
+                        return isCorrect;
+                    }
 
             }
             /* ---------------------- PUBLIC FUNCTIONS END ----------------------------*/
@@ -2415,7 +2446,9 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
 
                 /*Bind the data to template using rivets*/
                 rivets.bind($('#mcqmr-engine'), {
-                    content: __content
+                    content: __content,
+                    feedback: __feedback,
+                    showFeedback: __feedbackState
                 });
             }
             /*------------------------RIVETS END-------------------------------*/
@@ -2610,7 +2643,7 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
                 __content.instructions = jsonContent.content.instructions.map(function (element) {
                     var tagtype = element['tag'];
                     return element[tagtype];
-                })
+                }) 
 
                 __content.interactions = jsonContent.content.canvas.data.questiondata.map(function (element) {
                     var obj = {};

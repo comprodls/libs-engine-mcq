@@ -73,6 +73,11 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
             var __correct_answers = {};
             var __scoring = {};
             var __feedback = {};
+            var __feedbackState = {
+                'correct' : false,
+                'incorrect' : false,
+                'empty' : false
+            };
             var INTERACTION_REFERENCE_STR = "http://www.comprodls.com/m1.0/interaction/mcqmr";
 
             /*
@@ -170,14 +175,14 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
             * Bound to click of Activity submit button.
             */
             function handleSubmit() {
-                console.log(" show grades called ");
                 /* Saving Answers. */
                 __saveResults(true);
 
                 /* Marking Answers. */
-                 if (activityAdaptor.showAnswers) {
+                if (activityAdaptor.showAnswers) {
                     __markAnswers();
-                 }
+                    showfeedback();
+                }
                 $('input[id^=option]').attr("disabled", true);
             }
 
@@ -185,7 +190,6 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
             * Function to show user grades.
             */
             function showGrades(savedAnswer, reviewAttempt) {
-                console.log(" show grades callled ");
                 /* Show last saved answers. */
                 updateLastSavedResults(savedAnswer);
                 /* Mark answers. */
@@ -200,29 +204,53 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
              */
             function updateLastSavedResults(lastResults) {
                 // Read data and populate answerjson.
+                __content.user_answers = {};
+                for(var interaction in lastResults.response){
+                    __content.user_answers[interaction]  = lastResults.response[interaction]; 
+                    for (var j = 0; j < __content.user_answers[interaction].length; j++) {
+                            $("#" + interaction + " input[name='" + __content.user_answers[interaction][j] + "']").checked = true;
+                    }
+                }
             }
-
+            /** Default feedback. This feedback will be shown if app doesn't wan't to override it by its own Feedback. */
             function showfeedback() {
                 for (var prop in __feedback) {
-                    __feedback[prop] = false;
+                    __feedbackState[prop] = false;
                 }
                 if (__content.user_answers.length <= 0) {
-                    __feedback.empty = true;
+                    __feedbackState.empty = true;
                 } else if (isCorrect(__correct_answers, __content.user_answers)) {
-                    __feedback.correct = true;
+                    __feedbackState.correct = true;
                 } else {
-                    __feedback.incorrect = true;
+                    __feedbackState.incorrect = true;
                 }
 
                 function isCorrect(answerjson, useranswerjson) {
                     var isCorrect = false;
                     if (answerjson == null || useranswerjson == null) return isCorrect = false;
-                    if (answerjson.length != useranswerjson.length) {
+                    
+                    if (Object.keys(answerjson).length != Object.keys(useranswerjson).length) {
                         return isCorrect = false;
                     }
-                    if (answerjson.sort().join("") === useranswerjson.sort().join("")) return isCorrect = true;
-                    return isCorrect;
-                }
+                    
+                    var countCorrectInteractionAttempt = 0;
+                    
+                    for (var key in __content.user_answers) {
+                        var score = 0;
+                        var interactionResult = {};
+                        if (__content.user_answers.hasOwnProperty(key)) {
+                            if (__content.user_answers[key].length === __correct_answers[key]['correct'].length) {
+                                if (__content.user_answers[key].sort().join("") === __correct_answers[key]['correct'].sort().join(""))
+                                    countCorrectInteractionAttempt++;
+                            }
+                        }
+                    }
+
+                    if(countCorrectInteractionAttempt === Object.keys(__correct_answers).length) return isCorrect = true;
+                    if(countCorrectInteractionAttempt !== Object.keys(__correct_answers).length) return isCorrect = true;
+
+                        return isCorrect;
+                    }
 
             }
             /* ---------------------- PUBLIC FUNCTIONS END ----------------------------*/
@@ -233,7 +261,6 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
             /*------------------------RIVET INITIALIZATION & BINDINGS -------------------------------*/
             function __initRivets() {
                 rivets.formatters.propertyList = function (obj) {
-                    console.log(JSON.stringify(obj))
                     return (function () {
                         var properties = [];
                         for (var key in obj) {
@@ -249,7 +276,9 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
 
                 /*Bind the data to template using rivets*/
                 rivets.bind($('#mcqmr-engine'), {
-                    content: __content
+                    content: __content,
+                    feedback: __feedback,
+                    showFeedback: __feedbackState
                 });
             }
             /*------------------------RIVETS END-------------------------------*/
@@ -264,18 +293,14 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                 var currentTarget = event.currentTarget;
                 var currentInteractionId = currentTarget.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
                 var currentChoice = currentTarget.getAttribute('name');
-                console.log(currentInteractionId);
                 // if current choice checked
                 if (currentTarget.checked) {
-
                     if (!__content.user_answers[currentInteractionId]) {
                         __content.user_answers[currentInteractionId] = [];
                     }
                     __content.user_answers[currentInteractionId].push(currentChoice);
-                    console.log(" Testing arrayu ", __content.user_answers[currentInteractionId]);
                 } else {
                     remove(__content.user_answers[currentInteractionId], currentChoice);
-                    console.log(__content.user_answers[currentInteractionId]);
                 }
                 $(document).triggerHandler('userAnswered');
                 function remove(arr, value) {
@@ -389,7 +414,6 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                                 if (__content.user_answers[key].sort().join("") === __correct_answers[key]['correct'].sort().join(""))
                                     score = perInteractionScore;
                                     countCorrectInteractionAttempt++;
-                                    console.log(countCorrectInteractionAttempt, interactioncount);
                             }
                         }
                         resultArray.push({
@@ -444,7 +468,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                 __content.instructions = jsonContent.content.instructions.map(function (element) {
                     var tagtype = element['tag'];
                     return element[tagtype];
-                })
+                }) 
 
                 __content.interactions = jsonContent.content.canvas.data.questiondata.map(function (element) {
                     var obj = {};
@@ -453,7 +477,6 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                     $(parsedQuestionArray).find("a[href='" + INTERACTION_REFERENCE_STR + "']").remove();
                     obj.id = currinteractionid;
                     obj.questiontext = $(parsedQuestionArray).html();
-                    console.log(obj.questiontext);
                     obj.prompt = "";
                     var tempobj = jsonContent.content.interactions[currinteractionid]
                     var interactiontype = tempobj['type'];

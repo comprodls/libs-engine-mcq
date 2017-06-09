@@ -34,33 +34,23 @@ ul {
     list-style: none;
 }
 
-
-
-.correct:before {
-    content: "\f00c";
+.correct:before, .wrong:before  {
     font-family: fontawesome;
-    color: green;
     display: inline-block;
     margin: 0 0.5em auto -2.2em;
+}
+
+.correct:before {
+     content: "\f00c";
+     color:#080;
 }
 
 .wrong:before {
     content: "\f00d";
-    font-family: fontawesome;
-    color: red;
-    display: inline-block;
-    margin: 0 0.5em auto -2.2em;
+    color: #F00;
 }
 
-.rejoinder {
-    margin-left: 20px;
-}
-
-.correct,
-.wrong {
-    margin-left: 0;
-}
 
 .option-content {
-    margin: 0 0 0 7px;
+    margin: 0 0 0 5px;
 }

@@ -14,7 +14,7 @@
         <p class="prompt"></p>
         <ul class="options">
           <li class="option" rv-each-optionitem="interaction.options | propertyList">
-            <label class="input-label"> 
+            <label class="input-label">
                   <span class="rejoinder invisible pull-left" rv-id="%optionitem% | idcreator 'rejoinder'" ></span>
                   <input class="option-input" rv-id="%optionitem%   | idcreator 'option'" type="checkbox" 
                           rv-name="optionitem.key" rv-id="optionitem.key" data-val="{optionitem.key}"autocomplete="off" />
@@ -25,9 +25,9 @@
       </section>
     </section>
     <section class="feedback">
-          <div class="correct-text" rv-show="showFeedback.correct" rv-text="feedback.global.correct">sdsfsdf</div>
-          <div class="incorrect-text" rv-show="showFeedback.incorrect" rv-text="feedback.global.incorrect">wyyyy</div>
-          <div class="empty-text" rv-show="showFeedback.empty" rv-text="feedback.global.empty">yyyyfcf</div>
+      <div class="correct-text" rv-show="showFeedback.correct" rv-text="feedback.global.correct">sdsfsdf</div>
+      <div class="incorrect-text" rv-show="showFeedback.incorrect" rv-text="feedback.global.incorrect">wyyyy</div>
+      <div class="empty-text" rv-show="showFeedback.empty" rv-text="feedback.global.empty">yyyyfcf</div>
     </section>
   </main>
 </div>

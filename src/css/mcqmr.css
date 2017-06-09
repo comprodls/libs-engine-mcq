@@ -19,26 +19,22 @@
 
 main {
     margin: 20px 20px 20px 20px;
+    font-size: 1em;
 }
 
 .instructions {
-    font-size: 20px;
+    font-size: 1.25em;
 }
 
 .interactions {
-    font-size: 18px;
+    font-size: 1.15em;
 }
 
 ul {
     list-style: none;
 }
 
-main .options {
-    font-size: 16px;
-}
 
-
-/* needs to be redone */
 
 .correct:before {
     content: "\f00c";

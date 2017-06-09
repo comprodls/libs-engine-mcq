@@ -61,7 +61,10 @@
   },
   "responses": {
     "i1": {
-      "correct": "choiceC"
+      "correct": [
+        "choiceA",
+        "choiceC"
+      ]
     }
   },
   "learning-objectives": [],

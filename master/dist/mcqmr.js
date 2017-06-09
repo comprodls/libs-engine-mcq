@@ -2237,7 +2237,7 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
             };
 
 
-            var __interactionIds = [];
+            var __interactionIds = [];//Not required as it can be calculated from __correct_answers
             var __correct_answers = {};
             var __scoring = {};
             
@@ -2311,6 +2311,8 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
                 $(document).bind('userAnswered', function () {
                     __saveResults(false);
                 });
+
+                 //update states??   
 
                 /* ---------------------- SETUP EVENTHANDLER ENDS------------------------------*/
 
@@ -2403,7 +2405,6 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
                     }
                     
                     var countCorrectInteractionAttempt = 0;
-                    
                     for (var key in __content.user_answers) {
                         var score = 0;
                         var interactionResult = {};
@@ -2458,11 +2459,9 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
             * Function to handle radio button click.
             */
             function __handleCheckboxClick(event) {
-                // alert("  I m clicked ");
                 var currentTarget = event.currentTarget;
                 var currentInteractionId = currentTarget.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
                 var currentChoice = currentTarget.getAttribute('name');
-                // if current choice checked
                 if (currentTarget.checked) {
                     if (!__content.user_answers[currentInteractionId]) {
                         __content.user_answers[currentInteractionId] = [];
@@ -2659,6 +2658,9 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
 
                 __content.stimuli = jsonContent.content.stimulus.map(function (element) {
                     var tagtype = element['tag'];
+                     if(tagtype === "image") {
+                        return  params.questionMediaBasePath + element[tagtype];
+                    }
                     return element[tagtype];
                 })
 
@@ -2677,13 +2679,11 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
                 "updateLastSavedResults": updateLastSavedResults,
                 "showfeedback": showfeedback
             };
-
         }
-
     });
 
 
 
 
 (function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})
-('/*******************************************************\r\n * \r\n * ----------------------\r\n * Engine Renderer Styles\r\n * ----------------------\r\n *\r\n * These styles do not include any product-specific branding\r\n * and/or layout / design. They represent minimal structural\r\n * CSS which is necessary for a default rendering of an\r\n * MCQSC activity\r\n *\r\n * The styles are linked/depending on the presence of\r\n * certain elements (classes / ids / tags) in the DOM (as would\r\n * be injected via a valid MCQSC layout HTML and/or dynamically\r\n * created by the MCQSC engine JS)\r\n *\r\n *\r\n *******************************************************/\r\n\r\n.mcqmr-body .mcqmr-main  {\r\n    margin: 20px 20px 20px 20px;\r\n}\r\n\r\n.mcqmr-body .instruction {\r\n\tfont-family: Georgia, serif;\r\n\tfont-size: 20px;\r\n}\r\n\r\n.mcqmr-body .interactions {\r\n\tfont-family: Georgia, serif;\r\n}\r\n\r\n.mcqmr-body .question-text {\r\n\tfont-size: 18px;\r\n} \r\n\r\n.mcqmr-body ul {\r\n list-style: none;\r\n}\r\n\r\n.mcqmr-body .option {\r\n\tfont-size: 16px;\r\n}\r\n\r\n.mcqmr-body span.correct:before {\r\n    content: \"\\f00c\";\r\n    font-family: fontawesome;\r\n    color: green;\r\n    display: inline-block;\r\n    margin: 0 3.5em auto -3.2em;\r\n}\r\n\r\n.mcqmr-body span.wrong:before {\r\n    content: \"\\f00d\";\r\n    font-family: fontawesome;\r\n    color: red;\r\n    display: inline-block;\r\n    margin: 0 3.6em auto -3.2em;\r\n}\r\n\r\n\r\n.mcqmr-body span.correct, .mcqmr-body span.wrong{\r\n    margin-left: 0;\r\n}\r\n');
+('/*******************************************************\r\n * \r\n * ----------------------\r\n * Engine Renderer Styles\r\n * ----------------------\r\n *\r\n * These styles do not include any product-specific branding\r\n * and/or layout / design. They represent minimal structural\r\n * CSS which is necessary for a default rendering of an\r\n * MCQSC activity\r\n *\r\n * The styles are linked/depending on the presence of\r\n * certain elements (classes / ids / tags) in the DOM (as would\r\n * be injected via a valid MCQSC layout HTML and/or dynamically\r\n * created by the MCQSC engine JS)\r\n *\r\n *\r\n *******************************************************/\r\n\r\n.mcqmr-body .mcqmr-main  {\r\n    margin: 20px 20px 20px 20px;\r\n}\r\n\r\n.mcqmr-body .instruction {\r\n\tfont-family: Georgia, serif;\r\n\tfont-size: 20px;\r\n}\r\n\r\n.mcqmr-body .interactions {\r\n\tfont-family: Georgia, serif;\r\n}\r\n\r\n.mcqmr-body .question-text {\r\n\tfont-size: 18px;\r\n} \r\n\r\n.mcqmr-body ul {\r\n list-style: none;\r\n}\r\n\r\n.mcqmr-body .option {\r\n\tfont-size: 16px;\r\n}\r\n\r\n.mcqmr-body span.correct:before {\r\n    content: \"\\f00c\";\r\n    font-family: fontawesome;\r\n    color: green;\r\n    display: inline-block;\r\n    margin: 0 3.5em auto -3.2em;\r\n}\r\n\r\n.mcqmr-body span.wrong:before {\r\n    content: \"\\f00d\";\r\n    font-family: fontawesome;\r\n    color: red;\r\n    display: inline-block;\r\n    margin: 0 3.6em auto -3.2em;\r\n}\r\n\r\n\r\n.mcqmr-body .rejoinder{\r\n    margin-left: 20px;\r\n}\r\n\r\n.mcqmr-body span.correct, .mcqmr-body span.wrong{\r\n    margin-left: 0;\r\n}\r\n');

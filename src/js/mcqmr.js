@@ -71,7 +71,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
             };
 
 
-            var __interactionIds = [];
+            var __interactionIds = [];//Not required as it can be calculated from __correct_answers
             var __correct_answers = {};
             var __scoring = {};
             
@@ -492,6 +492,9 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
 
                 __content.stimuli = jsonContent.content.stimulus.map(function (element) {
                     var tagtype = element['tag'];
+                     if(tagtype === "image") {
+                        return  params.questionMediaBasePath + element[tagtype];
+                    }
                     return element[tagtype];
                 })
 

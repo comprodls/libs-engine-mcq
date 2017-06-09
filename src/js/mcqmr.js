@@ -160,7 +160,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
             /* ---------------------- PUBLIC FUNCTIONS --------------------------------*/
             /**
              * ENGINE-SHELL Interface
-             *
+             * May be used in future, No change required
              * Return configuration
              */
             function getConfig() {
@@ -169,7 +169,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
 
             /**
              * ENGINE-SHELL Interface
-             *
+             * May be used in future, No change required.
              * Return the current state (Activity Attempted.) of activity.
              */
             function getStatus() {

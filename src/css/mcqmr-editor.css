@@ -16,58 +16,81 @@
  *
  *
  *******************************************************/
-#mcqmr--editor .edit-procedure{
-    padding-bottom: 0;
+
+#mcqmr-editor .content-height {
+    overflow: hidden;
 }
 
-#mcqmr--editor .edit-procedure li{
+#mcqmr-editor .no-left-padding {
+    padding-left: 0;
+}
+
+#mcqmr-editor .edit-procedure {
+    padding-bottom: 0;
+    font-size: 12px;
+    line-height: 1.2;
+    color: #555;
+}
+
+#mcqmr-editor .edit-procedure li {
     padding: 5px;
 }
 
-#mcqmr--editor .ques-text-editor.editor-icon{
-	position: absolute;
-	right: 115px;
+#mcqmr-editor .ques-text-editor.editor-icon {
+    position: absolute;
+    right: 40px;
     cursor: pointer;
 }
 
-#mcqmr--editor .question-text-viewer{
-	font-weight: 700;
-	font-size: 18px;
+#mcqmr-editor .question-text-container>div.content-height {
+    position: relative;
 }
 
-#mcqmr--editor .question-text-editor{
-	font-weight: 700;
-	font-size: 18px;
+#mcqmr-editor .question-text-viewer {
+    font-weight: 700;
+    font-size: 18px;
+    padding-top: 5px;
+}
+
+#mcqmr-editor .question-text-editor {
+    font-weight: 700;
+    padding-top: 5px;
+    font-size: 18px;
     border: none;
     border-bottom: 1px solid black;
 }
 
-#mcqmr--editor .questions-editor.form{
-	padding-top: 10px;
+#mcqmr-editor .questions-editor.form {
+    padding-top: 15px;
     padding-bottom: 15px;
 }
 
-#mcqmr--editor .form *{
+#mcqmr-editor .form * {
     margin: 0;
-    padding: 0;
 }
 
-#mcqmr--editor .form ul li{
-    padding: 10px;
+#mcqmr-editor .form ul {
+    padding-left: 15px;
+    padding-bottom: 10px;
     position: relative;
 }
 
-#mcqmr--editor .form ul li.highlight{
-    background-color: #F2F2F2;
-    border-radius: 6px;
+#mcqmr-editor .form ul li {
+    padding: 10px;
+    position: static;
 }
 
-#mcqmr--editor .form ul li i{
+#mcqmr-editor .form ul li.highlight {
+    background-color: #F2F2F2;
+    border-radius: 0px;
+}
+
+#mcqmr-editor .form ul li i {
     height: 1.8em;
     width: 1.8em;
-    border-radius: 50%;
+    border-radius: 0;
     position: absolute;
-	top: 0;
+    top: 0;
     left: 0;
     display: block;
     outline: 0;
@@ -75,10 +98,10 @@
     background: #FFF;
 }
 
-#mcqmr--editor .form ul li i:after {
+#mcqmr-editor .form ul li i:after {
     background-color: #3276B1;
     content: '';
-    border-radius: 50%;
+    border-radius: 0;
     height: 1.1em;
     width: 1.1em;
     top: .3em;
@@ -87,15 +110,15 @@
     opacity: 0;
 }
 
-#mcqmr--editor .form ul li.highlight i{
+#mcqmr-editor .form ul li.highlight i {
     border-color: #3276B1;
 }
 
-#mcqmr--editor .form ul li.highlight i:after{
+#mcqmr-editor .form ul li.highlight i:after {
     opacity: 1;
 }
 
-#mcqmr--editor .form ul li .radio{
+#mcqmr-editor .form ul li .checkbox {
     font-size: 1em;
     line-height: 1.8em;
     color: #3D3D3D;
@@ -103,62 +126,79 @@
     padding-left: 45px!important;
 }
 
-
-#mcqmr--editor .form ul li .radio input {
-    position: absolute;
-    left: -9999px;
+#mcqmr-editor .form ul li .checkbox input {
+    /*position: absolute;*/
+    left: 0px;
 }
 
-#mcqmr--editor .form ul li .radio .option-value{
-	position: static!important;
+
+/*#mcqmr-editor .form ul li .radio .      -value {*/
+
+#mcqsr-editor .form ul li .checkbox .option-value {
+    position: static!important;
+    left: -9999
 }
 
-#mcqmr--editor .form ul li .radio div.option-value{
-	display: inline-block;
+#mcqmr-editor .form ul li .checkbox div.option-value {
+    display: inline-block;
 }
 
-#mcqmr--editor .form ul li .radio .correct-answer{
+#mcqmr-editor .form ul li .checkbox .correct-answer {
     font-weight: 700;
 }
 
-#mcqmr--editor .form ul li .editor-icon {
-	cursor: pointer;
+#mcqmr-editor .form ul li .editor-icon {
+    cursor: pointer;
 }
 
-#mcqmr--editor .form ul li .editor-icon.mcqmr--edit{
-	position: absolute;
-	right: -50px;
-	top: 10px;
+#mcqmr-editor .form ul li .editor-icon.mcqmr-edit {
+    position: absolute;
+    right: 40px;
 }
 
-#mcqmr--editor .form ul li .delete-icon.mcqmr--edit{
-	right: -90px;
+#mcqmr-editor .form ul li .delete-icon.mcqmr-edit {
+    right: 20px;
 }
 
-#mcqmr--editor .form ul li .drag-icon.mcqmr--edit{
-	right: -70px;
+#mcqmr-editor .form ul li .drag-icon.mcqmr-edit {
+    right: 0px;
 }
 
-#mcqmr--editor .add-container .add-item{
-	cursor: pointer;
+#mcqmr-editor .add-container {
+    padding-bottom: 20px;
 }
 
-#mcqmr--editor .input-option{
-	width: 90%;
-	border: none;
-	border-bottom: 1px solid black;
+#mcqmr-editor .add-container .add-item {
+    cursor: pointer;
 }
 
-#mcqmr--editor .bottom-content .rule{
-	padding-bottom: 10px;	
+#mcqmr-editor .input-option {
+    width: 90%;
+    border: none;
+    border-bottom: 1px solid black;
 }
 
-#mcqmr--editor .bottom-content .objective{
-    border-bottom: 1px solid #dbdbdb;
-    padding-bottom: 10px;
+#mcqmr-editor .bottom-content {
+    position: relative;
 }
 
-#mcqmr--editor .bottom-content .feedback-text{
-	display: block;
-	padding: 10px 0;
+#mcqmr-editor .bottom-content h3 {
+    margin-top: 5px;
+    padding-left: 15px;
+}
+
+#mcqmr-editor .bottom-content .feedback-label {
+    font-size: 17px;
+    padding-left: 15px;
+    overflow: hidden
+}
+
+#mcqmr-editor .bottom-content .feedback-text {
+    display: inline-block;
+}
+
+#mcqmr-editor .bottom-content .feedback-text-editor {
+    display: inline-block;
+    border: none;
+    border-bottom: 1px solid black;
 }

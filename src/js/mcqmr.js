@@ -184,6 +184,9 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                 __saveResults(true);
 
                 /* Marking Answers. */
+                /*This is a temporary execution block to show answers and feedbacks. 
+                 * In future realese will remove this block once app starts executing
+                 * showfeedback and showgrades function */
                 if (activityAdaptor.showAnswers) {
                     __markAnswers();
                     showfeedback();
@@ -217,6 +220,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                     }
                 }
             }
+
             /** Default feedback. This feedback will be shown if app doesn't wan't to override it by its own Feedback. */
             function showfeedback() {
                 for (var prop in __feedback) {
@@ -255,7 +259,6 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
 
                     return isCorrect;
                     }
-
             }
             /* ---------------------- PUBLIC FUNCTIONS END ----------------------------*/
 

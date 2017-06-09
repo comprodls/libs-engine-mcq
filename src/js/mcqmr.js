@@ -67,13 +67,37 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
      * Content (loaded / initialized during init() ).
      */ 
     var __content = {
-        directionsJSON: "",
+        directionsJSON: "", //NOT USED
+	activityType: null,  //NOT USED
+	    
+	/**
+	  FORMAT - SAME AS DEFINTION.JSON
+	*/
         questionsJSON: [], /* Contains the question obtained from content JSON. */
+    
+	/**
+	  FORMAT - SAME AS DEFINTION.JSON
+	*/	    
         optionsJSON: [], /* Contains all the options for a particular question obtained from content JSON. */
+	    
+	/**
+	  FORMAT - SAME AS DEFINTION.JSON
+	*/	    
         answersJSON: [], /* Contains the answer for a particular question obtained from content JSON. */
+	    
+	/**
+	  FORMAT - SAME AS DEFINTION.JSON
+	*/	    
         userAnswersJSON: [], /* Contains the user answer for a particular question. */
-        activityType: null,  /* Type of FIB activity. Possible Values :- FIBPassage.  */ 
+	    
+        /**
+	  FORMAT - SAME AS DEFINTION.JSON
+	*/
         scoreJSON : null,
+	   
+	/**
+	  FORMAT - SAME AS DEFINTION.JSON
+	*/	    
         feedbackJSON : null
     };
 

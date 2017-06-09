@@ -17,52 +17,54 @@
  *
  *******************************************************/
 
-.mcqmr-body .mcqmr-main  {
+main {
     margin: 20px 20px 20px 20px;
 }
 
-.mcqmr-body .instruction {
-	font-family: Georgia, serif;
-	font-size: 20px;
+.instructions {
+    font-size: 20px;
 }
 
-.mcqmr-body .interactions {
-	font-family: Georgia, serif;
+.interactions {
+    font-size: 18px;
 }
 
-.mcqmr-body .question-text {
-	font-size: 18px;
-} 
-
-.mcqmr-body ul {
- list-style: none;
+ul {
+    list-style: none;
 }
 
-.mcqmr-body .option {
-	font-size: 16px;
+main .options {
+    font-size: 16px;
 }
 
-.mcqmr-body span.correct:before {
+
+/* needs to be redone */
+
+.correct:before {
     content: "\f00c";
     font-family: fontawesome;
     color: green;
     display: inline-block;
-    margin: 0 3.5em auto -3.2em;
+    margin: 0 0.5em auto -2.2em;
 }
 
-.mcqmr-body span.wrong:before {
+.wrong:before {
     content: "\f00d";
     font-family: fontawesome;
     color: red;
     display: inline-block;
-    margin: 0 3.6em auto -3.2em;
+    margin: 0 0.5em auto -2.2em;
 }
 
-
-.mcqmr-body .rejoinder{
+.rejoinder {
     margin-left: 20px;
 }
 
-.mcqmr-body span.correct, .mcqmr-body span.wrong{
+.correct,
+.wrong {
     margin-left: 0;
+}
+
+.option-content {
+    margin: 0 0 0 7px;
 }

@@ -69,9 +69,12 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                 interactions: [],
                 stimuli: []
             };
+
+
             var __interactionIds = [];
             var __correct_answers = {};
             var __scoring = {};
+            
             var __feedback = {};
             var __feedbackState = {
                 'correct' : false,
@@ -142,6 +145,8 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                 $(document).bind('userAnswered', function () {
                     __saveResults(false);
                 });
+
+                 //update states??   
 
                 /* ---------------------- SETUP EVENTHANDLER ENDS------------------------------*/
 
@@ -234,7 +239,6 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                     }
                     
                     var countCorrectInteractionAttempt = 0;
-                    
                     for (var key in __content.user_answers) {
                         var score = 0;
                         var interactionResult = {};
@@ -247,9 +251,9 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                     }
 
                     if(countCorrectInteractionAttempt === Object.keys(__correct_answers).length) return isCorrect = true;
-                    if(countCorrectInteractionAttempt !== Object.keys(__correct_answers).length) return isCorrect = true;
+                    if(countCorrectInteractionAttempt !== Object.keys(__correct_answers).length) return isCorrect = false;
 
-                        return isCorrect;
+                    return isCorrect;
                     }
 
             }
@@ -289,11 +293,9 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
             * Function to handle radio button click.
             */
             function __handleCheckboxClick(event) {
-                // alert("  I m clicked ");
                 var currentTarget = event.currentTarget;
                 var currentInteractionId = currentTarget.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
                 var currentChoice = currentTarget.getAttribute('name');
-                // if current choice checked
                 if (currentTarget.checked) {
                     if (!__content.user_answers[currentInteractionId]) {
                         __content.user_answers[currentInteractionId] = [];
@@ -508,9 +510,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                 "updateLastSavedResults": updateLastSavedResults,
                 "showfeedback": showfeedback
             };
-
         }
-
     });
 
 

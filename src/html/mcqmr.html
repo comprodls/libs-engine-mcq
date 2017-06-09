@@ -1,11 +1,11 @@
 <!-- Engine Renderer Template -->
 <div class="mcqmr-body" id="mcqmr-engine">
-  <main id="question_id">
+  <main>
     <section rv-each-instruction="content.instructions">
       <p class="instructions" rv-text="instruction"></p>
     </section>
     <div class="stimuli">
-      <figure></figure>
+      <figure  rv-each-stimuli="content.stimuli"></figure>
     </div>
     <section class="interactions">
       <section rv-id="interaction.id" rv-each-interaction="content.interactions" class="interaction">
@@ -27,9 +27,9 @@
     <section id="feedback-section">
       <div class="row">
         <div class="col-sm-12">
-         <div rv-show="showFeedback.correct" class="" rv-text="feedback.global.correct">sdsfsdf</div>
-         <div rv-show="showFeedback.incorrect" class="" rv-text="feedback.global.incorrect">wyyyy</div>
-         <div rv-show="showFeedback.empty" class="" rv-text="feedback.global.empty">yyyyfcf</div>
+         <div rv-show="showFeedback.correct"  rv-text="feedback.global.correct">sdsfsdf</div>
+         <div rv-show="showFeedback.incorrect"  rv-text="feedback.global.incorrect">wyyyy</div>
+         <div rv-show="showFeedback.empty"  rv-text="feedback.global.empty">yyyyfcf</div>
       </div>      
    </div>
 

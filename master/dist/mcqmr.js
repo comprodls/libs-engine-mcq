@@ -373,7 +373,7 @@ define('text',['module'], function (module) {
 });
 
 
-define('text!../html/mcqmr.html',[],function () { return '<!-- Engine Renderer Template -->\r\n<div class="mcqmr-body" id="mcqmr-engine">\r\n  <main id="question_id">\r\n    <section rv-each-instruction="content.instructions">\r\n      <p class="instructions" rv-text="instruction"></p>\r\n    </section>\r\n    <div class="stimuli">\r\n      <figure></figure>\r\n    </div>\r\n    <section class="interactions">\r\n      <section rv-id="interaction.id" rv-each-interaction="content.interactions" class="interaction">\r\n        <p class="question-text" rv-text="interaction.questiontext"></p>\r\n        <!-- prompt Will be shown only if prompt text is available for interaction /-->\r\n        <p class="prompt"></p>\r\n        <ul id="options">\r\n          <li id="option" rv-each-optionitem="interaction.options | propertyList">\r\n            <label> \r\n                  <span rv-id="%optionitem% | idcreator \'rejoinder\'" class="rejoinder invisible pull-left"></span>\r\n                  <input class="option-input" rv-id="%optionitem%   | idcreator \'option\'" type="checkbox" \r\n                          rv-name="optionitem.key" rv-id="optionitem.key" data-val="{optionitem.key}"autocomplete="off" />\r\n                          <span class=\'option-content\' rv-text="optionitem.value">{optionitem.value}</span>\r\n             </label>\r\n          </li>\r\n        </ul>\r\n      </section>\r\n    </section>\r\n    <section id="feedback-section">\r\n      <div class="row">\r\n        <div class="col-sm-12">\r\n         <div rv-show="showFeedback.correct" class="" rv-text="feedback.global.correct">sdsfsdf</div>\r\n         <div rv-show="showFeedback.incorrect" class="" rv-text="feedback.global.incorrect">wyyyy</div>\r\n         <div rv-show="showFeedback.empty" class="" rv-text="feedback.global.empty">yyyyfcf</div>\r\n      </div>      \r\n   </div>\r\n\r\n    </section>\r\n  </main>\r\n</div>';});
+define('text!../html/mcqmr.html',[],function () { return '<!-- Engine Renderer Template -->\r\n<div class="mcqmr-body" id="mcqmr-engine">\r\n  <main>\r\n    <section rv-each-instruction="content.instructions">\r\n      <p class="instructions" rv-text="instruction"></p>\r\n    </section>\r\n    <div class="stimuli">\r\n      <figure  rv-each-stimuli="content.stimuli"></figure>\r\n    </div>\r\n    <section class="interactions">\r\n      <section rv-id="interaction.id" rv-each-interaction="content.interactions" class="interaction">\r\n        <p class="question-text" rv-text="interaction.questiontext"></p>\r\n        <!-- prompt Will be shown only if prompt text is available for interaction /-->\r\n        <p class="prompt"></p>\r\n        <ul id="options">\r\n          <li id="option" rv-each-optionitem="interaction.options | propertyList">\r\n            <label> \r\n                  <span rv-id="%optionitem% | idcreator \'rejoinder\'" class="rejoinder invisible pull-left"></span>\r\n                  <input class="option-input" rv-id="%optionitem%   | idcreator \'option\'" type="checkbox" \r\n                          rv-name="optionitem.key" rv-id="optionitem.key" data-val="{optionitem.key}"autocomplete="off" />\r\n                          <span class=\'option-content\' rv-text="optionitem.value">{optionitem.value}</span>\r\n             </label>\r\n          </li>\r\n        </ul>\r\n      </section>\r\n    </section>\r\n    <section id="feedback-section">\r\n      <div class="row">\r\n        <div class="col-sm-12">\r\n         <div rv-show="showFeedback.correct"  rv-text="feedback.global.correct">sdsfsdf</div>\r\n         <div rv-show="showFeedback.incorrect"  rv-text="feedback.global.incorrect">wyyyy</div>\r\n         <div rv-show="showFeedback.empty"  rv-text="feedback.global.empty">yyyyfcf</div>\r\n      </div>      \r\n   </div>\r\n\r\n    </section>\r\n  </main>\r\n</div>';});
 
 /*
  * Require-CSS RequireJS css! loader plugin
@@ -2235,9 +2235,12 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
                 interactions: [],
                 stimuli: []
             };
+
+
             var __interactionIds = [];
             var __correct_answers = {};
             var __scoring = {};
+            
             var __feedback = {};
             var __feedbackState = {
                 'correct' : false,
@@ -2341,7 +2344,6 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
             * Bound to click of Activity submit button.
             */
             function handleSubmit() {
-                console.log(" show grades called ");
                 /* Saving Answers. */
                 __saveResults(true);
 
@@ -2357,7 +2359,6 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
             * Function to show user grades.
             */
             function showGrades(savedAnswer, reviewAttempt) {
-                console.log(" show grades callled ");
                 /* Show last saved answers. */
                 updateLastSavedResults(savedAnswer);
                 /* Mark answers. */
@@ -2382,7 +2383,6 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
             }
             /** Default feedback. This feedback will be shown if app doesn't wan't to override it by its own Feedback. */
             function showfeedback() {
-                console.log("Show feedback is executed");
                 for (var prop in __feedback) {
                     __feedbackState[prop] = false;
                 }
@@ -2416,9 +2416,9 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
                     }
 
                     if(countCorrectInteractionAttempt === Object.keys(__correct_answers).length) return isCorrect = true;
-                    if(countCorrectInteractionAttempt !== Object.keys(__correct_answers).length) return isCorrect = true;
+                    if(countCorrectInteractionAttempt !== Object.keys(__correct_answers).length) return isCorrect = false;
 
-                        return isCorrect;
+                    return isCorrect;
                     }
 
             }
@@ -2430,7 +2430,6 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
             /*------------------------RIVET INITIALIZATION & BINDINGS -------------------------------*/
             function __initRivets() {
                 rivets.formatters.propertyList = function (obj) {
-                    console.log(JSON.stringify(obj))
                     return (function () {
                         var properties = [];
                         for (var key in obj) {
@@ -2463,18 +2462,14 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
                 var currentTarget = event.currentTarget;
                 var currentInteractionId = currentTarget.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
                 var currentChoice = currentTarget.getAttribute('name');
-                console.log(currentInteractionId);
                 // if current choice checked
                 if (currentTarget.checked) {
-
                     if (!__content.user_answers[currentInteractionId]) {
                         __content.user_answers[currentInteractionId] = [];
                     }
                     __content.user_answers[currentInteractionId].push(currentChoice);
-                    console.log(" Testing arrayu ", __content.user_answers[currentInteractionId]);
                 } else {
                     remove(__content.user_answers[currentInteractionId], currentChoice);
-                    console.log(__content.user_answers[currentInteractionId]);
                 }
                 $(document).triggerHandler('userAnswered');
                 function remove(arr, value) {
@@ -2588,7 +2583,6 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
                                 if (__content.user_answers[key].sort().join("") === __correct_answers[key]['correct'].sort().join(""))
                                     score = perInteractionScore;
                                     countCorrectInteractionAttempt++;
-                                    console.log(countCorrectInteractionAttempt, interactioncount);
                             }
                         }
                         resultArray.push({
@@ -2652,7 +2646,6 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
                     $(parsedQuestionArray).find("a[href='" + INTERACTION_REFERENCE_STR + "']").remove();
                     obj.id = currinteractionid;
                     obj.questiontext = $(parsedQuestionArray).html();
-                    console.log(obj.questiontext);
                     obj.prompt = "";
                     var tempobj = jsonContent.content.interactions[currinteractionid]
                     var interactiontype = tempobj['type'];
@@ -2693,4 +2686,4 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
 
 
 (function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})
-('/*******************************************************\r\n * \r\n * ----------------------\r\n * Engine Renderer Styles\r\n * ----------------------\r\n *\r\n * These styles do not include any product-specific branding\r\n * and/or layout / design. They represent minimal structural\r\n * CSS which is necessary for a default rendering of an\r\n * MCQSC activity\r\n *\r\n * The styles are linked/depending on the presence of\r\n * certain elements (classes / ids / tags) in the DOM (as would\r\n * be injected via a valid MCQSC layout HTML and/or dynamically\r\n * created by the MCQSC engine JS)\r\n *\r\n *\r\n *******************************************************/\r\n\r\n.mcqmr-body .mcqmr-main  {\r\n    margin: 20px 20px 20px 20px;\r\n}\r\n\r\n.mcqmr-body .instruction {\r\n\tfont-family: Georgia, serif;\r\n\tfont-size: 20px;\r\n}\r\n\r\n.mcqmr-body .interactions {\r\n\tfont-family: Georgia, serif;\r\n}\r\n\r\n.mcqmr-body .question-text {\r\n\tfont-size: 18px;\r\n} \r\n\r\n.mcqmr-body ul {\r\n list-style: none;\r\n}\r\n\r\n.mcqmr-body .option {\r\n\tfont-size: 16px;\r\n}\r\n\r\n.mcqmr-body span.correct:before {\r\n    content: \"\\f00c\";\r\n    font-family: fontawesome;\r\n    display: inline-block;\r\n    margin: 0 3.5em auto -3.2em;\r\n}\r\n\r\n.mcqmr-body span.wrong:before {\r\n    content: \"\\f00d\";\r\n    font-family: fontawesome;\r\n    display: inline-block;\r\n    margin: 0 3.6em auto -3.2em;\r\n}\r\n\r\n\r\n.mcqmr-body .rejoinder{\r\n    margin-left: 20px;\r\n}\r\n\r\n.mcqmr-body span.correct, .mcqmr-body span.wrong{\r\n    margin-left: 0;\r\n}\r\n');
+('/*******************************************************\r\n * \r\n * ----------------------\r\n * Engine Renderer Styles\r\n * ----------------------\r\n *\r\n * These styles do not include any product-specific branding\r\n * and/or layout / design. They represent minimal structural\r\n * CSS which is necessary for a default rendering of an\r\n * MCQSC activity\r\n *\r\n * The styles are linked/depending on the presence of\r\n * certain elements (classes / ids / tags) in the DOM (as would\r\n * be injected via a valid MCQSC layout HTML and/or dynamically\r\n * created by the MCQSC engine JS)\r\n *\r\n *\r\n *******************************************************/\r\n\r\n.mcqmr-body .mcqmr-main  {\r\n    margin: 20px 20px 20px 20px;\r\n}\r\n\r\n.mcqmr-body .instruction {\r\n\tfont-family: Georgia, serif;\r\n\tfont-size: 20px;\r\n}\r\n\r\n.mcqmr-body .interactions {\r\n\tfont-family: Georgia, serif;\r\n}\r\n\r\n.mcqmr-body .question-text {\r\n\tfont-size: 18px;\r\n} \r\n\r\n.mcqmr-body ul {\r\n list-style: none;\r\n}\r\n\r\n.mcqmr-body .option {\r\n\tfont-size: 16px;\r\n}\r\n\r\n.mcqmr-body span.correct:before {\r\n    content: \"\\f00c\";\r\n    font-family: fontawesome;\r\n    color: green;\r\n    display: inline-block;\r\n    margin: 0 3.5em auto -3.2em;\r\n}\r\n\r\n.mcqmr-body span.wrong:before {\r\n    content: \"\\f00d\";\r\n    font-family: fontawesome;\r\n    color: red;\r\n    display: inline-block;\r\n    margin: 0 3.6em auto -3.2em;\r\n}\r\n\r\n\r\n.mcqmr-body span.correct, .mcqmr-body span.wrong{\r\n    margin-left: 0;\r\n}\r\n');

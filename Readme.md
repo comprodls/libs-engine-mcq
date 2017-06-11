@@ -203,24 +203,6 @@ define(['text!../html/mcqmr.html', //layout(s) template representing the UX
      * Reference to platform's activity adaptor (passed during init() ).
      */
     var activityAdaptor;     
-    
-    /*
-     * Internal Engine Config.
-     */ 
-    var __config = {
-        MAX_RETRIES: 10, /* Maximum number of retries for sending results to platform for a particular activity. */ 
-        RESIZE_MODE: "auto", /* Possible values - "manual"/"auto". Default value is "auto". */
-        RESIZE_HEIGHT: "580" /* Applicable, if RESIZE_MODE is manual. If RESIZE_HEIGHT is defined in TOC then that will overrides. */
-        /* If both config RESIZE_HEIGHT and TOC RESIZE_HEIGHT are not defined then RESIZE_MODE is set to "auto"*/
-    };
-    
-    /*
-     * Internal Engine State - used to manage/track current status of the assessment.
-     */ 
-    var __state = {
-        activityPariallySubmitted: false, /* State whether activity has been partially submitted. Possible Values: true/false(Boolean) */
-        activitySubmitted: false /* State whether activity has been submitted. Possible Values: true/false(Boolean) */
-    };  
 
     /*
      * Constants.
@@ -267,20 +249,19 @@ define(['text!../html/mcqmr.html', //layout(s) template representing the UX
     /* ---------------------- PUBLIC FUNCTIONS --------------------------------*/
     /**
      * ENGINE Interface
-     *
+     * Note: Placeholder for future use. Currently empty definition provided due to testrunner API dependecy.
      * Returns configuration (width, height, etc) of the assessment
      */
     function getConfig () {
-        return __config;
     }
     
     /**
      * ENGINE Interface
-     *
+     * Note: Placeholder for future use. Currently empty definition provided due to testrunner API dependecy.
      * Returns the current state (Activity Submitted/ Partial Save State.) of assessment.
+     * 
      */
     function getStatus() {
-        return __state.activitySubmitted || __state.activityPariallySubmitted;
     }
 
 

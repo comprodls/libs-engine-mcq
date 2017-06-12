@@ -2177,6 +2177,7 @@ define('css!../css/mcqmr',[],function(){});
  *  {
  *          init(),
  *          getConfig()
+ *          getStatus()
  *  }
  * 
  *
@@ -2184,6 +2185,8 @@ define('css!../css/mcqmr',[],function(){});
  * 
  *
  * The function engine.getConfig() is called to request SIZE information - the response from the engine is used to resize & display the container iframe.
+ *
+ * The function [ engine.getStatus() ] may be called to check if SUBMIT has been pressed or not - the response from the engine is used to enable / disable appropriate platform controls.
  *
  *
  * EXTERNAL JS DEPENDENCIES : ->
@@ -2212,12 +2215,9 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
              */
             var __config = {
                 MAX_RETRIES: 10, /* Maximum number of retries for sending results to platform for a particular activity. */
-                RESIZE_MODE: "auto", /* Possible values - "manual"/"auto". Default value is "auto". */
-                RESIZE_HEIGHT: "580" /* Applicable, if RESIZE_MODE is manual. If RESIZE_HEIGHT is defined in TOC then that will overrides. */
-                /* If both config RESIZE_HEIGHT and TOC RESIZE_HEIGHT are not defined then RESIZE_MODE is set to "auto"*/
             };
 
-            /*
+             /*
              * Internal Engine State.
              */
             var __state = {
@@ -2329,8 +2329,7 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
              * May be used in future, No change required
              * Return configuration
              */
-            function getConfig() {
-                return __config;
+            function getConfig() {                
             }
 
             /**
@@ -2338,8 +2337,7 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
              * May be used in future, No change required.
              * Return the current state (Activity Attempted.) of activity.
              */
-            function getStatus() {
-                return __state.activitySubmitted || __state.activityPariallySubmitted;
+            function getStatus() {            
             }
 
             /**
@@ -2365,9 +2363,10 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
             */
             function showGrades(savedAnswer, reviewAttempt) {
                 /* Show last saved answers. */
-                updateLastSavedResults(savedAnswer);
+               
                 /* Mark answers. */
                 if (reviewAttempt) {
+                    updateLastSavedResults(savedAnswer);
                     __markAnswers();
                 }
                 $('input[id^=option]').attr("disabled", true);
@@ -2596,32 +2595,13 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
 
                     if (countCorrectInteractionAttempt === interactioncount) {
                         statusEvaluation = "correct";
-                        /* Prepare Feedback */
-                        feedback = {
-                            "global": {
-                                "id": "global.correct",
-                                "status": "correct",
-                                "content": __feedback.correct
-                            }
-                        }
+                        feedback = __buildFeedbackResponse("global.correct", "correct", __feedback.correct);
                     } else if (countCorrectInteractionAttempt === 0) {
                         statusEvaluation = "incorrect";
-                        feedback = {
-                            "global": {
-                                "id": "global.incorrect",
-                                "status": statusEvaluation,
-                                "content": __feedback.incorrect
-                            }
-                        }
+                        feedback = __buildFeedbackResponse("global.incorrect", statusEvaluation, __feedback.incorrect);
                     } else {
                         statusEvaluation = "partially_correct";
-                        feedback = {
-                            "global": {
-                                "id": "global.incorrect",
-                                "status": "incorrect",
-                                "content": __feedback.incorrect
-                            }
-                        }
+                        feedback = __buildFeedbackResponse("global.incorrect", "incorrect", __feedback.incorrect);
                     }
                 } else {
                     statusEvaluation = "incorrect";
@@ -2632,6 +2612,19 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
                     "statusEvaluation": statusEvaluation,
                     "feedback": feedback
                 };
+            }
+            /**
+             * Prepare feedback response.
+             * @param {*} id 
+             * @param {*} status 
+             * @param {*} content 
+             */
+            function __buildFeedbackResponse( id, status, content){
+                     var feedback = {};
+                     feedback.id = id;
+                     feedback.status = status;
+                     feedback.content = content;
+            return feedback;
             }
 
 

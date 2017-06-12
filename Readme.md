@@ -325,6 +325,7 @@ This function is called by the platform - it is a request to Engine to show grad
 
 **Parameters** 
 * **lastResults**: Array of last saved results. Each item of array represent an **interaction**
+* **reviewAttempt**: Review Attempt mode.
 
 ```javascript
 

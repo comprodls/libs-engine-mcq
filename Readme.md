@@ -141,22 +141,8 @@ If you're developing your first assessment type, its strongly recommended that y
 For more information on the standard comproDLS&trade; schema elements and their purpose, see https://docs.google.com/document/d/1npkT-s7aIWrAi_uXMldWMuX9UWpvhHXTflvi__Pm2jo/edit#heading=h.lz5q7wlcy4c1
 
 
-* Based on your UX, define the default layout for your assessment type - `html/<CODE>.html`. Include basic or first-level templating snippets (see http://rivetsjs.com/docs/guide/#usage for details on the RIVETS templating engine) for linking your **question JSON** to your template. Start with the standard schema elements like `content.instructions`, `meta.title` etc. You could use following vanilla template as a starting point.
-```html
-<div class="well" id="mcqmr-engine">  <!-- the "id" attribute must set as shown. -->
-   <!-- Displaying the Title -->
-   <h1 rv-text="jsonContent.meta.title"></h1>
-   <!-- Displaying Instructions -->
-   <div rv-each-instruction="jsonContent.content.instructions">
-      <p class="lead" rv-text="instruction.html"></p>
-   </div>   
-   <!-- Displaying the question -->
-   <div rv-each-question="jsonContent.content.canvas.data.questiondata">
-      <h6 rv-text="question.text"></h6>
-   </div>   
-   <!-- TODO - Display options -->
-</div>
-```
+* Based on your UX, define the default layout for your assessment type - `html/<CODE>.html`. Include basic or first-level templating snippets (see http://rivetsjs.com/docs/guide/#usage for details on the RIVETS templating engine) for linking your **question JSON** to your template. Start with the standard schema elements like `content.instructions`, `meta.title` etc. You could use sample MCQMR implementation (see https://github.com/comprodls/libs-engine-mcqmr/blob/master/src/html/mcqmr.html ) as a starting point.
+
 * If necessary add **custom styles** to align with your default template in `css/<CODE>.css`. Note **[Bootstrap 3.3.7]**(https://github.com/twbs/bootstrap) is already included as the baseline styling system. You may skip this step initially and simply leverage default bootstrap styles.
 * Now you are ready to start writing your **javascript module** in the files `js/<CODE>.js`. The library  **`jquery 3.2.1`** is available as the baseline. Use the standard AMD module (see http://requirejs.org/docs/whyamd.html#amd ) pattern for specifying additional dependencies. Following is the vanilla starter module which uses RIVETS (for two-way binding and templating).
 

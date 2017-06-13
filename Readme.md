@@ -324,11 +324,29 @@ The engine should call this function to save user's answers - to minimize chance
 ```javascript
 //Example
 resultsArray = [{
-            itemUID: interactionId, // interactionId
-            answer: "ChoiceC", //Answer given by the user
-            score: 1 // Score for the interaction
-            
-        }]
+    "response": {
+        "interactions": [{
+                "id": "i1",
+                "score": 0.16666666666666666,
+                "answer": "van"
+            }
+        ],
+        "statusProgress": "in_progress",
+        "statusEvaluation": "partially_correct",
+        "feedback": {
+            "global": {
+                "id": "global.correct",
+                "status": "correct",
+                "content": "Perfect. You got it correct !!!"
+            },
+            "i1": {
+                "id": "interaction.choice",
+                "status": "correct",
+                "content": "This is a correct response. Well done."
+            }
+        }        
+    }
+}]
 ```
 * **uniqueId**: UniqueId of the assessment
 * **callback**: The function that will be called once the results are saved successfully.

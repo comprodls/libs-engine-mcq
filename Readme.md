@@ -310,19 +310,7 @@ This function is called by the platform - it is a request to Engine to render th
 This function is called by the platform - it is a request to Engine to show grades (correct / wron g answers). The engine should expect this function to be called right after updateLastSavedResults().
 
 **Parameters** 
-* **lastResults**: Array of last saved results. Each item of array represent an **interaction**
-* **reviewAttempt**: Review Attempt mode.
-
-```javascript
-
-//Example
-lastResults = [{"itemUID": "i1","answer": "This is answer 1"},
-	       {"itemUID": "i2", "answer": "This is answer 2"}]
-
-//itemUID - Interaction Id
-//answer - Interaction data/state
-
-```
+* **uniqueTestId**: Unique Id for your test.
 
 ### 4.2 Adaptor (platform) functions 
 The engine can contact the platform via the  functions available in the adaptor object. 

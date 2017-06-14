@@ -85,7 +85,7 @@ Done.
 2. Open http://assessment.comprodls.com and login using your comproDLS&trade; development account.
 3. Click on "Register New Item" in the left menu bar.
 4. Fill in the register form using your newly created item credentials.
-	* **Path** - External item repository path.
+	* **Path** - External item repository path. e.g. https://github.com/comprodls/libs-engine-mcqmr/master/dist/
 	* **Item Type** - Your engine CODE.
 	* **Item Name** - Name you want to give to the item.
 	* **Layout** - Enter your Engine CODE here. This is the name of default layout/variation to be used for the item.
@@ -306,6 +306,18 @@ This function is called by the platform, when end user presses SUBMIT. This can 
 #### 4.1.5 updateLastSavedResults() 
 This function is called by the platform - it is a request to Engine to render the last save results / state. This function is typically called to simulate a RESUME scenario. The engine should expect this function to be called rightafter the completion of init (i.e. the platform callback has been executed). In case FRESH ATTEMPT, this function will NOT be called.
 
+**Parameters** 
+* **savedAnswer**: Saved Answer.
+```javascript
+//Example
+answerArray = [{
+                "id": "i1",
+                "score": 0.16666666666666666,
+                "answer": ["choiceA"]
+            }
+        ]
+```
+
 #### 4.1.5 showGrades() 
 This function is called by the platform - it is a request to Engine to show grades (correct / wron g answers). The engine should expect this function to be called right after updateLastSavedResults().
 
@@ -328,7 +340,7 @@ resultsArray = [{
         "interactions": [{
                 "id": "i1",
                 "score": 0.16666666666666666,
-                "answer": "van"
+                "answer": ["choiceA"]
             }
         ],
         "statusProgress": "in_progress",

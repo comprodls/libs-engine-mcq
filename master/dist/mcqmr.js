@@ -2351,25 +2351,21 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
                 /*This is a temporary execution block to show answers and feedbacks. 
                  * In future realese will remove this block once app starts executing
                  * showfeedback and showgrades function */
-                if (activityAdaptor.showAnswers) {
-                    __markAnswers();
-                    showfeedback();
-                }
+                // if (activityAdaptor.showAnswers) {
+                //     __markAnswers();
+                //     showfeedback();
+                // }
                 $('input[id^=option]').attr("disabled", true);
             }
 
             /**
             * Function to show user grades.
             */
-            function showGrades(savedAnswer, reviewAttempt) {
+            function showGrades(uniqueid) {
                 /* Show last saved answers. */
-               
-                /* Mark answers. */
-                if (reviewAttempt) {
-                    updateLastSavedResults(savedAnswer);
-                    __markAnswers();
-                }
                 $('input[id^=option]').attr("disabled", true);
+                __markAnswers();
+                
             }
 
             /**
@@ -2494,8 +2490,7 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
                 var uniqueId = activityAdaptor.getId();
 
                 /*Getting answer in JSON format*/
-                var answerJSON = __getAnswersJSON(false);
-
+                var answerJSON = __getAnswersJSON();
                 if (bSubmit === true) {/*Hard Submit*/
                     answerJSON.statusProgress = "attempted";
                     /*Send Results to platform*/
@@ -2565,53 +2560,50 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
              *   3. Divide the maximum marks among interaction.
              *   4. Returns result objects.  [{ itemUID: interactionId,  answer: answer,   score: score }]
              */
-            function __getAnswersJSON(skipQuestion) {
+            function __getAnswersJSON() {
                 var resultArray = [];
                 var statusEvaluation = "empty";
                 var feedback = "";
-
-                if (!skipQuestion) {
-                    var maxscore = __scoring.max;
-                    var perInteractionScore = __interactionIds.length / maxscore;
-                    var interactioncount = Object.keys(__correct_answers).length;
-                    var countCorrectInteractionAttempt = 0;
-                    /* Iterate over user_answers and calculate */
-                    for (var key in __content.user_answers) {
-                        var score = 0;
-                        var interactionResult = {};
-                        if (__content.user_answers.hasOwnProperty(key)) {
-                            if (__content.user_answers[key].length === __correct_answers[key]['correct'].length) {
-                                if (__content.user_answers[key].sort().join("") === __correct_answers[key]['correct'].sort().join(""))
-                                    score = perInteractionScore;
-                                    countCorrectInteractionAttempt++;
-                            }
+                var maxscore = __scoring.max;
+                var perInteractionScore = __interactionIds.length / maxscore;
+                var interactioncount = Object.keys(__correct_answers).length;
+                var countCorrectInteractionAttempt = 0;
+                /* Iterate over user_answers and calculate */
+                for (var key in __content.user_answers) {
+                    var score = 0;
+                    var interactionResult = {};
+                    if (__content.user_answers.hasOwnProperty(key)) {
+                        if (__content.user_answers[key].length === __correct_answers[key]['correct'].length) {
+                            if (__content.user_answers[key].sort().join("") === __correct_answers[key]['correct'].sort().join(""))
+                                score = perInteractionScore;
+                                countCorrectInteractionAttempt++;
                         }
-                        resultArray.push({
-                            itemUID: key,
-                            answer: __content.user_answers[key],
-                            score: score
-                        });
                     }
-
-                    if (countCorrectInteractionAttempt === interactioncount) {
-                        statusEvaluation = "correct";
-                        feedback = __buildFeedbackResponse("global.correct", "correct", __feedback.correct);
-                    } else if (countCorrectInteractionAttempt === 0) {
-                        statusEvaluation = "incorrect";
-                        feedback = __buildFeedbackResponse("global.incorrect", statusEvaluation, __feedback.incorrect);
-                    } else {
-                        statusEvaluation = "partially_correct";
-                        feedback = __buildFeedbackResponse("global.incorrect", "incorrect", __feedback.incorrect);
-                    }
-                } else {
-                    statusEvaluation = "incorrect";
+                    resultArray.push({
+                        itemUID: key,
+                        answer: __content.user_answers[key],
+                        score: score
+                    });
                 }
-                                
-                return {
-                    "results": resultArray,
-                    "statusEvaluation": statusEvaluation,
-                    "feedback": feedback
-                };
+
+                if (countCorrectInteractionAttempt === interactioncount) {
+                    statusEvaluation = "correct";
+                    feedback = __buildFeedbackResponse("global.correct", "correct", __feedback.correct);
+                } else if (countCorrectInteractionAttempt === 0) {
+                    statusEvaluation = "incorrect";
+                    feedback = __buildFeedbackResponse("global.incorrect", statusEvaluation, __feedback.incorrect);
+                } else {
+                    statusEvaluation = "partially_correct";
+                    feedback = __buildFeedbackResponse("global.incorrect", "incorrect", __feedback.incorrect);
+                }
+                            
+            return { 
+                    response: {
+                        "interactions": resultArray,
+                        "statusEvaluation": statusEvaluation,
+                        "feedback": feedback
+                    } 
+                    };
             }
             /**
              * Prepare feedback response.

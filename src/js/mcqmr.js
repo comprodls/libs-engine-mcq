@@ -488,7 +488,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                 "handleSubmit": handleSubmit,
                 "showGrades": showGrades,
                 "updateLastSavedResults": updateLastSavedResults,
-                "showfeedback": showfeedback
+                "showFeedback": showfeedback
             };
         }
     });

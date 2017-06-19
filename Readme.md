@@ -85,7 +85,7 @@ Done.
 2. Open http://assessment.comprodls.com and login using your comproDLS&trade; development account.
 3. Click on "Register New Item" in the left menu bar.
 4. Fill in the register form using your newly created item credentials.
-	* **Path** - External item repository path.
+	* **Path** - External item repository path. e.g. https://github.com/comprodls/libs-engine-mcqmr/master/dist/
 	* **Item Type** - Your engine CODE.
 	* **Item Name** - Name you want to give to the item.
 	* **Layout** - Enter your Engine CODE here. This is the name of default layout/variation to be used for the item.
@@ -141,22 +141,8 @@ If you're developing your first assessment type, its strongly recommended that y
 For more information on the standard comproDLS&trade; schema elements and their purpose, see https://docs.google.com/document/d/1npkT-s7aIWrAi_uXMldWMuX9UWpvhHXTflvi__Pm2jo/edit#heading=h.lz5q7wlcy4c1
 
 
-* Based on your UX, define the default layout for your assessment type - `html/<CODE>.html`. Include basic or first-level templating snippets (see http://rivetsjs.com/docs/guide/#usage for details on the RIVETS templating engine) for linking your **question JSON** to your template. Start with the standard schema elements like `content.instructions`, `meta.title` etc. You could use following vanilla template as a starting point.
-```html
-<div class="well" id="mcqmr-engine">  <!-- the "id" attribute must set as shown. -->
-   <!-- Displaying the Title -->
-   <h1 rv-text="jsonContent.meta.title"></h1>
-   <!-- Displaying Instructions -->
-   <div rv-each-instruction="jsonContent.content.instructions">
-      <p class="lead" rv-text="instruction.html"></p>
-   </div>   
-   <!-- Displaying the question -->
-   <div rv-each-question="jsonContent.content.canvas.data.questiondata">
-      <h6 rv-text="question.text"></h6>
-   </div>   
-   <!-- TODO - Display options -->
-</div>
-```
+* Based on your UX, define the default layout for your assessment type - `html/<CODE>.html`. Include basic or first-level templating snippets (see http://rivetsjs.com/docs/guide/#usage for details on the RIVETS templating engine) for linking your **question JSON** to your template. Start with the standard schema elements like `content.instructions`, `meta.title` etc. You could use sample MCQMR implementation (see https://github.com/comprodls/libs-engine-mcqmr/blob/master/src/html/mcqmr.html ) as a starting point.
+
 * If necessary add **custom styles** to align with your default template in `css/<CODE>.css`. Note **[Bootstrap 3.3.7]**(https://github.com/twbs/bootstrap) is already included as the baseline styling system. You may skip this step initially and simply leverage default bootstrap styles.
 * Now you are ready to start writing your **javascript module** in the files `js/<CODE>.js`. The library  **`jquery 3.2.1`** is available as the baseline. Use the standard AMD module (see http://requirejs.org/docs/whyamd.html#amd ) pattern for specifying additional dependencies. Following is the vanilla starter module which uses RIVETS (for two-way binding and templating).
 
@@ -320,22 +306,23 @@ This function is called by the platform, when end user presses SUBMIT. This can 
 #### 4.1.5 updateLastSavedResults() 
 This function is called by the platform - it is a request to Engine to render the last save results / state. This function is typically called to simulate a RESUME scenario. The engine should expect this function to be called rightafter the completion of init (i.e. the platform callback has been executed). In case FRESH ATTEMPT, this function will NOT be called.
 
+**Parameters** 
+* **savedAnswer**: Saved Answer.
+```javascript
+//Example
+answerArray = [{
+                "id": "i1",
+                "score": 0.16666666666666666,
+                "answer": ["choiceA"]
+            }
+        ]
+```
+
 #### 4.1.5 showGrades() 
 This function is called by the platform - it is a request to Engine to show grades (correct / wron g answers). The engine should expect this function to be called right after updateLastSavedResults().
 
 **Parameters** 
-* **lastResults**: Array of last saved results. Each item of array represent an **interaction**
-
-```javascript
-
-//Example
-lastResults = [{"itemUID": "i1","answer": "This is answer 1"},
-	       {"itemUID": "i2", "answer": "This is answer 2"}]
-
-//itemUID - Interaction Id
-//answer - Interaction data/state
-
-```
+* **uniqueTestId**: Unique Id for your test.
 
 ### 4.2 Adaptor (platform) functions 
 The engine can contact the platform via the  functions available in the adaptor object. 
@@ -349,11 +336,29 @@ The engine should call this function to save user's answers - to minimize chance
 ```javascript
 //Example
 resultsArray = [{
-            itemUID: interactionId, // interactionId
-            answer: "ChoiceC", //Answer given by the user
-            score: 1 // Score for the interaction
-            
-        }]
+    "response": {
+        "interactions": [{
+                "id": "i1",
+                "score": 0.16666666666666666,
+                "answer": ["choiceA"]
+            }
+        ],
+        "statusProgress": "in_progress",
+        "statusEvaluation": "partially_correct",
+        "feedback": {
+            "global": {
+                "id": "global.correct",
+                "status": "correct",
+                "content": "Perfect. You got it correct !!!"
+            },
+            "i1": {
+                "id": "interaction.choice",
+                "status": "correct",
+                "content": "This is a correct response. Well done."
+            }
+        }        
+    }
+}]
 ```
 * **uniqueId**: UniqueId of the assessment
 * **callback**: The function that will be called once the results are saved successfully.

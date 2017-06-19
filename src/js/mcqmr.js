@@ -110,8 +110,6 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
             */
             /********************************************************/
             function init(elRoot, params, adaptor, htmlLayout, jsonContentObj, callback) {
-                console.log("Welcome to the init world! ++++++++++++++++++++++++++++");
-
                 /* ---------------------- BEGIN OF INIT ---------------------------------*/
                 //Store the adaptor  
                 activityAdaptor = adaptor;

@@ -1,7 +1,7 @@
 {
   "name": "libs-engine-mcqmr",
   "version": "0.0.1",
-  "description": "Compro DQ Activity engine",  
+  "description": "Compro DQ Activity engine",
   "main": "Gruntfile.js",
   "devDependencies": {
     "bower": "1.8.0",

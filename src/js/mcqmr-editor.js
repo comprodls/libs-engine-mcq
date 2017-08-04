@@ -317,6 +317,14 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                 return array;
             };
 
+
+            rivets.formatters.placeholderText = function (obj) {
+                var text = "Feedback for option: ";
+                text = text.concat(obj);
+                return text;
+            };
+
+
             /* 
              * Bind data to template using rivets
              */

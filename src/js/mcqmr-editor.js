@@ -134,6 +134,7 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             //Process JSON for easy iteration in template
             //__parseAndUpdateJSONForRivets();
             __parseAndUpdateJSONForRivets();
+            //console.log("1--> ", JSON.stringify(__editedJsonContent, null, 4));
             /* ------ VALIDATION BLOCK END -------- */
 
             /* Apply the layout HTML to the dom */
@@ -217,6 +218,7 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                     }
                 });
             }
+
             for (var key in __editedJsonContent.content.interactions) {
                 newObj = __editedJsonContent.content.interactions[key];
                 newObj.key = key;
@@ -243,7 +245,7 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             ----------------------
             "MCQSR": [
               {
-                  "customAttribs" : {
+                  " " : {
                         "key" : "choiceA",
                         "value" : "She has the flu.",
                         "isEdited" : false,
@@ -263,24 +265,25 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             ]
          */
         function __parseAndUpdateJSONForRivets() {
-            console.log(__editedJsonContent);
             for (var i = 0; i < __interactionIds.length; i++) {
                 var processedArray = [];
                 __editedJsonContent.content.interactions[i].MCQMR.forEach(function (obj, index) {
                     var processedObj = {};
                     processedObj.customAttribs = {};
                     Object.keys(obj).forEach(function (key) {
+                        var interactionid = __interactionIds[i];
                         processedObj.customAttribs.key = key;
                         processedObj.customAttribs.value = obj[key];
                         processedObj.customAttribs.isEdited = false;
                         processedObj.customAttribs.index = index;
+                        processedObj.customAttribs.id = interactionid;
 
-                        /*
-                                                if (__editedJsonContent.responses[__interactionIds[i]].correct == processedObj.customAttribs.key) {
-                                                    processedObj.customAttribs.isCorrect = processedObj.customAttribs.value;
-                                                } else {
-                                                    processedObj.customAttribs.isCorrect = false;
-                                                }*/
+                        if (typeof __editedJsonContent.feedback[interactionid] != 'undefined') {
+                            if (typeof __editedJsonContent.feedback[interactionid][key] != 'undefined') {
+                                processedObj.customAttribs.feedback = __editedJsonContent.feedback[interactionid][key];
+                            }
+                        }
+
                     });
 
                     if (__editedJsonContent.responses[__interactionIds[i]].correct.indexOf(processedObj.customAttribs.key) > -1) {
@@ -324,10 +327,9 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                 return text;
             };
 
-
             /* 
-             * Bind data to template using rivets
-             */
+              * Bind data to template using rivets
+              */
             rivets.bind($('#mcqmr-editor'), {
                 content: __editedJsonContent.content,
                 toggleEditing: __toggleEditing,
@@ -339,8 +341,7 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                 interactionIds: __interactionIds,
                 feedback: __editedJsonContent.feedback,
                 feedbackEditing: __feedbackEditing,
-                toggleFeedbackEditing: __toggleFeedbackEditing,
-                removeFeedbackEditing: __removeFeedbackEditing
+                setInlineFeedback: __setInlineFeedback
             });
         }
 
@@ -522,6 +523,25 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
                 s4() + '-' + s4() + s4() + s4();
         }
+
+        function __setInlineFeedback(option) {
+            var interactionid = option[1]['option']['customAttribs'].id;
+            var choice = option[1]['option']['customAttribs'].key;
+            var feedbacktxt = option[1]['option']['customAttribs'].feedback;
+
+            var feedbackObj = {};
+            feedbackObj[choice] = feedbacktxt;
+            var interactionfeedback = __editedJsonContent.feedback[interactionid];
+            // update feedback JSON
+            if (typeof interactionfeedback == 'undefined') {
+                __editedJsonContent.feedback[interactionid] = {};
+                __editedJsonContent.feedback[interactionid] = feedbackObj;
+            }
+            else {
+                __editedJsonContent.feedback[interactionid][choice] = feedbacktxt;
+            }
+        }
+
 
         return {
             /*Engine-Shell Interface*/

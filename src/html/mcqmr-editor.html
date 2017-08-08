@@ -46,8 +46,8 @@
                         <div class="option-value" rv-hide="element.customAttribs.isEdited" rv-text="element.customAttribs.value"></div>
                         <span class="glyphicon glyphicon-check correct" rv-show="element.customAttribs.isCorrect"></span>
                         <span>
-                          <a class="btn btn-default editor-icon delete-icon mcqmr-edit fa fa-trash-o pull-right" rv-on-click="removeItem | args element %interact%"></a>
-                          <a class="btn btn-default editor-icon mcqmr-edit fa fa-pencil pull-right" rv-on-click="toggleEditing | args element"></a>
+                          <a class="btn btn-danger editor-icon delete-icon mcqmr-edit fa fa-trash-o pull-right" rv-on-click="removeItem | args element %interact%"></a>
+                          <a class="btn btn-primary editor-icon mcqmr-edit fa fa-pencil pull-right" rv-on-click="toggleEditing | args element"></a>
                           <a class="btn btn-default  editor-icon drag-icon mcqmr-edit fa fa-bars pull-right"></a>
                         </span>
                       </label>
@@ -120,7 +120,7 @@
               </div>
               <div class="vspacer">
                 <div class="input-group margin-bottom-sm spacer">
-                  <span class="input-group-addon"><i class="fa fa-square-o fa-lg incorrect" aria-hidden="true"></i></span>
+                  <span class="input-group-addon"><i class="fa fa-square-o fa-lg" aria-hidden="true"></i></span>
                   <input class="form-control" type="text" rv-value="feedback.global.empty" placeholder="Feedback for no response">
                 </div>
               </div>
@@ -137,8 +137,9 @@
               <div class="row spacer" rv-each-interact="content.interactions">
                 <div rv-each-option="interact.MCQMR">
                   <div class="input-group vspacer">
-                    <span class="input-group-addon" id="basic-addon3"><i class="fa fa-commenting" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" rv-id="option.customAttribs.key" rv-placeholder="option.customAttribs.value | placeholderText">
+                    <span class="input-group-addon" id="basic-addon3"><i class="fa fa-commenting fa-lg comment" aria-hidden="true"></i></span>
+                    <input type="text" class="form-control" rv-id="option.customAttribs.key" rv-value="option.customAttribs.feedback" rv-placeholder="option.customAttribs.value | placeholderText"
+                      rv-on-blur="setInlineFeedback | args option">
                   </div>
                 </div>
               </div>

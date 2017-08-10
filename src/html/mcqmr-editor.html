@@ -28,7 +28,7 @@
           </div>
           <p class="questionlabel"></p>
           <div class="row form questions-editor">
-            <div class="col-sm-6">
+            <div class="col-sm-12">
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <h5>3. Add / Edit / Re-order / Remove Choices.</h5>
@@ -44,13 +44,36 @@
                         <i></i>
                         <input class="option-value input-option" rv-show="element.customAttribs.isEdited" rv-value="element.customAttribs.value" rv-on-blur="removeEditing | args element"></input>
                         <div class="option-value" rv-hide="element.customAttribs.isEdited" rv-text="element.customAttribs.value"></div>
-                        <span class="glyphicon glyphicon-check correct" rv-show="element.customAttribs.isCorrect"></span>
+                        <span class="label label-default" rv-show="element.customAttribs.isCorrect">Correct Answer</span>
                         <span>
                           <a class="btn btn-danger editor-icon delete-icon mcqmr-edit fa fa-trash-o pull-right" rv-on-click="removeItem | args element %interact%"></a>
                           <a class="btn btn-primary editor-icon mcqmr-edit fa fa-pencil pull-right" rv-on-click="toggleEditing | args element"></a>
                           <a class="btn btn-default  editor-icon drag-icon mcqmr-edit fa fa-bars pull-right"></a>
+                          <a class="btn btn-default  editor-icon mcqmr-edit fa fa-commenting fa-lg comment pull-right" rv-id="element.customAttribs.value | btnId" rv-on-click="addInlineFeedback | args element.customAttribs.value"></a>
                         </span>
                       </label>
+                      <div class="modal fade" rv-id="element.customAttribs.value | modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              <h4 class="modal-title" id="myModalLabel">Add Inline Feedback</h4>
+                            </div>
+                            <div class="modal-body">
+                              <div class="input-group vspacer">
+                                <span class="input-group-addon" id="basic-addon3"><i class="fa fa-commenting fa-lg comment" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" rv-id="element.customAttribs.key" rv-value="element.customAttribs.feedback" rv-placeholder="element.customAttribs.value | placeholderText"
+                                  rv-on-blur="setInlineFeedback | args option">
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </li>
                   </ul>
                 </div>
@@ -65,34 +88,29 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-6">
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  <h5>4. Media</h5>
-                </div>
-                <p class="questionlabel">Use this section to add or remove associated media elements. (Images & Videos Supported)</p>
-                <div class="panel-body">
-                  <div class="row">
-                    <div class="col-sm-8">
-                      <div class="media">
-                        <ul class="list-group">
-                          <li class="list-group-item">No Files available for this question. Uploaded files will be listed here.</li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <div class="dropzone" id="dropzone">
-                        <i class="fa fa-upload fa-5x" aria-hidden="true"></i><br>Drag and Drop Files here
-                        <input type="file" id="mediaupload" style="display:none" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
+    </section>
+    <section class="section">
+      <header>
+        <span class="sectionlabel">Score</span>
+      </header>
+      <p>Define Score for this question. The default min and max score are populated.</p>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="input-group margin-bottom-sm">
+            <span class="input-group-addon"><strong>Minimum</strong></span>
+            <input class="form-control" type="text" rv-value="meta.score.min" placeholder="Define minimum Score">
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="input-group margin-bottom-sm">
+            <span class="input-group-addon"><strong>Maximum</strong></span>
+            <input class="form-control" type="text" rv-value="meta.score.max" placeholder="Define maximum score">
+          </div>
+
+        </div>
     </section>
     <section class="section">
       <header>
@@ -136,16 +154,32 @@
             <div class="panel-body">
               <div class="row spacer" rv-each-interact="content.interactions">
                 <div rv-each-option="interact.MCQMR">
-                  <div class="input-group vspacer">
-                    <span class="input-group-addon" id="basic-addon3"><i class="fa fa-commenting fa-lg comment" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" rv-id="option.customAttribs.key" rv-value="option.customAttribs.feedback" rv-placeholder="option.customAttribs.value | placeholderText"
-                      rv-on-blur="setInlineFeedback | args option">
-                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+    </section>
+    <section class="section">
+      <header>
+        <span class="sectionlabel">Media</span>
+      </header>
+      <p>Define Score for this question. The default min and max score are populated.</p>
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="media">
+            <ul class="list-group">
+              <li class="list-group-item">No Files available for this question. Uploaded files will be listed here.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="dropzone" id="dropzone">
+            <i class="fa fa-upload fa-5x" aria-hidden="true"></i><br>Drop Files here
+            <input type="file" id="mediaupload" style="display:none" />
+          </div>
+        </div>
+      </div>
     </section>
   </main>
   </div>

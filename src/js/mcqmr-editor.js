@@ -14,13 +14,16 @@
  *          getConfig()
  *  }
  *
- * This engine-editor is designed to be loaded dynamical by other applications (or  platforms). At the start the function [ engine.init() ] will be called with necessary configuration paramters and a reference to platform Adapter
- * object which allows subsequent communuication with the platform.
+ * This engine-editor is designed to be loaded dynamical by other applications (or  platforms). 
+ * At the start the function [ engine.init() ] will be called with necessary configuration paramters
+ * and a reference to platform Adapter object which allows subsequent communuication with the platform.
  *
  *
- * The function [ engine-editor.getStatus() ] may be called to check if SUBMIT has been pressed or not - the response from the engine is used to enable / disable appropriate platform controls.
+ * The function [ engine-editor.getStatus() ] may be called to check if SUBMIT has been pressed or not - the 
+ * response from the engine is used to enable / disable appropriate platform controls.
  *
- * he function [ engine-editor.getConfig() ] is called to request SIZE information - the response from the engine is used to resize & display the container iframe.
+ * The function [ engine-editor.getConfig() ] is called to request SIZE information - the response from the engine
+ * is used to resize & display the container iframe.
  *
  * EXTERNAL JS DEPENDENCIES : ->
  * Following are shared/common dependencies and assumed to loaded via the platform. The engine code can use/reference
@@ -194,7 +197,8 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
          * 1. Creates two arrays required for rendering this editor
          *      1.1 __interactionIds (InteractionIds array) - This contains all the interaction ids (in questiondata)
          *           e.g. ["i1", "i2"]
-         *      1.2 __interactionTags (Array of Original interaction texts in questiondata) - This will be used for recreating JSON to original format when "saveItemInEditor" is called.  
+         *      1.2 __interactionTags (Array of Original interaction texts in questiondata) - 
+         *          This will be used for recreating JSON to original format when "saveItemInEditor" is called.  
          *          e.g. [
          *             "<a href='http://www.comprodls.com/m1.0/interaction/mcqmr'>i1</a>", 
          *             "<a href='http://www.comprodls.com/m1.0/interaction/mcqmr'>i2</a>"
@@ -283,7 +287,6 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                                 processedObj.customAttribs.feedback = __editedJsonContent.feedback[interactionid][key];
                             }
                         }
-
                     });
 
                     if (__editedJsonContent.responses[__interactionIds[i]].correct.indexOf(processedObj.customAttribs.key) > -1) {
@@ -296,6 +299,7 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                 });
                 __editedJsonContent.content.interactions[i].MCQMR = processedArray;
             }
+            console.log(JSON.stringify(__editedJsonContent, null, 4));
         }
 
 
@@ -327,10 +331,40 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                 return text;
             };
 
+            rivets.formatters.modalId = function (obj) {
+                var text = "modal";
+                text = text.concat(obj);
+                return text;
+            };
+
+            rivets.formatters.btnId = function (obj) {
+                var text = "btn";
+                text = text.concat(obj);
+                return text;
+            };
+
+            function __addInlineFeedback(option) {
+                var attribs = option[1].element.customAttribs;
+                console.log(attribs);
+                var option = attribs["key"];
+                var optionValue = attribs["value"];
+                console.log(option, optionValue);
+                var btn = "#btn" + optionValue;
+                var modal = "#modal" + optionValue;
+                console.log(btn, modal);
+
+                $(btn).click(function () {
+                    $(modal).modal('show');
+                });
+            }
+
+
+
             /* 
               * Bind data to template using rivets
               */
             rivets.bind($('#mcqmr-editor'), {
+                meta: __editedJsonContent.meta,
                 content: __editedJsonContent.content,
                 toggleEditing: __toggleEditing,
                 toggleQuestionTextEditing: __toggleQuestionTextEditing,
@@ -341,7 +375,8 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                 interactionIds: __interactionIds,
                 feedback: __editedJsonContent.feedback,
                 feedbackEditing: __feedbackEditing,
-                setInlineFeedback: __setInlineFeedback
+                setInlineFeedback: __setInlineFeedback,
+                addInlineFeedback: __addInlineFeedback
             });
         }
 
@@ -448,7 +483,9 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
         }
 
         function __handleCheckboxButtonClick(event) {
+
             var currentTarget = event.currentTarget;
+            console.log("==> ", currentTarget);
             var quesIndex = 0;
             var interactionIndex = parseInt($(currentTarget).parent().parent("li").attr('interactIndex'));
 
@@ -542,6 +579,19 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             }
         }
 
+        function __toggleInlineFeedback(el) {
+            console.log(el.stopPropagation());
+            console.log(el);
+            return false;
+        }
+
+
+        $(document).ready(function () {
+            //Handles menu drop down
+            $('.dropdown-menu').click(function (e) {
+                e.stopPropagation();
+            });
+        });
 
         return {
             /*Engine-Shell Interface*/

@@ -595,6 +595,21 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                 e.stopPropagation();
             });
             $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="popover"]').popover();
+        });
+
+
+        $(function () {
+            $('[rel="popover"]').popover({
+                container: 'body',
+                html: true,
+                content: function () {
+                    var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
+                    return clone;
+                }
+            }).click(function (e) {
+                e.preventDefault();
+            });
         });
 
         return {

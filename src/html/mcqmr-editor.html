@@ -9,7 +9,13 @@
       <!-- Loop over all instructions text -->
       <div class="panel panel-default">
         <div class="panel-body">
-          <p class="questionlabel">1.1. Use the text field below to enter instructions for this question.</p>
+          <p class="questionlabel">1.1. Select a Question type.<i class="fa fa-info-circle info" aria-hidden="true" rel="popover" data-placement="right"
+              data-popover-content="#qtype"></i></p>
+          <div class="btn-group vspacer">
+            <button type="button" class="btn btn-default">MCQSR</button>
+            <button type="button" class="btn btn-default">MCQMR</button>
+          </div>
+          <p class="questionlabel">1.2. Use the text field below to enter instructions for this question.</p>
           <div class="row" rv-each-instructions="content.instructions">
             <div class="col-sm-12">
               <div class="input-group margin-bottom-sm">
@@ -83,6 +89,8 @@
                       </div>
                     </div>
                   </li>
+
+
                 </ul>
               </div>
             </div>
@@ -175,5 +183,14 @@
         </div>
       </div>
     </section>
+    <div id="qtype" class="hide">
+      <div class="popmsg">
+        <p><strong>Question Type:</strong></p>
+        <ul>
+          <li><strong>MCQSR</strong> - Multiple Choice Question Single Response</li>
+          <li><strong>MCQMR</strong> - Multiple Choice Question Nultiple Response</li>
+        </ul>
+      </div>
+    </div>
   </main>
 </div>

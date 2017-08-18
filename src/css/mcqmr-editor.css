@@ -221,3 +221,14 @@
     top: 55%;
     margin-top: -250px;
 }
+
+.info {
+    font-size: 20px;
+    color: black;
+    text-decoration: none;
+}
+
+.popmsg {
+    font-size: 12px;
+    padding: 2px 2px 2px 2px;
+}

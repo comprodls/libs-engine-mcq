@@ -299,7 +299,6 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                 });
                 __editedJsonContent.content.interactions[i].MCQMR = processedArray;
             }
-            console.log(JSON.stringify(__editedJsonContent, null, 4));
         }
 
 
@@ -326,38 +325,25 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
 
 
             rivets.formatters.placeholderText = function (obj) {
-                var text = "Feedback for option: ";
+                var text = "Enter inline feedback for option ";
                 text = text.concat(obj);
                 return text;
             };
 
             rivets.formatters.modalId = function (obj) {
                 var text = "modal";
+                obj = obj.replace(/\s+/g, '');
                 text = text.concat(obj);
+
                 return text;
             };
 
             rivets.formatters.btnId = function (obj) {
                 var text = "btn";
+                obj = obj.replace(/\s+/g, '');
                 text = text.concat(obj);
                 return text;
             };
-
-            function __addInlineFeedback(option) {
-                var attribs = option[1].element.customAttribs;
-                console.log(attribs);
-                var option = attribs["key"];
-                var optionValue = attribs["value"];
-                console.log(option, optionValue);
-                var btn = "#btn" + optionValue;
-                var modal = "#modal" + optionValue;
-                console.log(btn, modal);
-
-                $(btn).click(function () {
-                    $(modal).modal('show');
-                });
-            }
-
 
 
             /* 
@@ -366,7 +352,6 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             rivets.bind($('#mcqmr-editor'), {
                 meta: __editedJsonContent.meta,
                 content: __editedJsonContent.content,
-                toggleEditing: __toggleEditing,
                 toggleQuestionTextEditing: __toggleQuestionTextEditing,
                 quesEdited: __quesEdited,
                 removeItem: __removeItem,
@@ -374,9 +359,9 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                 removeEditing: __removeEditing,
                 interactionIds: __interactionIds,
                 feedback: __editedJsonContent.feedback,
-                feedbackEditing: __feedbackEditing,
                 setInlineFeedback: __setInlineFeedback,
-                addInlineFeedback: __addInlineFeedback
+                addInlineFeedback: __addInlineFeedback,
+                editOptionText: __editOptionText
             });
         }
 
@@ -386,11 +371,12 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             $(event[0].currentTarget).siblings('.question-text-editor').focus();
         }
 
-        /* Toggle between editing and read-only mode for options */
+        /* Toggle between editing and read-only mode for options *//*
         function __toggleEditing(event, element) {
             element.customAttribs.isEdited = !element.customAttribs.isEdited;
             $(event[0].currentTarget).parent().find('.option-value')[0].focus();
-        }
+        }*/
+
 
         /* Remove option item */
         function __removeItem(event, element, interaction) {
@@ -402,7 +388,15 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
-        /* Remove editing on blur*/
+        /* Sets the edit mode on the option text. Allows the Author to edit the text  */
+        function __editOptionText(event, element) {
+            element.customAttribs.isEdited = !element.customAttribs.isEdited;
+            $(event[0].currentTarget).parent().find('.option-value')[0].focus();
+            event[0].preventDefault();
+        }
+
+
+        /* Remove edit mode on blur*/
         function __removeEditing(event, element) {
             if (element.customAttribs) {
                 element.customAttribs.isEdited = false;
@@ -482,10 +476,12 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             });
         }
 
+        /** 
+         * handles the click event of the checkbox and sets the isCorrect for the appropriate option
+         */
         function __handleCheckboxButtonClick(event) {
 
             var currentTarget = event.currentTarget;
-            console.log("==> ", currentTarget);
             var quesIndex = 0;
             var interactionIndex = parseInt($(currentTarget).parent().parent("li").attr('interactIndex'));
 
@@ -545,7 +541,6 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             for (var i = 0; i < __finalJSONContent.content.canvas.data.questiondata.length; i++) {
                 __finalJSONContent.content.canvas.data.questiondata[i].text += __interactionTags[i];
             }
-            console.log(JSON.stringify(__finalJSONContent, null, 4));
             return __finalJSONContent;
         }
         /* ---------------------- JQUERY BINDINGS END ----------------------------*/
@@ -561,10 +556,25 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                 s4() + '-' + s4() + s4() + s4();
         }
 
+        /** Opens the window for the inline feedback */
+        function __addInlineFeedback(option) {
+            var event = option[0];
+            var attribs = option[1].element.customAttribs;
+            var option = attribs["key"];
+            var optionValue = attribs["value"];
+            optionValue = optionValue.replace(/\s+/g, '');
+            var btn = "#btn" + optionValue;
+            var modal = "#modal" + optionValue;
+            $(modal).modal('show');
+            // prevents the default action when the row is clicked.
+            event.preventDefault();
+        }
+
+        /** Updated the entered inline feedback in the JSON  */
         function __setInlineFeedback(option) {
-            var interactionid = option[1]['option']['customAttribs'].id;
-            var choice = option[1]['option']['customAttribs'].key;
-            var feedbacktxt = option[1]['option']['customAttribs'].feedback;
+            var interactionid = option[1]['element']['customAttribs'].id;
+            var choice = option[1]['element']['customAttribs'].key;
+            var feedbacktxt = option[1]['element']['customAttribs'].feedback;
 
             var feedbackObj = {};
             feedbackObj[choice] = feedbacktxt;
@@ -579,18 +589,12 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             }
         }
 
-        function __toggleInlineFeedback(el) {
-            console.log(el.stopPropagation());
-            console.log(el);
-            return false;
-        }
-
-
         $(document).ready(function () {
             //Handles menu drop down
             $('.dropdown-menu').click(function (e) {
                 e.stopPropagation();
             });
+            $('[data-toggle="tooltip"]').tooltip();
         });
 
         return {

@@ -29,7 +29,7 @@
 }
 
 .sectionlabel {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: bold;
 }
 
@@ -204,9 +204,20 @@
 }
 
 #mcqmr-editor .addbutton {
+    margin-left: 5px;
     padding: 5px 15px 5px 0px;
 }
 
 #mcqmr-editor .form-container {
     width: 100%;
+}
+
+#mcqmr-editor .modal {
+    position: absolute;
+    left: 50%;
+    /* now you must set a margin left under zero - value is a half width your window */
+    margin-left: -312px;
+    /* this same situation is with height - example */
+    top: 55%;
+    margin-top: -250px;
 }

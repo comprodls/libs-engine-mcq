@@ -2,99 +2,105 @@
 
 <div class="mcqmr-body main-container" id="mcqmr-editor">
   <main class="main">
-    <section class="section">
+    <section id="question" class="section">
       <header>
-        <span class="sectionlabel">Question</span>
-        <p class="questionlabel">1. Use the text field below to enter instructions for this question.</p>
+        <span class="sectionlabel">1. Question</span>
       </header>
-      <div class="row" rv-each-instructions="content.instructions">
-        <div class="col-sm-12 vspacer">
-          <div class="input-group margin-bottom-sm">
-            <span class="input-group-addon"><strong>Instruction</strong></span>
-            <input class="form-control" type="text" rv-value="instructions.text" placeholder="Add Instructions">
+      <!-- Loop over all instructions text -->
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p class="questionlabel">1.1. Use the text field below to enter instructions for this question.</p>
+          <div class="row" rv-each-instructions="content.instructions">
+            <div class="col-sm-12">
+              <div class="input-group margin-bottom-sm">
+                <span class="input-group-addon"><strong>Instruction</strong></span>
+                <input class="form-control" type="text" rv-value="instructions.text" placeholder="Add Instructions">
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <!-- Loop over all interactions -->
-      <p class="questionlabel">2. Use the text field below to enter Question text.</p>
-      <div class="row" rv-each-interact="content.interactions">
-        <div class="col-sm-12">
-          <!-- Loop over all questiondata inside interaction -->
-          <div rv-each-questiondata="content.canvas.data.questiondata | appendindex %interact%">
-            <div class="input-group margin-bottom-sm">
-              <span class="input-group-addon"><strong>Question Text</strong></span>
-              <input class="form-control" type="text" rv-value="questiondata.text" placeholder="Question Title">
+      <!-- Loop over all question data text -->
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p class="questionlabel">1.2. Use the text field below to enter Question text.</p>
+          <div class="row" rv-each-interact="content.interactions">
+            <div class="col-sm-12">
+              <div rv-each-questiondata="content.canvas.data.questiondata">
+                <div class="input-group margin-bottom-sm">
+                  <span class="input-group-addon"><strong>Question Text</strong></span>
+                  <input class="form-control" type="text" rv-value="questiondata.text" placeholder="Question Title">
+                </div>
+              </div>
             </div>
           </div>
-          <p class="questionlabel"></p>
-          <div class="row form questions-editor">
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p class="questionlabel">1.3. Add / Edit / Re-order / Remove Choices.</p>
+          <div class="row" rv-each-interact="content.interactions">
+            <!-- Loop over all questiondata inside interaction -->
             <div class="col-sm-12">
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  <h5>3. Add / Edit / Re-order / Remove Choices.</h5>
-                </div>
-                <div class="panel-body">
-                  <ul class="list-unstyled nested-list editor sortable">
-                    <!-- Loop over all options inside interaction  (mcqmr Array)-->
-                    <li class="col-xs-12 colborder mcqmr-item" rv-each-element="interact.MCQMR" rv-class-highlight="element.customAttribs.isCorrect"
-                      rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">
-                      <label class="checkbox">
+              <div class="row form questions-editor">
+                <ul class="list-unstyled nested-list editor sortable">
+                  <!-- Loop over all options inside interaction  (mcqmr Array)-->
+                  <li class="col-xs-12 colborder mcqmr-item" rv-each-element="interact.MCQMR" rv-class-highlight="element.customAttribs.isCorrect"
+                    rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">
+                    <label class="checkbox">
                         <span class="invisible wrong pull-left"></span>
                         <input type="checkbox" name="optionsRadios" class="option mcqmr-option" rv-key="element.customAttribs.key" rv-value="element.customAttribs.value" rv-checked="element.customAttribs.isCorrect"></input>
                         <i></i>
                         <input class="option-value input-option" rv-show="element.customAttribs.isEdited" rv-value="element.customAttribs.value" rv-on-blur="removeEditing | args element"></input>
-                        <div class="option-value" rv-hide="element.customAttribs.isEdited" rv-text="element.customAttribs.value"></div>
-                        <span class="label label-default" rv-show="element.customAttribs.isCorrect">Correct Answer</span>
+                        <div class="option-value" rv-hide="element.customAttribs.isEdited" rv-text="element.customAttribs.value" rv-on-click="editOptionText | args element"></div>
+                        <span class="label label-success" rv-show="element.customAttribs.isCorrect">Correct Answer</span>
                         <span>
-                          <a class="btn btn-danger editor-icon delete-icon mcqmr-edit fa fa-trash-o pull-right" rv-on-click="removeItem | args element %interact%"></a>
-                          <a class="btn btn-primary editor-icon mcqmr-edit fa fa-pencil pull-right" rv-on-click="toggleEditing | args element"></a>
-                          <a class="btn btn-default  editor-icon drag-icon mcqmr-edit fa fa-bars pull-right"></a>
-                          <a class="btn btn-default  editor-icon mcqmr-edit fa fa-commenting fa-lg comment pull-right" rv-id="element.customAttribs.value | btnId" rv-on-click="addInlineFeedback | args element.customAttribs.value"></a>
+                          <a class="btn btn-danger editor-icon delete-icon mcqmr-edit fa fa-trash-o pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>
+                          <a class="btn btn-default editor-icon drag-icon mcqmr-edit fa fa-bars pull-right" data-toggle="tooltip" title="Click & drag move this option"></a>
+                          <a class="btn btn-default editor-icon mcqmr-edit fa fa-commenting fa-lg comment pull-right" data-toggle="tooltip" title="Click to add inline feedback" rv-id="element.customAttribs.value | btnId" rv-on-click="addInlineFeedback | args element.customAttribs.value"></a>
                         </span>
                       </label>
-                      <div class="modal fade" rv-id="element.customAttribs.value | modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                              <h4 class="modal-title" id="myModalLabel">Add Inline Feedback</h4>
+                    <div class="modal fade" rv-id="element.customAttribs.value | modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                      aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Add Inline Feedback</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="input-group vspacer">
+                              <span class="input-group-addon" id="basic-addon3">Feedback</span>
+                              <input type="text" class="form-control" rv-id="element.customAttribs.key" rv-value="element.customAttribs.feedback" rv-placeholder="element.customAttribs.value | placeholderText"
+                                rv-on-blur="setInlineFeedback | args element">
                             </div>
-                            <div class="modal-body">
-                              <div class="input-group vspacer">
-                                <span class="input-group-addon" id="basic-addon3"><i class="fa fa-commenting fa-lg comment" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" rv-id="element.customAttribs.key" rv-value="element.customAttribs.feedback" rv-placeholder="element.customAttribs.value | placeholderText"
-                                  rv-on-blur="setInlineFeedback | args option">
-                              </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
                           </div>
                         </div>
                       </div>
-                    </li>
-                  </ul>
-                </div>
+                    </div>
+                  </li>
+                </ul>
               </div>
-              <div class="row">
-                <div class="col xs-12 addbutton">
-                  <a class="add-item" rv-on-click="addItem | args content %interact%">
+            </div>
+            <div class="col xs-12 addbutton">
+              <a class="add-item" rv-on-click="addItem | args content %interact%">
                       <button type="button" class="btn btn-default btn-sm">
                         <span class="glyphicon glyphicon-plus"></span>  Add a Choice
                       </button>
                   </a>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <section class="section">
+
+    <section id="scores" class="section">
       <header>
-        <span class="sectionlabel">Score</span>
+        <span class="sectionlabel">2. Score</span>
       </header>
       <p>Define Score for this question. The default min and max score are populated.</p>
       <div class="row">
@@ -109,62 +115,50 @@
             <span class="input-group-addon"><strong>Maximum</strong></span>
             <input class="form-control" type="text" rv-value="meta.score.max" placeholder="Define maximum score">
           </div>
+        </div>
+    </section>
 
-        </div>
-    </section>
-    <section class="section">
+    <section id="feedback" class="section">
       <header>
-        <span class="sectionlabel">Feedback</span>
+        <span class="sectionlabel">3. Feedback</span>
       </header>
-      <p>Define Global feedback (<i>based on Correct / Incorrect response</i>) or Interaction level feedback (<i>based on user selection</i>).</p>
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h5>5. Global Feedback</h5>
+      <p class='questionlabel'>Define Global feedback (<i>based on Correct / Incorrect response</i>)</p>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="row vspacer">
+            <div class="col-sm-12">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-thumbs-up fa-lg correct" aria-hidden="true"></i></span>
+                <input class="form-control" type="text" rv-value="feedback.global.correct" placeholder="Feedback for Correct answer">
+              </div>
             </div>
-            <div class="panel-body">
-              <div class="vspacer">
-                <div class="input-group margin-bottom-sm spacer">
-                  <span class="input-group-addon"><i class="fa fa-thumbs-up fa-lg correct" aria-hidden="true"></i></span>
-                  <input class="form-control" type="text" rv-value="feedback.global.correct" placeholder="Feedback for Correct answer">
-                </div>
+          </div>
+          <div class="row vspacer">
+            <div class="col-sm-12">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-thumbs-down fa-lg incorrect" aria-hidden="true"></i></span>
+                <input class="form-control" type="text" rv-value="feedback.global.incorrect" placeholder="Feedback for Incorrect answer">
               </div>
-              <div class="vspacer">
-                <div class="input-group margin-bottom-sm spacer">
-                  <span class="input-group-addon"><i class="fa fa-thumbs-down fa-lg incorrect" aria-hidden="true"></i></span>
-                  <input class="form-control" type="text" rv-value="feedback.global.incorrect" placeholder="Feedback for Incorrect answer">
-                </div>
-              </div>
-              <div class="vspacer">
-                <div class="input-group margin-bottom-sm spacer">
-                  <span class="input-group-addon"><i class="fa fa-square-o fa-lg" aria-hidden="true"></i></span>
-                  <input class="form-control" type="text" rv-value="feedback.global.empty" placeholder="Feedback for no response">
-                </div>
+            </div>
+          </div>
+          <div class="row vspacer">
+            <div class="col-sm-12">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-square-o fa-lg" aria-hidden="true"></i></span>
+                <input class="form-control" type="text" rv-value="feedback.global.empty" placeholder="Feedback for no response">
               </div>
             </div>
           </div>
         </div>
-        <div class="col-sm-6">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h5>6. Interaction Level Feedback (optional)</h5>
-            </div>
-            <p class="questionlabel">Enter feedback for each option</p>
-            <div class="panel-body">
-              <div class="row spacer" rv-each-interact="content.interactions">
-                <div rv-each-option="interact.MCQMR">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      </div>
+      </div>
     </section>
-    <section class="section">
+
+    <section id="media" class="section">
       <header>
         <span class="sectionlabel">Media</span>
       </header>
-      <p>Define Score for this question. The default min and max score are populated.</p>
+      <p>Select files from you computer</p>
       <div class="row">
         <div class="col-sm-8">
           <div class="media">
@@ -182,4 +176,4 @@
       </div>
     </section>
   </main>
-  </div>
+</div>

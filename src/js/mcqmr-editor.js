@@ -612,6 +612,10 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             });
         });
 
+        $(document).ready(function () {
+            $('[data-toggle="popover"]').popover();
+        });
+
         return {
             /*Engine-Shell Interface*/
             "init": init, /* Shell requests the engine intialized and render itself. */

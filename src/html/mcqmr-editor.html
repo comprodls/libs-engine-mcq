@@ -9,52 +9,60 @@
       <!-- Loop over all instructions text -->
       <div class="panel panel-default">
         <div class="panel-body">
-          <p class="questionlabel">1.1. Select a Question type.<i class="fa fa-info-circle info" aria-hidden="true" rel="popover" data-placement="right"
+          <p class="questionlabel"><strong>1.1. Select Question type<strong>&nbsp;<i class="fa fa-info-circle info" aria-hidden="true" title="Question Type" rel="popover" data-placement="right"
               data-popover-content="#qtype"></i></p>
           <div class="btn-group vspacer">
             <button type="button" class="btn btn-default">MCQSR</button>
             <button type="button" class="btn btn-default">MCQMR</button>
           </div>
-          <p class="questionlabel">1.2. Use the text field below to enter instructions for this question.</p>
-          <div class="row" rv-each-instructions="content.instructions">
+          <br>
+          <div class="row">
             <div class="col-sm-12">
-              <div class="input-group margin-bottom-sm">
-                <span class="input-group-addon"><strong>Instruction</strong></span>
-                <input class="form-control" type="text" rv-value="instructions.text" placeholder="Add Instructions">
-              </div>
-            </div>
+              <p class="questionlabel"><strong>1.2. Instructions</strong>&nbsp;<i class="fa fa-info-circle info" title="Instructions"
+              aria-hidden="true" rel="popover" data-placement="right" data-popover-content="#instext"></i></p>
+        </div>
+      </div>
+      <div class="row" rv-each-instructions="content.instructions">
+        <div class="col-sm-12">
+          <div class="input-group margin-bottom-sm">
+            <span class="input-group-addon"><strong><i class="glyphicon glyphicon-info-sign"></i></strong></span>
+            <input class="form-control" type="text" rv-value="instructions.text" placeholder="Add Instructions">
           </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-sm-12">
+          <p class="questionlabel"><strong>1.3. Question text</strong>&nbsp;<i class="fa fa-info-circle info" title="Question Text" aria-hidden="true"
+              rel="popover" data-placement="right" data-popover-content="#qtext"></i></p>
         </div>
       </div>
       <!-- Loop over all question data text -->
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <p class="questionlabel">1.2. Use the text field below to enter Question text.</p>
-          <div class="row" rv-each-interact="content.interactions">
-            <div class="col-sm-12">
-              <div rv-each-questiondata="content.canvas.data.questiondata">
-                <div class="input-group margin-bottom-sm">
-                  <span class="input-group-addon"><strong>Question Text</strong></span>
-                  <input class="form-control" type="text" rv-value="questiondata.text" placeholder="Question Title">
-                </div>
-              </div>
+      <div class="row" rv-each-interact="content.interactions">
+        <div class="col-sm-12">
+          <div rv-each-questiondata="content.canvas.data.questiondata">
+            <div class="input-group margin-bottom-sm">
+              <span class="input-group-addon"><strong><i class="glyphicon glyphicon-question-sign"></i></strong></span>
+              <input class="form-control" type="text" rv-value="questiondata.text" placeholder="Question Title">
             </div>
           </div>
         </div>
       </div>
-
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <p class="questionlabel">1.3. Add / Edit / Re-order / Remove Choices.</p>
-          <div class="row" rv-each-interact="content.interactions">
-            <!-- Loop over all questiondata inside interaction -->
-            <div class="col-sm-12">
-              <div class="row form questions-editor">
-                <ul class="list-unstyled nested-list editor sortable">
-                  <!-- Loop over all options inside interaction  (mcqmr Array)-->
-                  <li class="col-xs-12 colborder mcqmr-item" rv-each-element="interact.MCQMR" rv-class-highlight="element.customAttribs.isCorrect"
-                    rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">
-                    <label class="checkbox">
+</div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p class="questionlabel"><strong>1.3. Answer Choices</strong>&nbsp;<i class="fa fa-info-circle info" aria-hidden="true" rel="popover" title="Answer Options"
+        data-placement="right" data-popover-content="#answer"></i></p>
+    <div class="row" rv-each-interact="content.interactions">
+      <!-- Loop over all questiondata inside interaction -->
+      <div class="col-sm-12">
+        <div class="row form questions-editor">
+          <ul class="list-unstyled nested-list editor sortable">
+            <!-- Loop over all options inside interaction  (mcqmr Array)-->
+            <li class="col-xs-12 colborder mcqmr-item" rv-each-element="interact.MCQMR" rv-class-highlight="element.customAttribs.isCorrect"
+              rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">
+              <label class="checkbox">
                         <span class="invisible wrong pull-left"></span>
                         <input type="checkbox" name="optionsRadios" class="option mcqmr-option" rv-key="element.customAttribs.key" rv-value="element.customAttribs.value" rv-checked="element.customAttribs.isCorrect"></input>
                         <i></i>
@@ -67,130 +75,151 @@
                           <a class="btn btn-default editor-icon mcqmr-edit fa fa-commenting fa-lg comment pull-right" data-toggle="tooltip" title="Click to add inline feedback" rv-id="element.customAttribs.value | btnId" rv-on-click="addInlineFeedback | args element.customAttribs.value"></a>
                         </span>
                       </label>
-                    <div class="modal fade" rv-id="element.customAttribs.value | modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                      aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">Add Inline Feedback</h4>
-                          </div>
-                          <div class="modal-body">
-                            <div class="input-group vspacer">
-                              <span class="input-group-addon" id="basic-addon3">Feedback</span>
-                              <input type="text" class="form-control" rv-id="element.customAttribs.key" rv-value="element.customAttribs.feedback" rv-placeholder="element.customAttribs.value | placeholderText"
-                                rv-on-blur="setInlineFeedback | args element">
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
-                          </div>
-                        </div>
+              <div class="modal fade" rv-id="element.customAttribs.value | modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="myModalLabel">Add Inline Feedback</h4>
+                    </div>
+                    <div class="modal-body">
+                      <div class="input-group vspacer">
+                        <span class="input-group-addon" id="basic-addon3">Feedback</span>
+                        <input type="text" class="form-control" rv-id="element.customAttribs.key" rv-value="element.customAttribs.feedback" rv-placeholder="element.customAttribs.value | placeholderText"
+                          rv-on-blur="setInlineFeedback | args element">
                       </div>
                     </div>
-                  </li>
-
-
-                </ul>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="col xs-12 addbutton">
-              <a class="add-item" rv-on-click="addItem | args content %interact%">
-                      <button type="button" class="btn btn-default btn-sm">
-                        <span class="glyphicon glyphicon-plus"></span>  Add a Choice
-                      </button>
-                  </a>
-            </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col xs-12 addbutton">
+        <a class="add-item" rv-on-click="addItem | args content %interact%">
+          <button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span>  Add a Choice</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="scores" class="section">
+  <header>
+    <span class="sectionlabel">2. Score&nbsp;<i class="fa fa-info-circle info" title="Score"
+      aria-hidden="true" rel="popover" data-placement="right" data-popover-content="#score"></i></span>
+  </header>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="input-group margin-bottom-sm">
+        <span class="input-group-addon"><strong>Minimum</strong></span>
+        <input class="form-control" type="text" rv-value="meta.score.min" placeholder="Define minimum Score">
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="input-group margin-bottom-sm">
+        <span class="input-group-addon"><strong>Maximum</strong></span>
+        <input class="form-control" type="text" rv-value="meta.score.max" placeholder="Define maximum score">
+      </div>
+    </div>
+</section>
+
+<section id="feedback" class="section">
+  <header>
+    <span class="sectionlabel">3. Feedback</span>
+  </header>
+  <p class='questionlabel'>Define Global feedback (<i>based on Correct / Incorrect response</i>)</p>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row vspacer">
+        <div class="col-sm-12">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-thumbs-up fa-lg correct" aria-hidden="true"></i></span>
+            <input class="form-control" type="text" rv-value="feedback.global.correct" placeholder="Feedback for Correct answer">
           </div>
         </div>
       </div>
-    </section>
-
-    <section id="scores" class="section">
-      <header>
-        <span class="sectionlabel">2. Score</span>
-      </header>
-      <p>Define Score for this question. The default min and max score are populated.</p>
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="input-group margin-bottom-sm">
-            <span class="input-group-addon"><strong>Minimum</strong></span>
-            <input class="form-control" type="text" rv-value="meta.score.min" placeholder="Define minimum Score">
-          </div>
-        </div>
-        <div class="col-sm-6">
-          <div class="input-group margin-bottom-sm">
-            <span class="input-group-addon"><strong>Maximum</strong></span>
-            <input class="form-control" type="text" rv-value="meta.score.max" placeholder="Define maximum score">
-          </div>
-        </div>
-    </section>
-
-    <section id="feedback" class="section">
-      <header>
-        <span class="sectionlabel">3. Feedback</span>
-      </header>
-      <p class='questionlabel'>Define Global feedback (<i>based on Correct / Incorrect response</i>)</p>
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="row vspacer">
-            <div class="col-sm-12">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-thumbs-up fa-lg correct" aria-hidden="true"></i></span>
-                <input class="form-control" type="text" rv-value="feedback.global.correct" placeholder="Feedback for Correct answer">
-              </div>
-            </div>
-          </div>
-          <div class="row vspacer">
-            <div class="col-sm-12">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-thumbs-down fa-lg incorrect" aria-hidden="true"></i></span>
-                <input class="form-control" type="text" rv-value="feedback.global.incorrect" placeholder="Feedback for Incorrect answer">
-              </div>
-            </div>
-          </div>
-          <div class="row vspacer">
-            <div class="col-sm-12">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-square-o fa-lg" aria-hidden="true"></i></span>
-                <input class="form-control" type="text" rv-value="feedback.global.empty" placeholder="Feedback for no response">
-              </div>
-            </div>
+      <div class="row vspacer">
+        <div class="col-sm-12">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-thumbs-down fa-lg incorrect" aria-hidden="true"></i></span>
+            <input class="form-control" type="text" rv-value="feedback.global.incorrect" placeholder="Feedback for Incorrect answer">
           </div>
         </div>
       </div>
+      <div class="row vspacer">
+        <div class="col-sm-12">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-square-o fa-lg" aria-hidden="true"></i></span>
+            <input class="form-control" type="text" rv-value="feedback.global.empty" placeholder="Feedback for no response">
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
+  </div>
+  </div>
+</section>
 
-    <section id="media" class="section">
-      <header>
-        <span class="sectionlabel">Media</span>
-      </header>
-      <p>Select files from you computer</p>
-      <div class="row">
-        <div class="col-sm-8">
-          <div class="media">
-            <ul class="list-group">
-              <li class="list-group-item">No Files available for this question. Uploaded files will be listed here.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="dropzone" id="dropzone">
-            <i class="fa fa-upload fa-5x" aria-hidden="true"></i><br>Drop Files here
-            <input type="file" id="mediaupload" style="display:none" />
-          </div>
-        </div>
-      </div>
-    </section>
-    <div id="qtype" class="hide">
-      <div class="popmsg">
-        <p><strong>Question Type:</strong></p>
-        <ul>
-          <li><strong>MCQSR</strong> - Multiple Choice Question Single Response</li>
-          <li><strong>MCQMR</strong> - Multiple Choice Question Nultiple Response</li>
+<section id="media" class="section">
+  <header>
+    <span class="sectionlabel">Media</span>
+  </header>
+  <p>Select files from you computer</p>
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="media">
+        <ul class="list-group">
+          <li class="list-group-item">No Files available for this question. Uploaded files will be listed here.</li>
         </ul>
       </div>
     </div>
-  </main>
+    <div class="col-sm-4">
+      <div class="dropzone" id="dropzone">
+        <i class="fa fa-upload fa-5x" aria-hidden="true"></i><br>Drop Files here
+        <input type="file" id="mediaupload" style="display:none" />
+      </div>
+    </div>
+  </div>
+</section>
+<div id="qtype" class="hide">
+  <div class="row">
+    <ul>
+      <li><strong>MCQSR</strong> - Multiple Choice Question Single Response</li>
+      <li><strong>MCQMR</strong> - Multiple Choice Question Nultiple Response</li>
+    </ul>
+  </div>
+</div>
+<div id="instext" class="hide">
+  <div class="popmsg">
+    <p><strong>Use the textfield below to enter instructions for this question.</strong></p>
+  </div>
+</div>
+<div id="qtext" class="hide">
+  <div class="popmsg">
+    <p><strong>Use the text field below to enter question text.</strong></p>
+  </div>
+</div>
+<div id="answer" class="hide">
+  <div class="popmsg">
+    <p>Use this section to Add / Edit / Re-order / Remove Choices.</p>
+    <ul>
+      <li>Click on Answer text to edit/modify the answer.</li>
+      <li>Use the buttons on the right to Add inline feedback, reorder the answers or remove and option.</li>
+      <li>Use the <strong>Add Choice</strong> button to add a new option.</li>
+      <li>Click the Check box on the left to mark an answer correct.</li>
+    </ul>
+  </div>
+</div>
+<div id="score" class="hide">
+  <div class="popmsg">
+    <p>Use the text fields below to enter minimum and maximum score possible for this question. A number between 0 and 1 is
+      permitted in this field.</p>
+  </div>
+</div>
+</main>
 </div>

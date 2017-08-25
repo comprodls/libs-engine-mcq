@@ -3,8 +3,8 @@
  * Engine Module
  * -------------
  * 
- * Item Type: MCQMR Single Choice Quesion engine
- * Code: MCQMR
+ * Item Type: MCQ Single Choice Quesion engine
+ * Code: MCQ
  * Interface: ENGINE
  
  *  ENGINE Interface public functions
@@ -29,13 +29,13 @@
  * 2. Boostrap (TODO: version) 
  */
 
-define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets) representing the rendering UX
-    'css!../css/mcqmr.css',  //Custom styles of the engine (applied over bootstrap & front-end-core)
+define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) representing the rendering UX
+    'css!../css/mcq.css',  //Custom styles of the engine (applied over bootstrap & front-end-core)
     'rivets',  // Rivets for data binding
     'sightglass'], //Required by Rivets
-    function (mcqmrTemplateRef) {
+    function (mcqTemplateRef) {
 
-        mcqmr = function () {
+        mcq = function () {
 
             "use strict";
 
@@ -51,9 +51,9 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                 MAX_RETRIES: 10, /* Maximum number of retries for sending results to platform for a particular activity. */
             };
 
-             /*
-             * Internal Engine State.
-             */
+            /*
+            * Internal Engine State.
+            */
             var __state = {
                 currentTries: 0, /* Current try of sending results to platform */
                 activityPariallySubmitted: false, /* State whether activity has been partially submitted. Possible Values: true/false(Boolean) */
@@ -74,14 +74,14 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
             var __interactionIds = [];//Not required as it can be calculated from __correct_answers
             var __correct_answers = {};
             var __scoring = {};
-            
+
             var __feedback = {};
             var __feedbackState = {
-                'correct' : false,
-                'incorrect' : false,
-                'empty' : false
+                'correct': false,
+                'incorrect': false,
+                'empty': false
             };
-            var INTERACTION_REFERENCE_STR = "http://www.comprodls.com/m1.0/interaction/mcqmr";
+            var INTERACTION_REFERENCE_STR = "http://www.comprodls.com/m1.0/interaction/mcq";
 
             /*
              * Constants.
@@ -91,7 +91,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                 STATUS_NOERROR: "NO_ERROR",
                 TEMPLATES: {
                     /* Regular MCQMR Layout */
-                    MCQMR: mcqmrTemplateRef
+                    MCQ: mcqTemplateRef
                 }
             };
             // Array of all interaction tags in question
@@ -144,7 +144,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                     __saveResults(false);
                 });
 
-                 //update states??   
+                //update states??   
 
                 /* ---------------------- SETUP EVENTHANDLER ENDS------------------------------*/
 
@@ -161,7 +161,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
              * May be used in future, No change required
              * Return configuration
              */
-            function getConfig() {                
+            function getConfig() {
             }
 
             /**
@@ -169,7 +169,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
              * May be used in future, No change required.
              * Return the current state (Activity Attempted.) of activity.
              */
-            function getStatus() {            
+            function getStatus() {
             }
 
             /**
@@ -188,7 +188,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                 /* Show last saved answers. */
                 $('input[id^=option]').attr("disabled", true);
                 __markAnswers();
-                
+
             }
 
             /**
@@ -197,10 +197,10 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
             function updateLastSavedResults(lastResults) {
                 // Read data and populate answerjson.
                 __content.user_answers = {};
-                for(var interaction in lastResults.response){
-                    __content.user_answers[interaction]  = lastResults.response[interaction]; 
+                for (var interaction in lastResults.response) {
+                    __content.user_answers[interaction] = lastResults.response[interaction];
                     for (var j = 0; j < __content.user_answers[interaction].length; j++) {
-                            $("#" + interaction + " input[name='" + __content.user_answers[interaction][j] + "']").checked = true;
+                        $("#" + interaction + " input[name='" + __content.user_answers[interaction][j] + "']").checked = true;
                     }
                 }
             }
@@ -221,11 +221,11 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                 function isCorrect(answerjson, useranswerjson) {
                     var isCorrect = false;
                     if (answerjson == null || useranswerjson == null) return isCorrect = false;
-                    
+
                     if (Object.keys(answerjson).length != Object.keys(useranswerjson).length) {
                         return isCorrect = false;
                     }
-                    
+
                     var countCorrectInteractionAttempt = 0;
                     for (var key in __content.user_answers) {
                         var score = 0;
@@ -238,11 +238,11 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                         }
                     }
 
-                    if(countCorrectInteractionAttempt === Object.keys(__correct_answers).length) return isCorrect = true;
-                    if(countCorrectInteractionAttempt !== Object.keys(__correct_answers).length) return isCorrect = false;
+                    if (countCorrectInteractionAttempt === Object.keys(__correct_answers).length) return isCorrect = true;
+                    if (countCorrectInteractionAttempt !== Object.keys(__correct_answers).length) return isCorrect = false;
 
                     return isCorrect;
-                    }
+                }
             }
             /* ---------------------- PUBLIC FUNCTIONS END ----------------------------*/
 
@@ -264,9 +264,9 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                 rivets.formatters.idcreator = function (index, idvalue) {
                     return idvalue + index;
                 }
-
+                console.log("Rivets bind mcq ", JSON.stringify(__content, null, 4));
                 /*Bind the data to template using rivets*/
-                rivets.bind($('#mcqmr-engine'), {
+                rivets.bind($('#mcq-engine'), {
                     content: __content,
                     feedback: __feedback,
                     showFeedback: __feedbackState
@@ -399,7 +399,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                         if (__content.user_answers[key].length === __correct_answers[key]['correct'].length) {
                             if (__content.user_answers[key].sort().join("") === __correct_answers[key]['correct'].sort().join(""))
                                 score = perInteractionScore;
-                                countCorrectInteractionAttempt++;
+                            countCorrectInteractionAttempt++;
                         }
                     }
                     resultArray.push({
@@ -419,14 +419,14 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                     statusEvaluation = "partially_correct";
                     feedback = __buildFeedbackResponse("global.incorrect", "incorrect", __feedback.incorrect);
                 }
-                            
-            return { 
+
+                return {
                     response: {
                         "interactions": resultArray,
                         "statusEvaluation": statusEvaluation,
                         "feedback": feedback
-                    } 
-                    };
+                    }
+                };
             }
             /**
              * Prepare feedback response.
@@ -434,12 +434,12 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
              * @param {*} status 
              * @param {*} content 
              */
-            function __buildFeedbackResponse( id, status, content){
-                     var feedback = {};
-                     feedback.id = id;
-                     feedback.status = status;
-                     feedback.content = content;
-            return feedback;
+            function __buildFeedbackResponse(id, status, content) {
+                var feedback = {};
+                feedback.id = id;
+                feedback.status = status;
+                feedback.content = content;
+                return feedback;
             }
 
 
@@ -447,7 +447,7 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                 __content.instructions = jsonContent.content.instructions.map(function (element) {
                     var tagtype = element['tag'];
                     return element[tagtype];
-                }) 
+                })
 
                 __content.interactions = jsonContent.content.canvas.data.questiondata.map(function (element) {
                     var obj = {};
@@ -457,20 +457,22 @@ define(['text!../html/mcqmr.html', //HTML layout(s) template (handlebars/rivets)
                     obj.id = currinteractionid;
                     obj.questiontext = $(parsedQuestionArray).html();
                     obj.prompt = "";
-                    var tempobj = jsonContent.content.interactions[currinteractionid]
+                    var tempobj = jsonContent.content.interactions[currinteractionid];
+                    console.log("tempobj: ", JSON.stringify(tempobj, null, 4));
                     var interactiontype = tempobj['type'];
                     obj.options = {};
                     tempobj[interactiontype].forEach(function (element) {
                         obj.options[Object.keys(element)[0]] = element[Object.keys(element)[0]];
                     })
                     __interactionIds.push(currinteractionid);
+                    console.log("obj ", JSON.stringify(obj, null, 4));
                     return obj
                 })
 
                 __content.stimuli = jsonContent.content.stimulus.map(function (element) {
                     var tagtype = element['tag'];
-                     if(tagtype === "image") {
-                        return  params.questionMediaBasePath + element[tagtype];
+                    if (tagtype === "image") {
+                        return params.questionMediaBasePath + element[tagtype];
                     }
                     return element[tagtype];
                 })

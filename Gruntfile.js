@@ -5,12 +5,12 @@ var img_src = "src/assets";
 var bower_components = "../../bower_components/"
 var dist = "master/dist/";
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
     // Grunt configuration.
     grunt.initConfig({
         // Clean dist and bower folders
-        clean: {            
+        clean: {
             dist: {
                 options: {
                     force: true
@@ -20,34 +20,34 @@ module.exports = function(grunt) {
                 ]
             },
             bower: {
-               src: "bower_components"
+                src: "bower_components"
             },
         },
 
         //Install bower components
         bower: {
             install: {
-              options: { 
-                verbose: true,
-                copy:false
-              }             
+                options: {
+                    verbose: true,
+                    copy: false
+                }
             }
         },
 
         // RequireJS optimizer
-        // Create two files - mcqmr.js and mcqmr-editor.js
+        // Create two files - mcq.js and mcq-editor.js
         requirejs: {
             engine: {
                 options: {
                     baseUrl: engine_src,
-                    name: "mcqmr",
-                    out: dist + "mcqmr.js",
+                    name: "mcq",
+                    out: dist + "mcq.js",
                     paths: {
                         'text': bower_components + 'text/text',
                         'css': bower_components + 'require-css/css',
                         'css-builder': bower_components + 'require-css/css-builder',
                         'normalize': bower_components + 'require-css/normalize',
-                        'rivets': bower_components+ 'rivets/dist/rivets',
+                        'rivets': bower_components + 'rivets/dist/rivets',
                         'sightglass': bower_components + 'sightglass/index'
                     },
                     optimize: 'none',
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
                     },
                     exclude: ['normalize'],
                     done: function (done, output) {
-                        console.log('Completed requirejs optimization for mcqmr renderer successfully.');
+                        console.log('Completed requirejs optimization for mcq renderer successfully.');
                         done();
                     }
                 }
@@ -64,17 +64,17 @@ module.exports = function(grunt) {
             engineEditor: {
                 options: {
                     baseUrl: engine_src,
-                    name: "mcqmr-editor",
-                    out: dist + "mcqmr-editor.js",
+                    name: "mcq-editor",
+                    out: dist + "mcq-editor.js",
                     paths: {
-                        'jquery':'empty:',
+                        'jquery': 'empty:',
                         'text': bower_components + 'text/text',
                         'css': bower_components + 'require-css/css',
                         'css-builder': bower_components + 'require-css/css-builder',
                         'normalize': bower_components + 'require-css/normalize',
-                        'rivets': bower_components+ 'rivets/dist/rivets',
+                        'rivets': bower_components + 'rivets/dist/rivets',
                         'sightglass': bower_components + 'sightglass/index',
-                        'jquery-ui' :  bower_components + 'jquery-ui/jquery-ui'
+                        'jquery-ui': bower_components + 'jquery-ui/jquery-ui'
                     },
                     optimize: 'none',
                     uglify2: {
@@ -82,7 +82,7 @@ module.exports = function(grunt) {
                     },
                     exclude: ['normalize'],
                     done: function (done, output) {
-                        console.log('Completed requirejs optimization for mcqmr editor successfully.');
+                        console.log('Completed requirejs optimization for mcq editor successfully.');
                         done();
                     }
                 }
@@ -98,48 +98,48 @@ module.exports = function(grunt) {
             }
         },
         copy: {
-          images: {
-            files: [
-              { 
-                expand: true,
-                cwd: img_src, 
-                src: ['**/*.{png,jpg,svg}'], 
-                dest: dist + '/assets' 
-              }
-            ]
-          }
+            images: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: img_src,
+                        src: ['**/*.{png,jpg,svg}'],
+                        dest: dist + '/assets'
+                    }
+                ]
+            }
         }
     });
-    
+
     //Load grunt Tasks
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-connect');    
+    grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    
+
     // Build distribution folder
-    grunt.registerTask('build', [ 
+    grunt.registerTask('build', [
         'clean:dist',
         'clean:bower',
         'bower:install',
         'requirejs',
         'copy'
-    ]);  
+    ]);
 
     // Run a local server at port 9001 (http://localhost:9001/) to serve engine files.
     // This is used during development to register engines from local server in Assesments Showcase.
-    grunt.registerTask('connectServer', [ 
+    grunt.registerTask('connectServer', [
         'connect'
     ]);
 
-     grunt.registerTask('default', [ 
-        'build'        
-    ]);   
+    grunt.registerTask('default', [
+        'build'
+    ]);
 
-    grunt.registerTask('local', [ 
-        'build',  'connectServer'       
+    grunt.registerTask('local', [
+        'build', 'connectServer'
     ]);
 
 };

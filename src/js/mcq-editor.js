@@ -33,15 +33,15 @@
  * 3. Rivets (0.9.6)
  */
 
-define(['text!../html/mcqmr-editor.html', //Layout of the Editor
-    'css!../css/mcqmr-editor.css', //Custom CSS of the Editor
+define(['text!../html/mcq-editor.html', //Layout of the Editor
+    'css!../css/mcq-editor.css', //Custom CSS of the Editor
     'jquery-ui', //Jquery Sortable for reordering
     'css!../../bower_components/jquery-ui/themes/base/jquery-ui.css', //CSS for sortable
     'rivets',   // Rivets for two way data binding
     'sightglass' // Required by Rivets
-], function (mcqmrTemplateRef) {
+], function (mcqTemplateRef) {
 
-    mcqmrEditor = function () {
+    mcqEditor = function () {
         "use strict";
 
         /*
@@ -77,7 +77,7 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
 
             TEMPLATES: {
                 /* Regular mcqmr Layout */
-                MCQMR_EDITOR: mcqmrTemplateRef
+                MCQ_EDITOR: mcqTemplateRef
             }
         };
 
@@ -211,7 +211,7 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             var interactionTag;
             for (var i = 0; i < __editedJsonContent.content.canvas.data.questiondata.length; i++) {
                 __parsedQuestionArray = $.parseHTML(__editedJsonContent.content.canvas.data.questiondata[i].text);
-                var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/mcqmr";
+                var interactionReferenceString = "http://www.comprodls.com/m1.0/interaction/mcq";
                 $.each(__parsedQuestionArray, function (index, el) {
                     if (this.href === interactionReferenceString) {
                         __interactionIds.push(this.childNodes[0].nodeValue.trim())
@@ -349,7 +349,7 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             /* 
               * Bind data to template using rivets
               */
-            rivets.bind($('#mcqmr-editor'), {
+            rivets.bind($('#mcq-editor'), {
                 meta: __editedJsonContent.meta,
                 content: __editedJsonContent.content,
                 toggleQuestionTextEditing: __toggleQuestionTextEditing,

@@ -2276,8 +2276,6 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
             */
             /********************************************************/
             function init(elRoot, params, adaptor, htmlLayout, jsonContentObj, callback) {
-                console.log("Welcome to the init world! ++++++++++++++++++++++++++++");
-
                 /* ---------------------- BEGIN OF INIT ---------------------------------*/
                 //Store the adaptor  
                 activityAdaptor = adaptor;
@@ -2346,15 +2344,6 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
             function handleSubmit() {
                 /* Saving Answers. */
                 __saveResults(true);
-
-                /* Marking Answers. */
-                /*This is a temporary execution block to show answers and feedbacks. 
-                 * In future realese will remove this block once app starts executing
-                 * showfeedback and showgrades function */
-                // if (activityAdaptor.showAnswers) {
-                //     __markAnswers();
-                //     showfeedback();
-                // }
                 $('input[id^=option]').attr("disabled", true);
             }
 
@@ -2665,7 +2654,7 @@ define('mcqmr',['text!../html/mcqmr.html', //HTML layout(s) template (handlebars
                 "handleSubmit": handleSubmit,
                 "showGrades": showGrades,
                 "updateLastSavedResults": updateLastSavedResults,
-                "showfeedback": showfeedback
+                "showFeedback": showfeedback
             };
         }
     });

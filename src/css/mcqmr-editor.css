@@ -17,52 +17,67 @@
  *
  *******************************************************/
 
-#mcqmr-editor .content-height {
-    overflow: hidden;
+.main {
+    font-size: 1em;
 }
 
-#mcqmr-editor .no-left-padding {
-    padding-left: 0;
+.section {
+    margin: 0 0 30px 0;
+    padding: 5px 5px 10px 5px;
+    border-radius: 5px;
+    border: 1px solid #a1a1a1;
 }
 
-#mcqmr-editor .edit-procedure {
-    padding-bottom: 0;
-    font-size: 12px;
-    line-height: 1.2;
-    color: #555;
+.sectionlabel {
+    font-size: 24px;
+    font-weight: bold;
 }
 
-#mcqmr-editor .edit-procedure li {
-    padding: 5px;
+.media {
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #a1a1a1;
+    height: 215px;
 }
 
-#mcqmr-editor .ques-text-editor.editor-icon {
-    position: absolute;
-    right: 40px;
-    cursor: pointer;
+.dropzone {
+    background-color: #F2F2F2;
+    height: 215px;
+    padding-top: 60px;
+    margin-bottom: 10px;
+    border: dotted;
+    text-align: center;
+    vertical-align: middle;
+    border: 2px dashed;
+    border-radius: 5px;
 }
 
-#mcqmr-editor .question-text-container>div.content-height {
+.vspacer {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.spacer {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.questionlabel {
+    padding: 5px 0 0 5px;
+}
+
+.comment {
+    color: navy
+}
+
+.media_container>i {
     position: relative;
+    top: calc(50% - 10px);
+    /* 50% - 3/4 of icon height */
 }
 
-#mcqmr-editor .question-text-viewer {
-    font-weight: 700;
-    font-size: 18px;
-    padding-top: 5px;
-}
-
-#mcqmr-editor .question-text-editor {
-    font-weight: 700;
-    padding-top: 5px;
-    font-size: 18px;
-    border: none;
-    border-bottom: 1px solid black;
-}
-
-#mcqmr-editor .questions-editor.form {
-    padding-top: 15px;
-    padding-bottom: 15px;
+#mcqmr-editor .form {
+    padding: 15px 0 15px 3px;
 }
 
 #mcqmr-editor .form * {
@@ -70,7 +85,6 @@
 }
 
 #mcqmr-editor .form ul {
-    padding-left: 15px;
     padding-bottom: 10px;
     position: relative;
 }
@@ -78,11 +92,14 @@
 #mcqmr-editor .form ul li {
     padding: 10px;
     position: static;
+    border-bottom: 1px solid #DDDDDD;
+    border-top: 1px solid #DDDDDD;
 }
 
 #mcqmr-editor .form ul li.highlight {
     background-color: #F2F2F2;
     border-radius: 0px;
+    border-bottom: 1px solid #DDDDDD;
 }
 
 #mcqmr-editor .form ul li i {
@@ -99,7 +116,7 @@
 }
 
 #mcqmr-editor .form ul li i:after {
-    background-color: #3276B1;
+    background-color: #666666;
     content: '';
     border-radius: 0;
     height: 1.1em;
@@ -111,7 +128,7 @@
 }
 
 #mcqmr-editor .form ul li.highlight i {
-    border-color: #3276B1;
+    border-color: #F2F2F2;
 }
 
 #mcqmr-editor .form ul li.highlight i:after {
@@ -152,8 +169,7 @@
 }
 
 #mcqmr-editor .form ul li .editor-icon.mcqmr-edit {
-    position: absolute;
-    right: 40px;
+    margin: 2px;
 }
 
 #mcqmr-editor .form ul li .delete-icon.mcqmr-edit {
@@ -165,7 +181,8 @@
 }
 
 #mcqmr-editor .add-container {
-    padding-bottom: 20px;
+    padding: 5px 15px 5px 0;
+    float: left;
 }
 
 #mcqmr-editor .add-container .add-item {
@@ -173,32 +190,51 @@
 }
 
 #mcqmr-editor .input-option {
-    width: 90%;
+    width: 80%;
     border: none;
     border-bottom: 1px solid black;
 }
 
-#mcqmr-editor .bottom-content {
-    position: relative;
+#mcqmr-editor .correct {
+    color: green;
 }
 
-#mcqmr-editor .bottom-content h3 {
-    margin-top: 5px;
-    padding-left: 15px;
+#mcqmr-editor .incorrect {
+    color: red;
 }
 
-#mcqmr-editor .bottom-content .feedback-label {
-    font-size: 17px;
-    padding-left: 15px;
-    overflow: hidden
+#mcqmr-editor .addbutton {
+    margin-left: 5px;
+    padding: 5px 15px 5px 0px;
 }
 
-#mcqmr-editor .bottom-content .feedback-text {
-    display: inline-block;
+#mcqmr-editor .form-container {
+    width: 100%;
 }
 
-#mcqmr-editor .bottom-content .feedback-text-editor {
-    display: inline-block;
-    border: none;
-    border-bottom: 1px solid black;
+#mcqmr-editor .modal {
+    position: absolute;
+    left: 50%;
+    /* now you must set a margin left under zero - value is a half width your window */
+    margin-left: -312px;
+    /* this same situation is with height - example */
+    top: 55%;
+    margin-top: -250px;
+}
+
+.info {
+    font-size: 18px;
+    color: black;
+    text-decoration: none;
+}
+
+.popmsg {
+    font-size: 12px;
+    padding: 2px 2px 2px 2px;
+}
+
+.popcol {
+    padding: 1px 1px 1px 1px;
+    border-top: 2px;
+    border-top-color: red;
 }

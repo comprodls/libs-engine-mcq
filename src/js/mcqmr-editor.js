@@ -14,13 +14,16 @@
  *          getConfig()
  *  }
  *
- * This engine-editor is designed to be loaded dynamical by other applications (or  platforms). At the start the function [ engine.init() ] will be called with necessary configuration paramters and a reference to platform Adapter
- * object which allows subsequent communuication with the platform.
+ * This engine-editor is designed to be loaded dynamical by other applications (or  platforms). 
+ * At the start the function [ engine.init() ] will be called with necessary configuration paramters
+ * and a reference to platform Adapter object which allows subsequent communuication with the platform.
  *
  *
- * The function [ engine-editor.getStatus() ] may be called to check if SUBMIT has been pressed or not - the response from the engine is used to enable / disable appropriate platform controls.
+ * The function [ engine-editor.getStatus() ] may be called to check if SUBMIT has been pressed or not - the 
+ * response from the engine is used to enable / disable appropriate platform controls.
  *
- * he function [ engine-editor.getConfig() ] is called to request SIZE information - the response from the engine is used to resize & display the container iframe.
+ * The function [ engine-editor.getConfig() ] is called to request SIZE information - the response from the engine
+ * is used to resize & display the container iframe.
  *
  * EXTERNAL JS DEPENDENCIES : ->
  * Following are shared/common dependencies and assumed to loaded via the platform. The engine code can use/reference
@@ -134,6 +137,7 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             //Process JSON for easy iteration in template
             //__parseAndUpdateJSONForRivets();
             __parseAndUpdateJSONForRivets();
+            //console.log("1--> ", JSON.stringify(__editedJsonContent, null, 4));
             /* ------ VALIDATION BLOCK END -------- */
 
             /* Apply the layout HTML to the dom */
@@ -193,7 +197,8 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
          * 1. Creates two arrays required for rendering this editor
          *      1.1 __interactionIds (InteractionIds array) - This contains all the interaction ids (in questiondata)
          *           e.g. ["i1", "i2"]
-         *      1.2 __interactionTags (Array of Original interaction texts in questiondata) - This will be used for recreating JSON to original format when "saveItemInEditor" is called.  
+         *      1.2 __interactionTags (Array of Original interaction texts in questiondata) - 
+         *          This will be used for recreating JSON to original format when "saveItemInEditor" is called.  
          *          e.g. [
          *             "<a href='http://www.comprodls.com/m1.0/interaction/mcqmr'>i1</a>", 
          *             "<a href='http://www.comprodls.com/m1.0/interaction/mcqmr'>i2</a>"
@@ -217,6 +222,7 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                     }
                 });
             }
+
             for (var key in __editedJsonContent.content.interactions) {
                 newObj = __editedJsonContent.content.interactions[key];
                 newObj.key = key;
@@ -243,7 +249,7 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             ----------------------
             "MCQSR": [
               {
-                  "customAttribs" : {
+                  " " : {
                         "key" : "choiceA",
                         "value" : "She has the flu.",
                         "isEdited" : false,
@@ -263,24 +269,24 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             ]
          */
         function __parseAndUpdateJSONForRivets() {
-            console.log(__editedJsonContent);
             for (var i = 0; i < __interactionIds.length; i++) {
                 var processedArray = [];
                 __editedJsonContent.content.interactions[i].MCQMR.forEach(function (obj, index) {
                     var processedObj = {};
                     processedObj.customAttribs = {};
                     Object.keys(obj).forEach(function (key) {
+                        var interactionid = __interactionIds[i];
                         processedObj.customAttribs.key = key;
                         processedObj.customAttribs.value = obj[key];
                         processedObj.customAttribs.isEdited = false;
                         processedObj.customAttribs.index = index;
+                        processedObj.customAttribs.id = interactionid;
 
-                        /*
-                                                if (__editedJsonContent.responses[__interactionIds[i]].correct == processedObj.customAttribs.key) {
-                                                    processedObj.customAttribs.isCorrect = processedObj.customAttribs.value;
-                                                } else {
-                                                    processedObj.customAttribs.isCorrect = false;
-                                                }*/
+                        if (typeof __editedJsonContent.feedback[interactionid] != 'undefined') {
+                            if (typeof __editedJsonContent.feedback[interactionid][key] != 'undefined') {
+                                processedObj.customAttribs.feedback = __editedJsonContent.feedback[interactionid][key];
+                            }
+                        }
                     });
 
                     if (__editedJsonContent.responses[__interactionIds[i]].correct.indexOf(processedObj.customAttribs.key) > -1) {
@@ -317,12 +323,35 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                 return array;
             };
 
+
+            rivets.formatters.placeholderText = function (obj) {
+                var text = "Enter inline feedback for option ";
+                text = text.concat(obj);
+                return text;
+            };
+
+            rivets.formatters.modalId = function (obj) {
+                var text = "modal";
+                obj = obj.replace(/\s+/g, '');
+                text = text.concat(obj);
+
+                return text;
+            };
+
+            rivets.formatters.btnId = function (obj) {
+                var text = "btn";
+                obj = obj.replace(/\s+/g, '');
+                text = text.concat(obj);
+                return text;
+            };
+
+
             /* 
-             * Bind data to template using rivets
-             */
+              * Bind data to template using rivets
+              */
             rivets.bind($('#mcqmr-editor'), {
+                meta: __editedJsonContent.meta,
                 content: __editedJsonContent.content,
-                toggleEditing: __toggleEditing,
                 toggleQuestionTextEditing: __toggleQuestionTextEditing,
                 quesEdited: __quesEdited,
                 removeItem: __removeItem,
@@ -330,9 +359,9 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
                 removeEditing: __removeEditing,
                 interactionIds: __interactionIds,
                 feedback: __editedJsonContent.feedback,
-                feedbackEditing: __feedbackEditing,
-                toggleFeedbackEditing: __toggleFeedbackEditing,
-                removeFeedbackEditing: __removeFeedbackEditing
+                setInlineFeedback: __setInlineFeedback,
+                addInlineFeedback: __addInlineFeedback,
+                editOptionText: __editOptionText
             });
         }
 
@@ -342,11 +371,12 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             $(event[0].currentTarget).siblings('.question-text-editor').focus();
         }
 
-        /* Toggle between editing and read-only mode for options */
+        /* Toggle between editing and read-only mode for options *//*
         function __toggleEditing(event, element) {
             element.customAttribs.isEdited = !element.customAttribs.isEdited;
             $(event[0].currentTarget).parent().find('.option-value')[0].focus();
-        }
+        }*/
+
 
         /* Remove option item */
         function __removeItem(event, element, interaction) {
@@ -358,7 +388,15 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
-        /* Remove editing on blur*/
+        /* Sets the edit mode on the option text. Allows the Author to edit the text  */
+        function __editOptionText(event, element) {
+            element.customAttribs.isEdited = !element.customAttribs.isEdited;
+            $(event[0].currentTarget).parent().find('.option-value')[0].focus();
+            event[0].preventDefault();
+        }
+
+
+        /* Remove edit mode on blur*/
         function __removeEditing(event, element) {
             if (element.customAttribs) {
                 element.customAttribs.isEdited = false;
@@ -438,7 +476,11 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             });
         }
 
+        /** 
+         * handles the click event of the checkbox and sets the isCorrect for the appropriate option
+         */
         function __handleCheckboxButtonClick(event) {
+
             var currentTarget = event.currentTarget;
             var quesIndex = 0;
             var interactionIndex = parseInt($(currentTarget).parent().parent("li").attr('interactIndex'));
@@ -499,7 +541,6 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             for (var i = 0; i < __finalJSONContent.content.canvas.data.questiondata.length; i++) {
                 __finalJSONContent.content.canvas.data.questiondata[i].text += __interactionTags[i];
             }
-            console.log(JSON.stringify(__finalJSONContent, null, 4));
             return __finalJSONContent;
         }
         /* ---------------------- JQUERY BINDINGS END ----------------------------*/
@@ -514,6 +555,66 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
                 s4() + '-' + s4() + s4() + s4();
         }
+
+        /** Opens the window for the inline feedback */
+        function __addInlineFeedback(option) {
+            var event = option[0];
+            var attribs = option[1].element.customAttribs;
+            var option = attribs["key"];
+            var optionValue = attribs["value"];
+            optionValue = optionValue.replace(/\s+/g, '');
+            var btn = "#btn" + optionValue;
+            var modal = "#modal" + optionValue;
+            $(modal).modal('show');
+            // prevents the default action when the row is clicked.
+            event.preventDefault();
+        }
+
+        /** Updated the entered inline feedback in the JSON  */
+        function __setInlineFeedback(option) {
+            var interactionid = option[1]['element']['customAttribs'].id;
+            var choice = option[1]['element']['customAttribs'].key;
+            var feedbacktxt = option[1]['element']['customAttribs'].feedback;
+
+            var feedbackObj = {};
+            feedbackObj[choice] = feedbacktxt;
+            var interactionfeedback = __editedJsonContent.feedback[interactionid];
+            // update feedback JSON
+            if (typeof interactionfeedback == 'undefined') {
+                __editedJsonContent.feedback[interactionid] = {};
+                __editedJsonContent.feedback[interactionid] = feedbackObj;
+            }
+            else {
+                __editedJsonContent.feedback[interactionid][choice] = feedbacktxt;
+            }
+        }
+
+        $(document).ready(function () {
+            //Handles menu drop down
+            $('.dropdown-menu').click(function (e) {
+                e.stopPropagation();
+            });
+            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="popover"]').popover();
+        });
+
+
+        $(function () {
+            $('[rel="popover"]').popover({
+                container: 'body',
+                html: true,
+                content: function () {
+                    var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
+                    return clone;
+                }
+            }).click(function (e) {
+                e.preventDefault();
+            });
+        });
+
+        $(document).ready(function () {
+            $('[data-toggle="popover"]').popover();
+        });
 
         return {
             /*Engine-Shell Interface*/

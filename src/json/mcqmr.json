@@ -55,7 +55,7 @@
     "global": {
       "correct": "That's a correct Answer.",
       "incorrect": "That's an incorrect Answer.",
-      "empty": "You haven't marked any Choice Option."
+      "empty": "You have not made a selection."
     }
   },
   "responses": {

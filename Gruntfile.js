@@ -3,7 +3,7 @@
 var engine_src = "src/js";
 var img_src = "src/assets";
 var bower_components = "../../bower_components/"
-var dist = "dist/";
+var dist = "master/dist/";
 
 module.exports = function(grunt) {
 
@@ -50,7 +50,7 @@ module.exports = function(grunt) {
                         'rivets': bower_components+ 'rivets/dist/rivets',
                         'sightglass': bower_components + 'sightglass/index'
                     },
-                    optimize: 'uglify2',
+                    optimize: 'none',
                     uglify2: {
                         mangle: false
                     },
@@ -76,7 +76,7 @@ module.exports = function(grunt) {
                         'sightglass': bower_components + 'sightglass/index',
                         'jquery-ui' :  bower_components + 'jquery-ui/jquery-ui'
                     },
-                    optimize: 'uglify2',
+                    optimize: 'none',
                     uglify2: {
                         mangle: false
                     },
@@ -93,8 +93,7 @@ module.exports = function(grunt) {
                 options: {
                     port: 9001,
                     hostname: '0.0.0.0',
-                    keepalive: true,
-                    base: '..'
+                    keepalive: true
                 }
             }
         },
@@ -135,8 +134,12 @@ module.exports = function(grunt) {
         'connect'
     ]);
 
-    grunt.registerTask('default', [ 
+     grunt.registerTask('default', [ 
         'build'        
-    ]);  
+    ]);   
+
+    grunt.registerTask('local', [ 
+        'build',  'connectServer'       
+    ]);
 
 };

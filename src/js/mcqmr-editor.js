@@ -589,6 +589,10 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             }
         }
 
+        $(document).on('click', "a.drag-icon", function () {
+            event.preventDefault();
+        });
+
         $(document).ready(function () {
             //Handles menu drop down
             $('.dropdown-menu').click(function (e) {
@@ -610,10 +614,6 @@ define(['text!../html/mcqmr-editor.html', //Layout of the Editor
             }).click(function (e) {
                 e.preventDefault();
             });
-        });
-
-        $(document).ready(function () {
-            $('[data-toggle="popover"]').popover();
         });
 
         return {

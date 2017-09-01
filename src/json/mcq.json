@@ -1,73 +1,96 @@
-{
-  "meta": {
-    "type": "MCQ",
-    "score": {
-      "default": 0,
-      "max": 1,
-      "min": 0
-    }
-  },
-  "content": {
-    "instructions": [
-      {
-        "tag": "text",
-        "text": "This question has multiple correct answers. Choose the correct options and click Submit."
-      }
-    ],
-    "stimulus": [
-      {
-        "tag": ""
-      }
-    ],
-    "canvas": {
-      "layout": "MCQ",
-      "data": {
-        "questiondata": [
-          {
-            "text": " Identify the major cities in India in the list below? <a href='http://www.comprodls.com/m1.0/interaction/mcqmr'>i1</a> "
-          }
-        ]
+    {
+      "meta": {
+        "type": "MCQ",
+        "score": {
+          "default": 0,
+          "max": 1,
+          "min": 0
+        }
       },
-      "raw": ""
-    },
-    "interactions": {
-      "i1": {
-        "type": "MCQMR",
-        "MCQMR": [
+      "content": {
+        "instructions": [
           {
-            "choiceA": "Delhi"
-          },
-          {
-            "choiceB": "Paris"
-          },
-          {
-            "choiceC": "Mumbai"
-          },
-          {
-            "choiceD": "New York"
+            "tag": "text",
+            "text": "The following set of questions have Multiple Choice Questions with Single and Multiple responses. These are evident from what can be selected for each question. Answer each question and click Submit."
           }
-        ]
-      }
-    },
-    "hint": {}
-  },
-  "feedback": {
-    "global": {
-      "correct": "That's a correct Answer.",
-      "incorrect": "That's an incorrect Answer.",
-      "empty": "You have not made a selection."
-    }
-  },
-  "responses": {
-    "i1": {
-      "correct": [
-        "choiceA",
-        "choiceC"
+        ],
+        "stimulus": [
+          {
+            "tag": ""
+          }
+        ],
+        "canvas": {
+          "layout": "MCQ",
+          "data": {
+            "questiondata": [
+              {
+                "text": " Identify the major cities in India in the list below? <a href='http://www.comprodls.com/m1.0/interaction/mcq'>i1</a> "
+              },
+              {
+                "text": " Identify the major cities in United States from the list below? <a href='http://www.comprodls.com/m1.0/interaction/mcq'>i2</a> "
+              }
+            ]
+          },
+          "raw": ""
+        },
+        "interactions": {
+          "i1": {
+            "type": "MCQMR",
+            "MCQMR": [
+              {
+                "choiceA": "Delhi"
+              },
+              {
+                "choiceB": "Paris"
+              },
+              {
+                "choiceC": "Mumbai"
+              },
+              {
+                "choiceD": "New York"
+              }
+            ]
+          },
+          "i2": {
+            "type": "MCQSR",
+            "MCQSR": [
+              {
+                "choiceA": "Delhi"
+              },
+              {
+                "choiceB": "New York"
+              },
+              {
+                "choiceC": "Istanbul"
+              },
+              {
+                "choiceD": "Paris"
+              }
+            ]
+          }
+        },
+        "hint": {}
+      },
+      "feedback": {
+        "global": {
+          "correct": "That's a correct Answer.",
+          "incorrect": "That's an incorrect Answer.",
+          "empty": "You have not made a selection."
+        }
+      },
+      "responses": {
+        "i1": {
+          "correct": [
+            "choiceB",
+            "choiceD"
+          ]
+        },
+        "i2": {
+          "correct": "choiceC"
+        }
+      },
+      "learning-objectives": [],
+      "tags": [
+        "test"
       ]
     }
-  },
-  "learning-objectives": [],
-  "tags": [
-    "test"
-  ]
-}

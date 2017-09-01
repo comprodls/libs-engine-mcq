@@ -269,6 +269,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             ]
          */
         function __parseAndUpdateJSONForRivets() {
+            console.log(JSON.stringify(__interactionIds, null, 4));
             for (var i = 0; i < __interactionIds.length; i++) {
                 var processedArray = [];
                 __editedJsonContent.content.interactions[i].MCQMR.forEach(function (obj, index) {

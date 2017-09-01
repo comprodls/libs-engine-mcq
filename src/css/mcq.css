@@ -34,22 +34,22 @@ ul {
     list-style: none;
 }
 
-.correct:before, .wrong:before  {
+.correct:before,
+.wrong:before {
     font-family: fontawesome;
     display: inline-block;
     margin: 0 0.5em auto -2.2em;
 }
 
 .correct:before {
-     content: "\f00c";
-     color:#080;
+    content: "\f00c";
+    color: #080;
 }
 
 .wrong:before {
     content: "\f00d";
     color: #F00;
 }
-
 
 .option-content {
     margin: 0 0 0 5px;

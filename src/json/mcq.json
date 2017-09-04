@@ -25,9 +25,6 @@
             "questiondata": [
               {
                 "text": " Identify the major cities in India in the list below? <a href='http://www.comprodls.com/m1.0/interaction/mcq'>i1</a> "
-              },
-              {
-                "text": " Identify the major cities in United States from the list below? <a href='http://www.comprodls.com/m1.0/interaction/mcq'>i2</a> "
               }
             ]
           },
@@ -50,23 +47,6 @@
                 "choiceD": "New York"
               }
             ]
-          },
-          "i2": {
-            "type": "MCQSR",
-            "MCQSR": [
-              {
-                "choiceA": "Delhi"
-              },
-              {
-                "choiceB": "New York"
-              },
-              {
-                "choiceC": "Istanbul"
-              },
-              {
-                "choiceD": "Paris"
-              }
-            ]
           }
         },
         "hint": {}
@@ -84,9 +64,6 @@
             "choiceB",
             "choiceD"
           ]
-        },
-        "i2": {
-          "correct": "choiceC"
         }
       },
       "learning-objectives": [],

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "type": "MCQMR",
+    "type": "MCQ",
     "score": {
       "default": 0,
       "max": 1,
@@ -12,7 +12,7 @@
       {
         "tag": "html",
         "html": "Click the correct answer for each question. Click <b>Submit</b> to check your answers."
-      } 
+      }
     ],
     "stimulus": [
       {
@@ -21,22 +21,22 @@
       }
     ],
     "canvas": {
-      "layout": "MCQMR_IMAGE",
+      "layout": "MCQ_IMAGE",
       "data": {
         "questiondata": [
           {
-            "text": " Hi. My name __ Paul. <a href='http://www.comprodls.com/m1.0/interaction/mcqmr'>i1</a> "
+            "text": " Hi. My name __ Paul. <a href='http://www.comprodls.com/m1.0/interaction/mcq'>i1</a> "
           }
         ]
       },
       "raw": ""
-    },     
+    },
     "interactions": {
       "i1": {
         "type": "MCQMR",
         "MCQMR": [
           {
-            "choiceA": "am" 
+            "choiceA": "am"
           },
           {
             "choiceB": "call"
@@ -46,7 +46,7 @@
           },
           {
             "choiceD": "calls"
-          }          
+          }
         ]
       }
     },

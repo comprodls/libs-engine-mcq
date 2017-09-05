@@ -76,33 +76,33 @@
     /* 50% - 3/4 of icon height */
 }
 
-#mcqmr-editor .form {
+#mcq-editor .form {
     padding: 15px 0 15px 3px;
 }
 
-#mcqmr-editor .form * {
+#mcq-editor .form * {
     margin: 0;
 }
 
-#mcqmr-editor .form ul {
+#mcq-editor .form ul {
     padding-bottom: 10px;
     position: relative;
 }
 
-#mcqmr-editor .form ul li {
+#mcq-editor .form ul li {
     padding: 10px;
     position: static;
     border-bottom: 1px solid #DDDDDD;
     border-top: 1px solid #DDDDDD;
 }
 
-#mcqmr-editor .form ul li.highlight {
+#mcq-editor .form ul li.highlight {
     background-color: #F2F2F2;
     border-radius: 0px;
     border-bottom: 1px solid #DDDDDD;
 }
 
-#mcqmr-editor .form ul li i {
+#mcq-editor .form ul li i {
     height: 1.8em;
     width: 1.8em;
     border-radius: 0;
@@ -115,7 +115,7 @@
     background: #FFF;
 }
 
-#mcqmr-editor .form ul li i:after {
+#mcq-editor .form ul li i:after {
     background-color: #666666;
     content: '';
     border-radius: 0;
@@ -127,15 +127,15 @@
     opacity: 0;
 }
 
-#mcqmr-editor .form ul li.highlight i {
+#mcq-editor .form ul li.highlight i {
     border-color: #F2F2F2;
 }
 
-#mcqmr-editor .form ul li.highlight i:after {
+#mcq-editor .form ul li.highlight i:after {
     opacity: 1;
 }
 
-#mcqmr-editor .form ul li .checkbox {
+#mcq-editor .form ul li .checkbox {
     font-size: 1em;
     line-height: 1.8em;
     color: #3D3D3D;
@@ -143,76 +143,76 @@
     padding-left: 45px!important;
 }
 
-#mcqmr-editor .form ul li .checkbox input {
+#mcq-editor .form ul li .checkbox input {
     /*position: absolute;*/
     left: 0px;
 }
 
 
-/*#mcqmr-editor .form ul li .radio .      -value {*/
+/*#mcq-editor .form ul li .radio .      -value {*/
 
 #mcqsr-editor .form ul li .checkbox .option-value {
     position: static!important;
     left: -9999
 }
 
-#mcqmr-editor .form ul li .checkbox div.option-value {
+#mcq-editor .form ul li .checkbox div.option-value {
     display: inline-block;
 }
 
-#mcqmr-editor .form ul li .checkbox .correct-answer {
+#mcq-editor .form ul li .checkbox .correct-answer {
     font-weight: 700;
 }
 
-#mcqmr-editor .form ul li .editor-icon {
+#mcq-editor .form ul li .editor-icon {
     cursor: pointer;
 }
 
-#mcqmr-editor .form ul li .editor-icon.mcqmr-edit {
+#mcq-editor .form ul li .editor-icon.mcq-edit {
     margin: 2px;
 }
 
-#mcqmr-editor .form ul li .delete-icon.mcqmr-edit {
+#mcq-editor .form ul li .delete-icon.mcq-edit {
     right: 20px;
 }
 
-#mcqmr-editor .form ul li .drag-icon.mcqmr-edit {
+#mcq-editor .form ul li .drag-icon.mcq-edit {
     right: 0px;
 }
 
-#mcqmr-editor .add-container {
+#mcq-editor .add-container {
     padding: 5px 15px 5px 0;
     float: left;
 }
 
-#mcqmr-editor .add-container .add-item {
+#mcq-editor .add-container .add-item {
     cursor: pointer;
 }
 
-#mcqmr-editor .input-option {
+#mcq-editor .input-option {
     width: 80%;
     border: none;
     border-bottom: 1px solid black;
 }
 
-#mcqmr-editor .correct {
+#mcq-editor .correct {
     color: green;
 }
 
-#mcqmr-editor .incorrect {
+#mcq-editor .incorrect {
     color: red;
 }
 
-#mcqmr-editor .addbutton {
+#mcq-editor .addbutton {
     margin-left: 5px;
     padding: 5px 15px 5px 0px;
 }
 
-#mcqmr-editor .form-container {
+#mcq-editor .form-container {
     width: 100%;
 }
 
-#mcqmr-editor .modal {
+#mcq-editor .modal {
     position: absolute;
     left: 50%;
     /* now you must set a margin left under zero - value is a half width your window */

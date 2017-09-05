@@ -1,6 +1,6 @@
 <!-- Engine Renderer Template -->
 <!-- Top level div handler to embed test engine into rendering app -->
-<div class="mcqmr-body" id="mcqmr-engine">
+<div class="mcq-body" id="mcq-engine">
   <main class="main">
     <section class="instructions" rv-each-instruction="content.instructions">
       <p class="instruction" rv-text="instruction"></p>
@@ -13,7 +13,7 @@
         <p class="question-text" rv-text="interaction.questiontext"></p>
         <!-- prompt Will be shown only if prompt text is available for interaction /-->
         <p class="prompt"></p>
-        <ul class="options">
+        <ul class="options" rv-if="interaction.MCQMR">
           <li class="option" rv-each-optionitem="interaction.options | propertyList">
             <label class="input-label">
                   <span class="rejoinder invisible pull-left" rv-id="%optionitem% | idcreator 'rejoinder'" ></span>
@@ -21,6 +21,17 @@
                           rv-name="optionitem.key" rv-id="optionitem.key" data-val="{optionitem.key}"autocomplete="off" />
                   <span class='option-content' rv-text="optionitem.value">{optionitem.value}</span>
              </label>
+          </li>
+        </ul>
+        <ul class="list-unstyled nested-list col-sm-6" rv-if="interaction.MCQSR">
+          <li rv-each-element="interaction.options | propertyList">
+            <label class="radio radio-lg">
+         <!-- Placeholder for radio buttons-->   
+                  <i></i>
+                  <span class="answer invisible wrong pull-left"></span>
+                  <input type="radio" name="optionsRadios" class="mcqsroption" rv-id="element.key" rv-value="element.value">
+                  <span class="content" rv-text="element.value"></span>
+               </label>
           </li>
         </ul>
       </section>

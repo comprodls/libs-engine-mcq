@@ -1,6 +1,6 @@
 <!-- Engine Editor Template -->
 
-<div class="mcqmr-body main-container" id="mcqmr-editor">
+<div class="mcq-body main-container" id="mcq-editor">
   <main class="main">
     <section id="question" class="section">
       <header>
@@ -59,20 +59,24 @@
       <div class="col-sm-12">
         <div class="row form questions-editor">
           <ul class="list-unstyled nested-list editor sortable">
-            <!-- Loop over all options inside interaction  (mcqmr Array)-->
-            <li class="col-xs-12 colborder mcqmr-item" rv-each-element="interact.MCQMR" rv-class-highlight="element.customAttribs.isCorrect"
+            <!-- Loop over all options inside interaction  (mcq Array)-->
+            <li class="col-xs-12 colborder mcq-item" rv-each-element="interact.MCQMR" rv-class-highlight="element.customAttribs.isCorrect"
               rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">
               <label class="checkbox">
                         <span class="invisible wrong pull-left"></span>
+<<<<<<< .mine
                         <input type="checkbox" name="optionsRadios" class="option mcqmr-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"></input>
+=======
+                        <input type="checkbox" name="optionsRadios" class="option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"></input>
+>>>>>>> .theirs
                         <i></i>
                         <input class="option-value input-option" rv-show="element.customAttribs.isEdited" rv-value="element.customAttribs.value" rv-on-blur="removeEditing | args element"></input>
                         <div class="option-value" rv-hide="element.customAttribs.isEdited" rv-text="element.customAttribs.value" rv-on-click="editOptionText | args element"></div>
                         <span class="label label-success" rv-show="element.customAttribs.isCorrect">Correct Answer</span>
                         <span>
-                          <a class="btn btn-danger editor-icon delete-icon mcqmr-edit fa fa-trash-o pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>
-                          <a class="btn btn-default editor-icon drag-icon mcqmr-edit fa fa-bars pull-right" data-toggle="tooltip" title="Click & drag move this option"></a>
-                          <a class="btn btn-default editor-icon mcqmr-edit fa fa-commenting fa-lg comment pull-right" data-toggle="tooltip" title="Click to add inline feedback" rv-id="element.customAttribs.value | btnId" rv-on-click="addInlineFeedback | args element.customAttribs.value"></a>
+                          <a class="btn btn-danger editor-icon delete-icon mcq-edit fa fa-trash-o pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>
+                          <a class="btn btn-default editor-icon drag-icon mcq-edit fa fa-bars pull-right" data-toggle="tooltip" title="Click & drag move this option"></a>
+                          <a class="btn btn-default editor-icon mcq-edit fa fa-commenting fa-lg comment pull-right" data-toggle="tooltip" title="Click to add inline feedback" rv-id="element.customAttribs.value | btnId" rv-on-click="addInlineFeedback | args element.customAttribs.value"></a>
                         </span>
                       </label>
               <div class="modal fade" rv-id="element.customAttribs.value | modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -190,7 +194,7 @@
   <div class="row">
     <ul>
       <li><strong>MCQSR</strong> - Multiple Choice Question Single Response</li>
-      <li><strong>MCQMR</strong> - Multiple Choice Question Nultiple Response</li>
+      <li><strong>mcq</strong> - Multiple Choice Question Nultiple Response</li>
     </ul>
   </div>
 </div>

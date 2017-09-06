@@ -115,7 +115,6 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
 
                 //Clone the JSON so that original is preserved.
                 var jsonContent = jQuery.extend(true, {}, jsonContentObj);
-
                 /* ------ VALIDATION BLOCK START -------- */
                 // Need to validate if it can be further optmized.
                 if (jsonContent.content === undefined) {
@@ -127,7 +126,6 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
 
                 /* Tranforming jsoncontent for rendering and manipulation purpose. */
                 __buildModelandViewContent(jsonContent, params);
-
                 /* Apply the layout HTML to the dom */
                 $(elRoot).html(__constants.TEMPLATES[htmlLayout]);
 
@@ -613,7 +611,6 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                     var obj = {};
                     var parsedQuestionArray = $('<div>' + element['text'] + '</div>');
                     var currinteractionid = $(parsedQuestionArray).find("a[href='" + INTERACTION_REFERENCE_STR + "']").text().trim();
-
                     var href = $('<div>').append(txt).find('a:first').attr('href');
 
                     $(parsedQuestionArray).find("a[href='" + INTERACTION_REFERENCE_STR + "']").remove();
@@ -621,7 +618,6 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                     obj.questiontext = $(parsedQuestionArray).html();
                     obj.prompt = "";
                     var tempobj = jsonContent.content.interactions[currinteractionid];
-
                     var interactiontype = tempobj['type'];
                     obj.type = interactiontype;
                     if (interactiontype === 'MCQMR') {

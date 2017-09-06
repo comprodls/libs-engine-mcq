@@ -266,10 +266,13 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             ]
          */
         function __parseAndUpdateJSONForRivets() {
+            __editedJsonContent.MCQMR = false;
+            __editedJsonContent.MCQSR = false;
             for (var i = 0; i < __interactionIds.length; i++) {
                 var processedArray = [];
                 var interaction = __editedJsonContent.content.interactions[i];
                 var type = interaction.type;
+                __editedJsonContent[type] = true;
                 interaction[type].forEach(function (obj, index) {
                     var processedObj = {};
                     processedObj.customAttribs = {};
@@ -331,14 +334,15 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
             rivets.formatters.modalId = function (obj) {
                 var text = "modal";
-                obj = obj.replace(/\s+/g, '');
+                obj = obj.replace(/[\. ,:-]+/g, '');
                 text = text.concat(obj);
+                console.log("MODAL id ", text);
                 return text;
             };
 
             rivets.formatters.btnId = function (obj) {
                 var text = "btn";
-                obj = obj.replace(/\s+/g, '');
+                obj = obj.replace(/[\. ,:-]+/g, '');
                 text = text.concat(obj);
                 return text;
             };
@@ -359,7 +363,9 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 feedback: __editedJsonContent.feedback,
                 setInlineFeedback: __setInlineFeedback,
                 addInlineFeedback: __addInlineFeedback,
-                editOptionText: __editOptionText
+                editOptionText: __editOptionText,
+                mcqmr: __editedJsonContent.MCQMR,
+                mcqsr: __editedJsonContent.MCQSR
             });
         }
 
@@ -490,7 +496,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             var interactionIndex = parseInt($(currentTarget).parent().parent("li").attr('interactIndex'));
             var interactionType = __editedJsonContent.content.interactions[interactionIndex].type;
             var interactionid = __editedJsonContent.content.interactions[interactionIndex].key;
-
+            var currentChoice = $(currentTarget).attr('key');
             var checked = $(currentTarget).prop("checked");
             //console.log('interactionType ', interactionType, "id ", interactionid, "currentTarget ", currentTarget);
 
@@ -505,11 +511,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 $(currentTarget).siblings('.correct-answer').hide();
             }
 
-            var currentChoice = $(currentTarget).attr('key');
             //console.log("currentChoice ", currentChoice);
             __state.hasUnsavedChanges = true;
-
-
             if (interactionType === 'MCQMR') {
 
                 /* Update the isCorrect property for each option*/
@@ -520,7 +523,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                             __editedJsonContent.content.interactions[interactionIndex][interactionType][index].customAttribs.isCorrect = true;
                             var idx = __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.indexOf(currentChoice);
                             if (idx < 0) {
-                                __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.push(currentChoicecurrentChoice);
+                                __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.push(currentChoice);
                             }
                         }
                         else {
@@ -584,17 +587,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             return __finalJSONContent;
         }
 
-
-        $('#mcqmrbtn').on('click', function () {
-            //console.log("BTN Clicked ", JSON.stringify(this, null, 4));
-            $(this).removeClass('btn-default').addClass('btn-primary').siblings().removeClass('btn-primary').addClass('btn-default');
-        });
-
-        $('#mcqsrbtn').on('click', function () {
-            //console.log("BTN Clicked ", JSON.stringify(this, null, 4));
-            $(this).removeClass('btn-default').addClass('btn-primary').siblings().removeClass('btn-primary').addClass('btn-default');
-        });
-
         /* ---------------------- JQUERY BINDINGS END ----------------------------*/
 
         /* Generate unique ids for newly added options*/
@@ -614,9 +606,9 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             var attribs = option[1].element.customAttribs;
             var option = attribs["key"];
             var optionValue = attribs["value"];
-            optionValue = optionValue.replace(/\s+/g, '');
-            var btn = "#btn" + optionValue;
-            var modal = "#modal" + optionValue;
+            option = option.replace(/[\. ,:-]+/g, '');
+            var btn = "#btn" + option;
+            var modal = "#modal" + option;
             $(modal).modal('show');
             // prevents the default action when the row is clicked.
             event.preventDefault();
@@ -652,6 +644,18 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             });
             $('[data-toggle="tooltip"]').tooltip();
             $('[data-toggle="popover"]').popover();
+
+            /** Toggle currently unsupported, enable this block when editor allows changing of type.
+             * Remove the commented code below when the button disabled is removed.
+            */
+            /*
+            $('#mcqmrbtn').on('click', function () {
+                $(this).removeClass('btn-default').addClass('btn-primary').siblings().removeClass('btn-primary').addClass('btn-default');
+            });
+
+            $('#mcqsrbtn').on('click', function () {
+                $(this).removeClass('btn-default').addClass('btn-primary').siblings().removeClass('btn-primary').addClass('btn-default');
+            });*/
         });
 
 

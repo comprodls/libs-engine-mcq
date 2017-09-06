@@ -205,7 +205,6 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 var type = __content.interactions[0]['type'];
 
                 if (type === 'MCQMR') {
-
                     for (var prop in __feedback) {
                         __feedbackState[prop] = false;
                     }
@@ -244,13 +243,33 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 }
 
                 if (type === "MCQSR") {
+                    Object.keys(__correct_answers).forEach(function (elem, idx) {
+                        var correctAnswer = __correct_answers[elem]['correct'];
+                        var userAnswer = __content.user_answers[elem];
+                        if (userAnswer === correctAnswer) {
+                            __feedbackState.correct = true;
+                            __feedbackState.incorrect = false;
+                            __feedbackState.empty = false;
+                        } else {
+                            __feedbackState.correct = false;
+                            __feedbackState.incorrect = true;
+                            __feedbackState.empty = false;
+                        }
+
+                        if (userAnswer == '') {
+                            __feedbackState.correct = false;
+                            __feedbackState.incorrect = false;
+                            __feedbackState.empty = true;
+                        }
+                    })
+
                     if (!$.isEmptyObject(__content.feedbackJSON)) {
                         var feedbackJSON = __content.feedbackJSON;
                         $(".mcq-body #feedback-area").remove();
-                        if (feedbackJSON.status === "correct") {
-                            $(".mcq-body").append("<div class='alert' id='feedback-area'><span class='correct'></span><h4>Feedback</h4>" + feedbackJSON.content + "</div>");
+                        if (__feedbackState.correct == true) {
+                            $(".mcq-body").append("<div class='alert' id='feedback-area'><span class='correct'></span><h4>Feedback</h4>" + feedbackJSON.global.correct + "</div>");
                         } else {
-                            $(".mcq-body").append("<div class='alert' id='feedback-area'><a href='#' class='close' data-dismiss='alert' arrayia-label='close' title='close'>x</a><span class='wrong'></span><h4>Feedback</h4>" + feedbackJSON.content + "</div>");
+                            $(".mcq-body").append("<div class='alert' id='feedback-area'><a href='#' class='close' data-dismiss='alert' arrayia-label='close' title='close'>x</a><span class='wrong'></span><h4>Feedback</h4>" + feedbackJSON.global.incorrect + "</div>");
                         }
                         /* Auto resize iframe container. */
                         activityAdaptor.autoResizeActivityIframe();
@@ -583,7 +602,6 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 };
             }
 
-
             /**
              * Prepare feedback response.
              * @param {*} id 
@@ -597,7 +615,6 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 feedback.content = content;
                 return feedback;
             }
-
 
             function __buildModelandViewContent(jsonContent, params) {
 

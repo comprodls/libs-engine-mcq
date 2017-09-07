@@ -23,23 +23,37 @@
              </label>
           </li>
         </ul>
-        <ul class="list-unstyled nested-list col-sm-6" rv-if="interaction.MCQSR">
+        <ul class="list-unstyled nested-list" rv-if="interaction.MCQSR">
           <li rv-each-element="interaction.options | propertyList">
-            <label class="radio radio-lg">
-         <!-- Placeholder for radio buttons-->   
-                  <i></i>
-                  <span class="answer invisible wrong pull-left"></span>
-                  <input type="radio" name="optionsRadios" class="mcqsroption" rv-id="element.key" rv-value="element.value">
-                  <span class="content" rv-text="element.value"></span>
-               </label>
+            <label class="radio radio-lg"><i></i>
+              <span class="answer invisible wrong pull-left"></span>
+              <input type="radio" name="optionsRadios" class="mcqsroption" rv-id="element.key" rv-value="element.value">
+              <span class="content" rv-text="element.value"></span>
+            </label>
           </li>
         </ul>
       </section>
     </section>
+
     <section class="feedback">
-      <div class="correct-text" rv-show="showFeedback.correct" rv-text="feedback.global.correct"></div>
-      <div class="incorrect-text" rv-show="showFeedback.incorrect" rv-text="feedback.global.incorrect"></div>
-      <div class="empty-text" rv-show="showFeedback.empty" rv-text="feedback.global.empty"></div>
+      <div class="row">
+        <div class="col-sm-6 col-md-6">
+          <div class="alert alert-success" role="alert" rv-show="showFeedback.correct" rv-text="feedback.global.correct">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 col-md-6">
+          <div class="alert alert-danger" role="alert" rv-show="showFeedback.incorrect" rv-text="feedback.global.incorrect">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 col-md-6">
+          <div class="alert alert-warning" role="alert" rv-show="showFeedback.empty" rv-text="feedback.global.empty">
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 </div>

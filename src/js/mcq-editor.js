@@ -112,7 +112,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         /********************************************************/
         function init(elRoot, params, adaptor, htmlLayout, jsonContentObj, callback) {
             /* ---------------------- BEGIN OF INIT ---------------------------------*/
-
             //Store the adaptor    
             activityAdaptor = adaptor;
 
@@ -336,7 +335,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 var text = "modal";
                 obj = obj.replace(/[\. ,:-]+/g, '');
                 text = text.concat(obj);
-                console.log("MODAL id ", text);
                 return text;
             };
 
@@ -364,6 +362,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 setInlineFeedback: __setInlineFeedback,
                 addInlineFeedback: __addInlineFeedback,
                 editOptionText: __editOptionText,
+                handleItemChanged: __handleItemChangedInEditor,
                 mcqmr: __editedJsonContent.MCQMR,
                 mcqsr: __editedJsonContent.MCQSR
             });
@@ -426,16 +425,16 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             __state.hasUnsavedChanges = true;
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
-
-        function __toggleFeedbackEditing(event, option) {
-            __feedbackEditing[option] = !__feedbackEditing[option];
-            $(event[0].currentTarget).siblings('.feedback-text-editor').focus();
-        }
-
-        function __removeFeedbackEditing(event, option) {
-            __feedbackEditing[option] = false;
-            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
-        }
+        /*
+                function __toggleFeedbackEditing(event, option) {
+                    __feedbackEditing[option] = !__feedbackEditing[option];
+                    $(event[0].currentTarget).siblings('.feedback-text-editor').focus();
+                }
+                
+                        function __removeFeedbackEditing(event, option) {
+                            __feedbackEditing[option] = false;
+                            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
+                        }*/
         /*------------------------RIVETS END-------------------------------*/
 
         /* ---------------------- JQUERY BINDINGS ---------------------------------*/
@@ -489,8 +488,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
          * handles the click event of the checkbox and sets the isCorrect for the appropriate option
          */
         function __handleCheckboxButtonClick(event) {
-
-            //console.log("__handleCheckboxButtonClick ", JSON.stringify(__editedJsonContent, null, 4));
             var currentTarget = event.currentTarget;
             var quesIndex = 0;
             var interactionIndex = parseInt($(currentTarget).parent().parent("li").attr('interactIndex'));
@@ -498,7 +495,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             var interactionid = __editedJsonContent.content.interactions[interactionIndex].key;
             var currentChoice = $(currentTarget).attr('key');
             var checked = $(currentTarget).prop("checked");
-            //console.log('interactionType ', interactionType, "id ", interactionid, "currentTarget ", currentTarget);
 
             if (checked) {
                 $(currentTarget).prop('checked', checked);
@@ -511,7 +507,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 $(currentTarget).siblings('.correct-answer').hide();
             }
 
-            //console.log("currentChoice ", currentChoice);
             __state.hasUnsavedChanges = true;
             if (interactionType === 'MCQMR') {
 
@@ -542,7 +537,11 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     __editedJsonContent.responses[interactionid]["correct"] = currentChoice;
                 }
             }
-            //console.log("__editedJsonContent ", JSON.stringify(__editedJsonContent.responses, null, 4));
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
+        }
+
+
+        function __handleItemChangedInEditor() {
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
@@ -631,6 +630,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             else {
                 __editedJsonContent.feedback[interactionid][choice] = feedbacktxt;
             }
+            __handleItemChangedInEditor();
         }
 
         $(document).on('click', "a.drag-icon", function () {
@@ -643,35 +643,72 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 e.stopPropagation();
             });
             $('[data-toggle="tooltip"]').tooltip();
-            $('[data-toggle="popover"]').popover();
 
-            /** Toggle currently unsupported, enable this block when editor allows changing of type.
-             * Remove the commented code below when the button disabled is removed.
-            */
-            /*
-            $('#mcqmrbtn').on('click', function () {
-                $(this).removeClass('btn-default').addClass('btn-primary').siblings().removeClass('btn-primary').addClass('btn-default');
-            });
+            $('#qtypeinfoico').popover(qtypecontent);
+            $('#instinfoico').popover(intructcontent);
+            $('#qtextinfoico').popover(qtextcontent);
+            $('#ansinfoico').popover(answercontent);
+            $('#scoreinfoico').popover(scorecontent);
+            $('#fbackinfoico').popover(fbackcontent);
+            $('#mediainfoico').popover(mediacontent);
 
-            $('#mcqsrbtn').on('click', function () {
-                $(this).removeClass('btn-default').addClass('btn-primary').siblings().removeClass('btn-primary').addClass('btn-default');
-            });*/
-        });
+            /***** Dismiss all popovers by clicking outside, don't dismiss if clicking inside the popover content  **************/
 
-
-        $(function () {
-            $('[rel="popover"]').popover({
-                container: 'body',
-                html: true,
-                content: function () {
-                    var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
-                    return clone;
+            $('html').on('click', function (e) {
+                if (typeof $(e.target).data('original-title') == 'undefined' &&
+                    !$(e.target).parents().is('.popover.in')) {
+                    $('[data-original-title]').popover('hide');
                 }
-            }).click(function (e) {
-                e.preventDefault();
             });
+
         });
 
+        /**
+         * This section contains the html content for the popovers
+         * 
+         */
+
+        var qtypecontent = {
+            content: '<div class="popmsg"><p>The MCQ Engine supports 2 types of questions:</p><div class="row"><ul><li><strong>MCQSR</strong> - Multiple Choice Question Single Response</li><li><strong>MCQMR</strong> - Multiple Choice Question Multiple Response</li></ul></div></div>',
+            html: true,
+            placement: 'right'
+        }
+        var intructcontent = {
+            content: '<div class="popmsg"><p><strong>Use the textfield below to enter instructions for this question.</strong></p></div></div>',
+            html: true,
+            placement: 'right'
+        }
+
+        var qtextcontent = {
+            content: '<div class="popmsg"><p><strong>Use the textfield below to enter instructions for this question.</strong></p></div></div>',
+            html: true,
+            placement: 'right'
+        }
+
+        var answercontent = {
+            content: '<div class="popmsg"><p><strong>Use this section to Add / Edit / Re-order / Remove Choices.</strong></p><ul><li>Click on Answer text to edit/modify the answer.</li><li>Use the buttons on the right to Add inline feedback, reorder the answers or remove and option.</li><li>Use the <strong>Add Choice</strong> button to add a new option.</li><li>Click the Check box on the left to mark an answer correct.</li></ul></div></div>',
+            html: true,
+            placement: 'right'
+        };
+
+        var scorecontent = {
+            content: '<div class="popmsg"><p>Use the text fields below to enter minimum and maximum score possible for this question. A number between 0 and 1 is permitted in this field.</p></div>',
+            html: true,
+            placement: 'right'
+        }
+
+        var fbackcontent = {
+            content: '<div class="popmsg"><p>Use the text fields below to enter enter global feedback for user response.</p><ul><li><strong>Correct</strong>: The feedback to be given when user answers correctly</li><li><strong>InCorrect</strong>: The feedback to be given when user answer is incorrect</li><li><strong>Empty</strong>: The feedback to be given when user does not answer the question</li></ul></div>',
+            html: true,
+            placement: 'right'
+        }
+
+        var mediacontent = {
+            content: '<div class="popmsg"><p>Allows the author to upload media elements like images, videos related to this question. <i>Note: This feature is currently not supported.</i></p></div>',
+            html: true,
+            placement: 'right'
+        }
+        /** End popover html section  */
         return {
             /*Engine-Shell Interface*/
             "init": init, /* Shell requests the engine intialized and render itself. */

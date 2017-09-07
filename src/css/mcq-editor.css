@@ -153,11 +153,12 @@
 
 #mcqsr-editor .form ul li .checkbox .option-value {
     position: static!important;
-    left: -9999
+    left: -9999;
 }
 
 #mcq-editor .form ul li .checkbox div.option-value {
     display: inline-block;
+    font-weight: normal;
 }
 
 #mcq-editor .form ul li .checkbox .correct-answer {
@@ -192,7 +193,7 @@
 #mcq-editor .input-option {
     width: 80%;
     border: none;
-    border-bottom: 1px solid black;
+    border-bottom: 1px black;
 }
 
 #mcq-editor .correct {
@@ -237,4 +238,14 @@
     padding: 1px 1px 1px 1px;
     border-top: 2px;
     border-top-color: red;
+}
+
+.txtEntry {
+    font-weight: normal;
+    font-size: 1em;
+}
+
+.popover-title .close {
+    position: relative;
+    bottom: 3px;
 }

@@ -262,18 +262,6 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                             __feedbackState.empty = true;
                         }
                     })
-
-                    if (!$.isEmptyObject(__content.feedbackJSON)) {
-                        var feedbackJSON = __content.feedbackJSON;
-                        $(".mcq-body #feedback-area").remove();
-                        if (__feedbackState.correct == true) {
-                            $(".mcq-body").append("<div class='alert' id='feedback-area'><span class='correct'></span><h4>Feedback</h4>" + feedbackJSON.global.correct + "</div>");
-                        } else {
-                            $(".mcq-body").append("<div class='alert' id='feedback-area'><a href='#' class='close' data-dismiss='alert' arrayia-label='close' title='close'>x</a><span class='wrong'></span><h4>Feedback</h4>" + feedbackJSON.global.incorrect + "</div>");
-                        }
-                        /* Auto resize iframe container. */
-                        activityAdaptor.autoResizeActivityIframe();
-                    }
                 }
             }
             /* ---------------------- PUBLIC FUNCTIONS END ----------------------------*/

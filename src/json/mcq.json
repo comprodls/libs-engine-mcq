@@ -61,8 +61,8 @@
       "responses": {
         "i1": {
           "correct": [
-            "choiceB",
-            "choiceD"
+            "choiceA",
+            "choiceC"
           ]
         }
       },

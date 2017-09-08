@@ -145,7 +145,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             /* ---------------------- SETUP EVENTHANDLER STARTS----------------------------*/
             //On CLICK of Radio buttons    
             $(document).on('change', '.editor .checkbox input:checkbox', __handleCheckboxButtonClick);
-
+            $(document).on('change', '.editor .radio input:radio', __handleRadioButtonClick);
             //Drag of list items (re-ordering)
             __bindSortable();
             /* ---------------------- SETUP EVENTHANDLER ENDS------------------------------*/
@@ -529,16 +529,31 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     }
                 });
             }
-            if (interactionType === 'MCQSR') {
-                if (checked) {
-                    var prevChoice = __editedJsonContent.responses[interactionid]["correct"];
-                    //console.log(prevChoice);
-                    __editedJsonContent.responses[interactionid] = {};
-                    __editedJsonContent.responses[interactionid]["correct"] = currentChoice;
-                }
-            }
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
+
+
+        function __handleRadioButtonClick(event) {
+            var currentTarget = event.currentTarget;
+            var quesIndex = 0;
+            var interactionIndex = parseInt($(currentTarget).parent().parent("li").attr('interactIndex'));
+            $("label.radio").parent().removeClass("highlight");
+            $(currentTarget).parent().parent("li").addClass("highlight");
+            $('.correct-answer').hide();
+            $(currentTarget).siblings('.correct-answer').show();
+            __state.hasUnsavedChanges = true;
+            /* Update the isCorrect property for each option*/
+            __editedJsonContent.content.interactions[interactionIndex].MCQSR.forEach(function (obj, index) {
+                if (__editedJsonContent.content.interactions[interactionIndex].MCQSR[index].customAttribs.key == $(currentTarget).attr('key')) {
+                    __editedJsonContent.content.interactions[interactionIndex].MCQSR[index].customAttribs.isCorrect = true;
+                } else {
+                    __editedJsonContent.content.interactions[interactionIndex].MCQSR[index].customAttribs.isCorrect = false;
+                }
+            });
+            __editedJsonContent.responses[__interactionIds[interactionIndex]].correct = $(currentTarget).attr('key');
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
+        }
+
 
 
         function __handleItemChangedInEditor() {

@@ -145,7 +145,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             /* ---------------------- SETUP EVENTHANDLER STARTS----------------------------*/
             //On CLICK of Radio buttons    
             $(document).on('change', '.editor .checkbox input:checkbox', __handleCheckboxButtonClick);
-
+            $(document).on('change', '.editor .radio input:radio', __handleRadioButtonClick);
             //Drag of list items (re-ordering)
             __bindSortable();
             /* ---------------------- SETUP EVENTHANDLER ENDS------------------------------*/
@@ -196,8 +196,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
          *      1.2 __interactionTags (Array of Original interaction texts in questiondata) - 
          *          This will be used for recreating JSON to original format when "saveItemInEditor" is called.  
          *          e.g. [
-         *             "<a href='http://www.comprodls.com/m1.0/interaction/mcqmr'>i1</a>", 
-         *             "<a href='http://www.comprodls.com/m1.0/interaction/mcqmr'>i2</a>"
+         *             "<a href='http://www.comprodls.com/m1.0/interaction/mcq'>i1</a>", 
+         *             "<a href='http://www.comprodls.com/m1.0/interaction/mcq'>i2</a>"
          *              ]   
          * 2. Replace the interactionTags in questiondata (__editedJsonContent Object) with BLANKs 
          **/
@@ -325,12 +325,14 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             };
 
 
+            // Rivets formatter function to set placeholder text
             rivets.formatters.placeholderText = function (obj) {
                 var text = "Enter inline feedback for option ";
                 text = text.concat(obj);
                 return text;
             };
 
+            // Rivets formatter function to dynamically generate Modal Window ids based on the option.
             rivets.formatters.modalId = function (obj) {
                 var text = "modal";
                 obj = obj.replace(/[\. ,:-]+/g, '');
@@ -373,13 +375,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             element.isEditing = !element.isEditing;
             $(event[0].currentTarget).siblings('.question-text-editor').focus();
         }
-
-        /* Toggle between editing and read-only mode for options *//*
-        function __toggleEditing(event, element) {
-            element.customAttribs.isEdited = !element.customAttribs.isEdited;
-            $(event[0].currentTarget).parent().find('.option-value')[0].focus();
-        }*/
-
 
         /* Remove option item */
         function __removeItem(event, element, interaction) {
@@ -425,16 +420,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             __state.hasUnsavedChanges = true;
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
-        /*
-                function __toggleFeedbackEditing(event, option) {
-                    __feedbackEditing[option] = !__feedbackEditing[option];
-                    $(event[0].currentTarget).siblings('.feedback-text-editor').focus();
-                }
-                
-                        function __removeFeedbackEditing(event, option) {
-                            __feedbackEditing[option] = false;
-                            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
-                        }*/
         /*------------------------RIVETS END-------------------------------*/
 
         /* ---------------------- JQUERY BINDINGS ---------------------------------*/
@@ -492,7 +477,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             var quesIndex = 0;
             var interactionIndex = parseInt($(currentTarget).parent().parent("li").attr('interactIndex'));
             var interactionType = __editedJsonContent.content.interactions[interactionIndex].type;
-            var interactionid = __editedJsonContent.content.interactions[interactionIndex].key;
             var currentChoice = $(currentTarget).attr('key');
             var checked = $(currentTarget).prop("checked");
 
@@ -506,39 +490,51 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 $(currentTarget).parent().parent("li").removeClass("highlight");
                 $(currentTarget).siblings('.correct-answer').hide();
             }
-
             __state.hasUnsavedChanges = true;
-            if (interactionType === 'MCQMR') {
 
-                /* Update the isCorrect property for each option*/
-                __editedJsonContent.content.interactions[interactionIndex][interactionType].forEach(function (obj, index) {
-                    if (__editedJsonContent.content.interactions[interactionIndex][interactionType][index].customAttribs.key == currentChoice) {
+            /* Update the isCorrect property for each option*/
+            __editedJsonContent.content.interactions[interactionIndex][interactionType].forEach(function (obj, index) {
+                if (__editedJsonContent.content.interactions[interactionIndex][interactionType][index].customAttribs.key == currentChoice) {
 
-                        if (checked) {
-                            __editedJsonContent.content.interactions[interactionIndex][interactionType][index].customAttribs.isCorrect = true;
-                            var idx = __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.indexOf(currentChoice);
-                            if (idx < 0) {
-                                __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.push(currentChoice);
-                            }
-                        }
-                        else {
-                            __editedJsonContent.content.interactions[interactionIndex][interactionType][index].customAttribs.isCorrect = false;
-                            var idx = __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.indexOf(currentChoice);
-                            __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.splice(idx, 1);
+                    if (checked) {
+                        __editedJsonContent.content.interactions[interactionIndex][interactionType][index].customAttribs.isCorrect = true;
+                        var idx = __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.indexOf(currentChoice);
+                        if (idx < 0) {
+                            __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.push(currentChoice);
                         }
                     }
-                });
-            }
-            if (interactionType === 'MCQSR') {
-                if (checked) {
-                    var prevChoice = __editedJsonContent.responses[interactionid]["correct"];
-                    //console.log(prevChoice);
-                    __editedJsonContent.responses[interactionid] = {};
-                    __editedJsonContent.responses[interactionid]["correct"] = currentChoice;
+                    else {
+                        __editedJsonContent.content.interactions[interactionIndex][interactionType][index].customAttribs.isCorrect = false;
+                        var idx = __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.indexOf(currentChoice);
+                        __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.splice(idx, 1);
+                    }
                 }
-            }
+            });
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
+
+
+        function __handleRadioButtonClick(event) {
+            var currentTarget = event.currentTarget;
+            var quesIndex = 0;
+            var interactionIndex = parseInt($(currentTarget).parent().parent("li").attr('interactIndex'));
+            $("label.radio").parent().removeClass("highlight");
+            $(currentTarget).parent().parent("li").addClass("highlight");
+            $('.correct-answer').hide();
+            $(currentTarget).siblings('.correct-answer').show();
+            __state.hasUnsavedChanges = true;
+            /* Update the isCorrect property for each option*/
+            __editedJsonContent.content.interactions[interactionIndex].MCQSR.forEach(function (obj, index) {
+                if (__editedJsonContent.content.interactions[interactionIndex].MCQSR[index].customAttribs.key == $(currentTarget).attr('key')) {
+                    __editedJsonContent.content.interactions[interactionIndex].MCQSR[index].customAttribs.isCorrect = true;
+                } else {
+                    __editedJsonContent.content.interactions[interactionIndex].MCQSR[index].customAttribs.isCorrect = false;
+                }
+            });
+            __editedJsonContent.responses[__interactionIds[interactionIndex]].correct = $(currentTarget).attr('key');
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
+        }
+
 
 
         function __handleItemChangedInEditor() {
@@ -642,7 +638,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             $('.dropdown-menu').click(function (e) {
                 e.stopPropagation();
             });
-            $('[data-toggle="tooltip"]').tooltip();
+            //$('[data-toggle="tooltip"]').tooltip();
 
             $('#qtypeinfoico').popover(qtypecontent);
             $('#instinfoico').popover(intructcontent);

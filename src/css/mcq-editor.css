@@ -33,6 +33,86 @@
     font-weight: bold;
 }
 
+
+/* Global CSS for the entire editor irrespective of the type*/
+
+#mcq-editor .form {
+    padding: 15px 0 15px 3px;
+}
+
+#mcq-editor .form * {
+    margin: 0;
+}
+
+#mcq-editor .form-container {
+    width: 100%;
+}
+
+#mcq-editor .modal {
+    position: absolute;
+    left: 50%;
+    /* now you must set a margin left under zero - value is a half width your window */
+    margin-left: -312px;
+    /* this same situation is with height - example */
+    top: 55%;
+    margin-top: -250px;
+}
+
+#mcq-editor .add-container {
+    padding: 5px 15px 5px 0;
+    float: left;
+}
+
+#mcq-editor .add-container .add-item {
+    cursor: pointer;
+}
+
+#mcq-editor .input-option {
+    width: 80%;
+    border: none;
+    border-bottom: 1px black;
+}
+
+#mcq-editor .correct {
+    color: green;
+}
+
+#mcq-editor .incorrect {
+    color: red;
+}
+
+#mcq-editor .addbutton {
+    margin-left: 5px;
+    padding: 5px 15px 5px 0px;
+}
+
+.info {
+    font-size: 18px;
+    color: black;
+    text-decoration: none;
+}
+
+.popmsg {
+    font-size: 12px;
+    padding: 2px 2px 2px 2px;
+}
+
+.popcol {
+    padding: 1px 1px 1px 1px;
+    border-top: 2px;
+    border-top-color: red;
+}
+
+.txtEntry {
+    font-weight: normal;
+    font-size: 1em;
+}
+
+.popover-title .close {
+    position: relative;
+    bottom: 3px;
+}
+
 .media {
     margin-bottom: 10px;
     border-radius: 5px;
@@ -76,33 +156,28 @@
     /* 50% - 3/4 of icon height */
 }
 
-#mcq-editor .form {
-    padding: 15px 0 15px 3px;
-}
 
-#mcq-editor .form * {
-    margin: 0;
-}
+/* Specific to MCQ MR type*/
 
-#mcq-editor .form ul {
+#mcq-mr ul {
     padding-bottom: 10px;
     position: relative;
 }
 
-#mcq-editor .form ul li {
+#mcq-mr ul li {
     padding: 10px;
     position: static;
     border-bottom: 1px solid #DDDDDD;
     border-top: 1px solid #DDDDDD;
 }
 
-#mcq-editor .form ul li.highlight {
+#mcq-mr ul li.highlight {
     background-color: #F2F2F2;
     border-radius: 0px;
     border-bottom: 1px solid #DDDDDD;
 }
 
-#mcq-editor .form ul li i {
+#mcq-mr ul li i {
     height: 1.8em;
     width: 1.8em;
     border-radius: 0;
@@ -115,7 +190,7 @@
     background: #FFF;
 }
 
-#mcq-editor .form ul li i:after {
+#mcq-mr ul li i:after {
     background-color: #666666;
     content: '';
     border-radius: 0;
@@ -127,15 +202,15 @@
     opacity: 0;
 }
 
-#mcq-editor .form ul li.highlight i {
+#mcq-mr ul li.highlight i {
     border-color: #F2F2F2;
 }
 
-#mcq-editor .form ul li.highlight i:after {
+#mcq-mr ul li.highlight i:after {
     opacity: 1;
 }
 
-#mcq-editor .form ul li .checkbox {
+#mcq-mr ul li .checkbox {
     font-size: 1em;
     line-height: 1.8em;
     color: #3D3D3D;
@@ -143,109 +218,151 @@
     padding-left: 45px!important;
 }
 
-#mcq-editor .form ul li .checkbox input {
+#mcq-mr ul li .checkbox input {
     /*position: absolute;*/
     left: 0px;
 }
 
-
-/*#mcq-editor .form ul li .radio .      -value {*/
-
-#mcqsr-editor .form ul li .checkbox .option-value {
+#mcq-mr ul li .checkbox .option-value {
     position: static!important;
     left: -9999;
 }
 
-#mcq-editor .form ul li .checkbox div.option-value {
+#mcq-mr ul li .checkbox div.option-value {
     display: inline-block;
     font-weight: normal;
 }
 
-#mcq-editor .form ul li .checkbox .correct-answer {
+#mcq-mr ul li .checkbox .correct-answer {
     font-weight: 700;
 }
 
-#mcq-editor .form ul li .editor-icon {
+#mcq-mr ul li .editor-icon {
     cursor: pointer;
 }
 
-#mcq-editor .form ul li .editor-icon.mcq-edit {
+#mcq-mr ul li .editor-icon.mcq-edit {
     margin: 2px;
 }
 
-#mcq-editor .form ul li .delete-icon.mcq-edit {
+#mcq-mr ul li .delete-icon.mcq-edit {
     right: 20px;
 }
 
-#mcq-editor .form ul li .drag-icon.mcq-edit {
+#mcq-mr ul li .drag-icon.mcq-edit {
     right: 0px;
 }
 
-#mcq-editor .add-container {
-    padding: 5px 15px 5px 0;
-    float: left;
+
+/* Specific to the MCQ - SR type only*/
+
+#mcq-sr ul {
+    margin-left: 30px;
+    padding-left: 15px;
+    padding-bottom: 10px;
+    position: relative;
 }
 
-#mcq-editor .add-container .add-item {
+#mcq-sr ul li {
+    padding: 10px;
+    position: static;
+    border-bottom: 1px solid #DDDDDD;
+    border-top: 1px solid #DDDDDD;
+}
+
+#mcq-sr ul li.highlight {
+    background-color: #F2F2F2;
+    border-radius: 6px;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+#mcq-sr ul li i {
+    height: 1.8em;
+    width: 1.8em;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    outline: 0;
+    border: 1px solid #BDBDBD;
+    background: #FFF;
+    padding: 10px;
+}
+
+#mcq-sr ul li i:after {
+    background-color: #3276B1;
+    content: '';
+    border-radius: 50%;
+    height: 1.1em;
+    width: 1.1em;
+    top: .29em;
+    left: .29em;
+    position: absolute;
+    opacity: 0;
+}
+
+#mcq-sr ul li.highlight i {
+    border-color: #3276B1;
+}
+
+#mcq-sr ul li.highlight i:after {
+    opacity: 1;
+}
+
+#mcq-sr ul li .radio {
+    font-size: 1em;
+    line-height: 1.8em;
+    color: #3D3D3D;
+    cursor: pointer;
+    display: inline-block;
+    padding-left: 45px!important;
+}
+
+#mcq-sr ul li .radio input {
+    position: absolute;
+    left: -9999px;
+}
+
+#mcq-sr ul li .radio .option-value {
+    position: static!important;
+}
+
+#mcq-sr ul li .radio .option-value .input-option {
+    width: 80%;
+}
+
+#mcq-sr ul li .radio div.option-value {
+    display: inline-block;
+}
+
+#mcq-sr ul li .radio .correct-answer {
+    font-weight: 700;
+}
+
+#mcq-sr ul li .editor-icon-container {
+    display: inline-block;
+    position: relative;
+    padding-top: 5px;
+}
+
+#mcq-sr ul li .editor-icon-container .editor-icon {
     cursor: pointer;
 }
 
-#mcq-editor .input-option {
-    width: 80%;
-    border: none;
-    border-bottom: 1px black;
-}
-
-#mcq-editor .correct {
-    color: green;
-}
-
-#mcq-editor .incorrect {
-    color: red;
-}
-
-#mcq-editor .addbutton {
-    margin-left: 5px;
-    padding: 5px 15px 5px 0px;
-}
-
-#mcq-editor .form-container {
-    width: 100%;
-}
-
-#mcq-editor .modal {
+#mcq-sr ul li .editor-icon-container .editor-icon.mcqsr-edit {
     position: absolute;
-    left: 50%;
-    /* now you must set a margin left under zero - value is a half width your window */
-    margin-left: -312px;
-    /* this same situation is with height - example */
-    top: 55%;
-    margin-top: -250px;
+    right: 60px;
 }
 
-.info {
-    font-size: 18px;
-    color: black;
-    text-decoration: none;
+#mcq-sr ul li .editor-icon-container .delete-icon.mcqsr-edit {
+    right: 40px;
 }
 
-.popmsg {
-    font-size: 12px;
-    padding: 2px 2px 2px 2px;
+#mcq-sr ul li .editor-icon-container .drag-icon.mcqsr-edit {
+    right: 20px;
 }
 
-.popcol {
-    padding: 1px 1px 1px 1px;
-    border-top: 2px;
-    border-top-color: red;
-}
-
-.txtEntry {
-    font-weight: normal;
-    font-size: 1em;
-}
-
-.popover-title .close {
-    position: relative;
-    bottom: 3px;
+#mcq-sr ul li .optionlabel {
+    width: 100%;
 }

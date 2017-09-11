@@ -62,11 +62,11 @@
     <div class="row" rv-each-interact="content.interactions">
       <!-- Loop over all questiondata inside interaction -->
       <div class="col-sm-12">
-        <div class="row form questions-editor">
-          <ul class="list-unstyled nested-list editor sortable" rv-if="interact.MCQMR">
+        <div class="row form questions-editor" id="mcq-mr" rv-if="interact.MCQMR">
+          <ul class="list-unstyled nested-list editor sortable">
             <!-- Loop over all options inside interaction  (mcq Array)-->
-            <li class="col-xs-12 colborder mcq-item" rv-each-element="interact.MCQMR" rv-class-highlight="element.customAttribs.isCorrect"
-              rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">
+            <li class="col-xs-12 colborder" rv-each-element="interact.MCQMR" rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index"
+              rv-interactIndex="%interact%">
               <label class="checkbox">
                 <span class="invisible wrong pull-left"></span>
                 <input type="checkbox" name="optionsRadios" class="option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"></input>
@@ -103,16 +103,18 @@
               </div>
             </li>
           </ul>
-          <ul class="list-unstyled nested-list editor sortable" rv-if="interact.MCQSR">
+        </div>
+        <div class="row form questions-editor" id="mcq-sr" rv-if="interact.MCQSR">
+          <ul class="list-unstyled nested-list editor sortable">
             <!-- Loop over all options inside interaction  (mcq Array)-->
-            <li class="col-xs-12 colborder mcq-item" rv-each-element="interact.MCQSR" rv-class-highlight="element.customAttribs.isCorrect"
-              rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">
-              <label class="checkbox">
-                <span class="invisible wrong pull-left"></span></input><input type="checkbox" name="optionsRadios" class="option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"></input>
-                <i></i>
-                <input class="option-value input-option" rv-show="element.customAttribs.isEdited" rv-value="element.customAttribs.value" rv-on-blur="removeEditing | args element"></input>
-                <div class="option-value" rv-hide="element.customAttribs.isEdited" rv-text="element.customAttribs.value" rv-on-click="editOptionText | args element"></div>
-                <span class="label label-success" rv-show="element.customAttribs.isCorrect" rv-spanid="element.customAttribs.key">Correct Answer</span>
+            <li class="col-xs-12" rv-each-element="interact.MCQSR" rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index"
+              rv-interactIndex="%interact%">
+              <label class="radio optionlabel">
+                  <span class="invisible wrong pull-left"></span>
+                  <input type="radio" name="optionsRadios" class="option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"></input><i></i>
+                  <input class="option-value input-option" rv-show="element.customAttribs.isEdited" rv-value="element.customAttribs.value" rv-on-blur="removeEditing | args element"></input>
+                  <div class="option-value" rv-hide="element.customAttribs.isEdited" rv-text="element.customAttribs.value" rv-on-click="editOptionText | args element"></div>
+                  <span class="label label-success" rv-show="element.customAttribs.isCorrect">Correct Answer</span>
                 <span>
                   <a class="btn btn-danger editor-icon delete-icon mcq-edit fa fa-trash-o pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>
                   <a class="btn btn-default editor-icon drag-icon mcq-edit fa fa-bars pull-right" data-toggle="tooltip" title="Click & drag move this option"></a>

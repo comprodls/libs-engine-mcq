@@ -21070,8 +21070,8 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
          *      1.2 __interactionTags (Array of Original interaction texts in questiondata) - 
          *          This will be used for recreating JSON to original format when "saveItemInEditor" is called.  
          *          e.g. [
-         *             "<a href='http://www.comprodls.com/m1.0/interaction/mcqmr'>i1</a>", 
-         *             "<a href='http://www.comprodls.com/m1.0/interaction/mcqmr'>i2</a>"
+         *             "<a href='http://www.comprodls.com/m1.0/interaction/mcq'>i1</a>", 
+         *             "<a href='http://www.comprodls.com/m1.0/interaction/mcq'>i2</a>"
          *              ]   
          * 2. Replace the interactionTags in questiondata (__editedJsonContent Object) with BLANKs 
          **/

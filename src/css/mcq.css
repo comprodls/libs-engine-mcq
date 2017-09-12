@@ -20,7 +20,7 @@
 main {
     margin: 20px 20px 20px 20px;
     font-size: 1em;
-    font-family: OpenSans;
+    font-family: "Open Sans";
 }
 
 .instructions {
@@ -56,12 +56,15 @@ ul {
 
 .option-content {
     margin: 0 0 0 5px;
+    font-size: 18px;
+    color: #494848;
+    font-weight: 500;
 }
 
 .question-text {
     color: #414040;
     font-size: 20px;
-    font-family: openSans-Semibold;
+    font-family: "Open Sans Semibold";
     padding-bottom: 10px;
 }
 

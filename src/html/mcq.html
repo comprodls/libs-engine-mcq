@@ -23,12 +23,12 @@
              </label>
           </li>
         </ul>
-        <ul class="list-unstyled nested-list" rv-if="interaction.MCQSR">
+        <ul class="list-unstyled nested-list"  id="mcq-sr" rv-if="interaction.MCQSR">
           <li rv-each-element="interaction.options | propertyList">
-            <label class="radio radio-lg"><i></i>
+            <label class="radio radio-lg" rv-for="element.key" ><i></i>
               <span class="answer invisible wrong pull-left"></span>
-              <input type="radio" name="optionsRadios" class="mcqsroption" rv-id="element.key" rv-value="element.value">
-              <span class="content" rv-text="element.value"></span>
+              <input type="radio" name="optionsRadios" class="mcqsroption" rv-id="element.key" rv-value="element.value"><i></i>
+              <span class="content option-content" rv-text="element.value"></span>
             </label>
           </li>
         </ul>

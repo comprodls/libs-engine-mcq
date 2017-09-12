@@ -27,6 +27,11 @@ main {
     font-size: 1.25em;
 }
 
+.instruction {
+    color: #414040;
+    font-size: 20px;
+}
+
 .interactions {
     font-size: 1.15em;
 }
@@ -64,8 +69,8 @@ ul {
 .question-text {
     color: #414040;
     font-size: 20px;
-    font-family: "Open Sans Semibold";
     padding-bottom: 10px;
+    font-weight: 700;
 }
 
 /* Specific to the MCQ - SR type only*/

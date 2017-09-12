@@ -20,6 +20,7 @@
 main {
     margin: 20px 20px 20px 20px;
     font-size: 1em;
+    font-family: "Open Sans";
 }
 
 .instructions {
@@ -32,8 +33,9 @@ main {
 
 ul {
     list-style: none;
-    margin-left: 30px;
+   /* margin-left: 30px;*/
 }
+
 
 .correct:before,
 .wrong:before {
@@ -54,4 +56,125 @@ ul {
 
 .option-content {
     margin: 0 0 0 5px;
+    font-size: 18px;
+    color: #494848;
+    font-weight: 500;
+}
+
+.question-text {
+    color: #414040;
+    font-size: 20px;
+    font-family: "Open Sans Semibold";
+    padding-bottom: 10px;
+}
+
+/* Specific to the MCQ - SR type only*/
+
+#mcq-sr {    
+    position: relative;
+}
+
+#mcq-sr li {
+    background-color: #F7fbff;
+    padding-left: 10px;
+    position: static;
+    border: 1px solid #DDDDDD;
+    margin-bottom: 15px;    
+}
+
+#mcq-sr li.highlight {
+    background-color: #F2F2F2;
+    border-radius: 6px;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+#mcq-sr li i {
+    height: 2.6em;
+    width: 2.6em;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    outline: 0;
+    border: 1px solid #BDBDBD;
+    background: #FFF;
+    padding: 10px;
+}
+
+#mcq-sr li i:after {
+    background-color: #3276B1;
+    content: '';
+    border-radius: 50%;
+    height: 2.1em;
+    width: 2.1em;
+    top: .2em;
+    left: .2em;
+    position: absolute;
+    opacity: 0;
+}
+
+#mcq-sr li.highlight i {
+    border-color: #3276B1;
+}
+
+#mcq-sr li.highlight i:after {
+    opacity: 1;
+}
+
+#mcq-sr li .radio {
+    font-size: 1em;
+    line-height: 2.7em;
+    color: #3D3D3D;
+    cursor: pointer;
+    display: inline-block;
+    padding-left: 45px!important;
+}
+
+#mcq-sr li .radio input {
+    position: absolute;
+    left: -9999px;
+}
+
+#mcq-sr li .radio .option-value {
+    position: static!important;
+}
+
+#mcq-sr li .radio .option-value .input-option {
+    width: 80%;
+}
+
+#mcq-sr li .radio div.option-value {
+    display: inline-block;
+}
+
+#mcq-sr li .radio .correct-answer {
+    font-weight: 700;
+}
+
+#mcq-sr li .editor-icon-container {
+    display: inline-block;
+    position: relative;
+    padding-top: 5px;
+}
+
+#mcq-sr li .editor-icon-container .editor-icon {
+    cursor: pointer;
+}
+
+#mcq-sr ul li .editor-icon-container .editor-icon.mcqsr-edit {
+    position: absolute;
+    right: 60px;
+}
+
+#mcq-sr ul li .editor-icon-container .delete-icon.mcqsr-edit {
+    right: 40px;
+}
+
+#mcq-sr ul li .editor-icon-container .drag-icon.mcqsr-edit {
+    right: 20px;
+}
+
+#mcq-sr ul li .optionlabel {
+    width: 100%;
 }

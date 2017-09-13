@@ -266,6 +266,12 @@ ul {
     left: -999px;
 }
 
+.feedback .alert-sucess {
+    background-color: #f2fdee;
+}
 
+.feedback .alert-danger {
+    background-color: #fdeeee;
+}
 
 /*  --- Ends ---  */

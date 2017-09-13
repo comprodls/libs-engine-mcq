@@ -13,11 +13,11 @@
         <p class="question-text" rv-text="interaction.questiontext"></p>
         <!-- prompt Will be shown only if prompt text is available for interaction /-->
         <p class="prompt"></p>
-        <ul class="options" rv-if="interaction.MCQMR">
+        <ul class="options list-unstyled nested-list" id="mcq-mr" rv-if="interaction.MCQMR">
           <li class="option" rv-each-optionitem="interaction.options | propertyList">
-            <label class="input-label">
-                  <span class="rejoinder invisible pull-left" rv-id="%optionitem% | idcreator 'rejoinder'" ></span>
-                  <input class="option-input" rv-id="%optionitem%   | idcreator 'option'" type="checkbox" 
+            <label class="checkbox input-label" rv-for="%optionitem%   | idcreator 'option'" >
+                  <span class="rejoinder invisible pull-left" rv-id="%optionitem% | idcreator 'rejoinder'"></span><i></i>
+                  <input class="option option-value mcq-option option-input" rv-id="%optionitem%   | idcreator 'option'" type="checkbox" 
                           rv-name="optionitem.key" rv-id="optionitem.key" data-val="{optionitem.key}"autocomplete="off" />
                   <span class='option-content' rv-text="optionitem.value">{optionitem.value}</span>
              </label>
@@ -25,7 +25,7 @@
         </ul>
         <ul class="list-unstyled nested-list"  id="mcq-sr" rv-if="interaction.MCQSR">
           <li rv-each-element="interaction.options | propertyList">
-            <label class="radio radio-lg" rv-for="element.key" ><i></i>
+            <label class="radio radio-lg label" rv-for="element.key" ><i></i>
               <span class="answer invisible wrong pull-left"></span>
               <input type="radio" name="optionsRadios" class="mcqsroption" rv-id="element.key" rv-value="element.value"><i></i>
               <span class="content option-content" rv-text="element.value"></span>
@@ -37,14 +37,14 @@
 
     <section class="feedback">
       <div class="row">
-        <div class="col-sm-6 col-md-6">
-          <div class="alert alert-success" role="alert" rv-show="showFeedback.correct" rv-text="feedback.global.correct">
+        <div class="col-sm-12 col-md-12">
+          <div class="alert alert-success" role="alert" rv-show="showFeedback.correct" ><i class="fa fa-smile-o"></i>&nbsp;<span rv-text="feedback.global.correct"></span>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-6 col-md-6">
-          <div class="alert alert-danger" role="alert" rv-show="showFeedback.incorrect" rv-text="feedback.global.incorrect">
+        <div class="col-sm-12 col-md-12">
+          <div class="alert alert-danger" role="alert" rv-show="showFeedback.incorrect"><i class="fa fa-meh-o"></i>&nbsp;<span rv-text="feedback.global.incorrect"></span>
           </div>
         </div>
       </div>

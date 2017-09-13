@@ -202,6 +202,7 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
 
             /** Default feedback. This feedback will be shown if app doesn't wan't to override it by its own Feedback. */
             function showfeedback() {
+                activityAdaptor.autoResizeActivityIframe();
                 var type = __content.interactions[0]['type'];
 
                 if (type === 'MCQMR') {
@@ -304,12 +305,14 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 var currentInteractionId = currentTarget.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
                 var currentChoice = currentTarget.getAttribute('name');
                 if (currentTarget.checked) {
+                        $(currentTarget).parent().parent("li").addClass("highlight");
                     if (!__content.user_answers[currentInteractionId]) {
                         __content.user_answers[currentInteractionId] = [];
                     }
                     __content.user_answers[currentInteractionId].push(currentChoice);
                 } else {
                     remove(__content.user_answers[currentInteractionId], currentChoice);
+                    $(currentTarget).parent().parent("li").removeClass("highlight");
                 }
                 //$(document).triggerHandler('userAnswered');
                 __savePartial(currentInteractionId);
@@ -435,15 +438,13 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                         var userAnswer = __content.user_answers[interactionid];
 
                         if (userAnswer.trim() === correctAnswer.trim()) {
-                            $("#" + userAnswer).siblings('.answer').removeClass("wrong");
-                            $("#" + userAnswer).siblings('.answer').addClass("correct");
-                            $("#" + userAnswer).parent().addClass("state-success");
+                            $("#" + userAnswer).parent().parent().removeClass('highlight');
+                            $("#" + userAnswer).parent().parent().addClass('correct');
                         } else {
-                            $("#" + userAnswer).siblings('.answer').removeClass("correct");
-                            $("#" + userAnswer).siblings('.answer').addClass("wrong");
-                            $("#" + userAnswer).parent().addClass("state-error");
+                            $("#" + userAnswer).parent().parent().removeClass('highlight');
+                            $("#" + userAnswer).parent().parent().addClass('wrong');
                         }
-                        $("#" + userAnswer).siblings('.answer').removeClass("invisible");
+                   //     $("#" + userAnswer).siblings('.answer').removeClass("invisible");
                     }
                 }
             }

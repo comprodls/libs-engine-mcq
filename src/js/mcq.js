@@ -413,21 +413,26 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 // Assuming that there is only one interaction.
                 var type = interactions[0]['type'];
 
-                $('input[id^=option]').prev('span').addClass("wrong");
+              
 
-                if (type === 'MCQMR') {
+               if (type === 'MCQMR') {
+                    $('input[id^=option]').parent().parent().removeClass("highlight");
+                    $('input[id^=option]').parent().parent().addClass("wrong");
                     for (var interaction in __correct_answers) {
                         if (__correct_answers.hasOwnProperty(interaction)) {
                             for (var j = 0; j < __correct_answers[interaction]['correct'].length; j++) {
-                                $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').removeClass("wrong")
-                                $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').removeClass("state-error")
-                                $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').addClass("correct")
-                                $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').addClass("state-success")
+                                $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").parent().parent().removeClass("wrong");
+                                $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").parent().parent().addClass("correct");
+                              //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').removeClass("wrong")
+                              //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').removeClass("state-error")
+                              //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').addClass("correct")
+                              //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').addClass("state-success")
                             }
                         }
-                        $("[id^=rejoinder]").removeClass("invisible");
+                        //$("[id^=rejoinder]").removeClass("invisible");
                     }
                 }
+                
 
                 if (type === 'MCQSR') {
                     var interactionid = Object.keys(__correct_answers);

@@ -199,6 +199,7 @@ li:hover {
 
 
 
+
 /* Specific to MCQ MR type*/
 
 #mcq-mr {
@@ -317,6 +318,11 @@ li:hover {
 
 .feedback .alert-danger {
     background-color: #fdeeee;
+}
+
+.align-2-item {    
+    display: flex;
+    align-items: center;
 }
 
 /*  --- Ends ---  */

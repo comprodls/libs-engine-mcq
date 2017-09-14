@@ -46,7 +46,6 @@ ul {
     font-size: 18px;
     color: #494848;
     font-weight: 500;
-    margin: 0 0 0 5px;
 }
 
 .question-text {
@@ -89,14 +88,12 @@ li:hover {
     height: 2.6em;
     width: 2.6em;
     border-radius: 50%;
-    position: absolute;
-    top: 0;
-    left: 0;
     display: block;
     outline: 0;
     border: 1px solid #BDBDBD;
     background: #FFF;
     padding: 10px;
+    position: relative;
 }
 
 #mcq-sr li i:after {
@@ -105,8 +102,8 @@ li:hover {
     border-radius: 50%;
     height: 1.7em;
     width: 1.7em;
-    top: .4em;
-    left: .4em;
+    top: .41em; 
+    left: .40em;
     position: absolute;
     opacity: 0;
 }
@@ -122,13 +119,12 @@ li:hover {
 
 
 #mcq-sr li .radio {
-    font-size: 1em;
-    line-height: 2.2em;
+    font-size: 1em;    
     color: #3D3D3D;
-    cursor: pointer;
-    display: block;
-    padding-left: 45px!important;
+    cursor: pointer;    
     text-align: left;
+    display: flex;
+    align-items: center;
 }
 
 #mcq-sr li .radio input {
@@ -156,9 +152,6 @@ li:hover {
     width: 100%;
 }
 
-#mcq-sr .option-content {
-    margin: 0 0 0 5px;
-}
 
 #mcq-sr li.wrong i {
     border-color: red;
@@ -199,6 +192,10 @@ li:hover {
     font-style: normal;
 }
 
+#mcq-sr .option-content {    
+    margin: 0 0 0 10px;
+}
+
 
 
 
@@ -237,7 +234,7 @@ li:hover {
     width: 2.6em;
     border-radius: 0;
     position: absolute;
-    top: 0;
+    top: 0; 
     left: 0;
     display: block;
     outline: 0;
@@ -306,7 +303,7 @@ li:hover {
     line-height: 2.7em;
     color: #3D3D3D;
     cursor: pointer;
-    padding-left: 45px!important;
+    padding-left: 50px!important;
 }
 
 #mcq-mr li .checkbox input {

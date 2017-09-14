@@ -330,10 +330,10 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                  * Soft save here
                  */
                 var currentTarget = event.currentTarget;
-                var currentInteractionId = currentTarget.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
+                var currentInteractionId = currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
 
-                $("label.radio").parent().removeClass("highlight");
-                $(currentTarget).parent().parent("li").addClass("highlight");
+                $("label.radio").closest('li').removeClass("highlight");
+                $(currentTarget).closest("li").addClass("highlight");
 
                 var newAnswer = currentTarget.value.replace(/^\s+|\s+$/g, '');
                 /* Save new Answer in memory. */
@@ -421,8 +421,8 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                     for (var interaction in __correct_answers) {
                         if (__correct_answers.hasOwnProperty(interaction)) {
                             for (var j = 0; j < __correct_answers[interaction]['correct'].length; j++) {
-                                $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").parent().parent().removeClass("wrong");
-                                $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").parent().parent().addClass("correct");
+                                $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").closest('li').removeClass("wrong");
+                                $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").closest('li').addClass("correct");
                               //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').removeClass("wrong")
                               //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').removeClass("state-error")
                               //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').addClass("correct")
@@ -443,11 +443,11 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                         var userAnswer = __content.user_answers[interactionid];
 
                         if (userAnswer.trim() === correctAnswer.trim()) {
-                            $("#" + userAnswer).parent().parent().removeClass('highlight');
-                            $("#" + userAnswer).parent().parent().addClass('correct');
+                            $("#" + userAnswer).closest('li').removeClass('highlight');
+                            $("#" + userAnswer).closest('li').addClass('correct');
                         } else {
-                            $("#" + userAnswer).parent().parent().removeClass('highlight');
-                            $("#" + userAnswer).parent().parent().addClass('wrong');
+                            $("#" + userAnswer).closest('li').removeClass('highlight');
+                            $("#" + userAnswer).closest('li').addClass('wrong');
                         }
                    //     $("#" + userAnswer).siblings('.answer').removeClass("invisible");
                     }

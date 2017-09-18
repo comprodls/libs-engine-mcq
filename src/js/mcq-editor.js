@@ -392,7 +392,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 mcqsr: __editedJsonContent.MCQSR,
                 removeInstruction : __removeInstruction,
                 addInstruction : __addInstruction,
-                isInstructionEmpty : __editedJsonContent.content.instructions.length === 0 ? false : true
+                isInstructionEmpty : false
+                // __editedJsonContent.content.instructions.length === 0 ? false : true
             });
         }
 
@@ -460,9 +461,9 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             __editedJsonContent.content.instructions.push({"tag": "text",
                                                            "text": "Modify this text to the desired Instruction text" ,
                                                                "customAttribs": {
-                                                                "isEdited": true
+                                                                "isEdited": false
                                                                 }
-                                                          });
+                                                          });                                                             
         }
         /*------------------------RIVETS END-------------------------------*/
 

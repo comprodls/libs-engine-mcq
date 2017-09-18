@@ -35,33 +35,33 @@
                   <h4 class="headerlabel">Instruction Text</h4>
                 </header>
               </div>
-              <div class="row" >
-                  <div class="col-sm-12" >
-                      <ul class="list-unstyled nested-list editor">
-                          <li class="col-xs-12 colborder" rv-each-instruction="content.instructions"   rv-instructionIndex="%instruction%">  
-                      <input role="button" class="option-value global-input" rv-show="instruction.customAttribs.isEdited" 
-                            rv-value="instruction.text"
-                        placeholder="Add Instructions"  rv-on-blur="removeEditing | args instruction" ></input>
-                        <div class="option-value border-bottom-dashed" role="button" rv-hide="instruction.customAttribs.isEdited"  
-                        rv-on-click="editOptionText | args instruction">
-                        <span><i class="fa fa-pencil"></i></span>
-                        <span rv-text="instruction.text"></span>
-                        </div>
-                        <span>
-                            <a class="btn  color-lightgray editor-icon delete-icon mcq-edit fa fa-times pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeInstruction | args instruction %instruction%"></a>            
-                       </span>
-                    </div>
-                  </li>
-                  </ul>
-              </div>
+              <div class="col-sm-12" >
+                  <ul class="list-unstyled nested-list editor">
+                  <li class="col-xs-12 colborder mt-sm" rv-each-instruction="content.instructions"   rv-instructionIndex="%instruction%">  
+                    <div class="line-formatter">
+                      <span class="icon-pencil-class icon-pencil-instruction-class"><i class="fa fa-pencil"></i></span>
+                      <input role="button" class="option-value global-input outline-none noborder border-bottom-blue " rv-show="instruction.customAttribs.isEdited" 
+                          rv-value="instruction.text"
+                      placeholder="Add Instructions"  rv-on-blur="removeEditing | args instruction" ></input>
+                      <div class="option-value border-bottom-dashed" role="button" rv-hide="instruction.customAttribs.isEdited"  
+                      rv-on-click="editOptionText | args instruction">
+                      <span rv-text="instruction.text"></span>
+                      </div>
+                      <span class="icon-pos-class icon-pos-instruction-class">
+                          <a class="btn color-lightgray editor-icon delete-icon mcq-edit fa fa-times pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeInstruction | args instruction %instruction%"></a>            
+                      </span>
+                  </div>
+                </div>
+              </li>
+              </ul>              
       </div>  
-      <div class="row">
+      <div class="row mt-sm">
         <div class="col-sm-12 dropdown">
             <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">+ Add
                 </button>
-                <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="menu1">
-                  <li role="presentation"><a role="menuitem" href="#" rv-on-click="addInstruction" >Instruction Text</a></li>
-                  <li role="presentation"><a role="menuitem" href="#">Description Text</a></li>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                  <li role="presentation"><a class='dropdown-toggle disabled' role="menuitem" href="#" rv-on-click="addInstruction" >Instruction Text</a></li>
+                  <li role="presentation"><a class='dropdown-toggle disabled' role="menuitem" href="#">Description Text</a></li>
                 </ul>
         </div>
       </div>     

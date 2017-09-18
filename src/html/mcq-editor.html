@@ -1,239 +1,207 @@
 <!-- Engine Editor Template -->
 
 <div class="mcq-body main-container" id="mcq-editor">
-  <main class="main">
-    <section id="question" class="section">
-      <header>
-        <span class="sectionlabel">1. Question</span>
-      </header>
+  <main class="main global container-fluid">
+    <section id="question" class="section question">
       <!-- Loop over all instructions text -->
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <p class="questionlabel"><strong>1.1. Select Question type<strong>&nbsp;<i class="fa fa-info-circle info" aria-hidden="true" title="Question Type" id="qtypeinfoico"></i></p>
-          <div id="typeToggle" class="btn-group vspacer" rv-if="mcqsr">
-            <button type="button" id="mcqsrbtn" class="btn btn-primary">MCQSR</button>
-            <button type="button" id="mcqmrbtn" class="btn btn-default" disabled>MCQMR</button>
-          </div>
-          <div id="typeToggle" class="btn-group vspacer" rv-if="mcqmr">
-            <button type="button" id="mcqsrbtn" class="btn btn-default" disabled>MCQSR</button>
-            <button type="button" id="mcqmrbtn" class="btn btn-primary">MCQMR</button>
-          </div>
-          <br>
-          <div class="row">
-            <div class="col-sm-12">
-              <p class="questionlabel"><strong>1.2. Instructions</strong>&nbsp;<i class="fa fa-info-circle info" title="Instructions"
-              id="instinfoico"></i></p>
-        </div>
-      </div>
-      <div class="row" rv-each-instructions="content.instructions">
-        <div class="col-sm-12">
-          <div class="input-group margin-bottom-sm">
-            <span class="input-group-addon"><strong><i class="glyphicon glyphicon-info-sign"></i></strong></span>
-            <input class="form-control txtEntry" type="text" rv-value="instructions.text" rv-on-blur="handleItemChanged | args element"
-              placeholder="Add Instructions">
-          </div>
-        </div>
-      </div>
-      <br>
+      <div class="global-padding">
       <div class="row">
         <div class="col-sm-12">
-          <p class="questionlabel"><strong>1.3. Question text</strong>&nbsp;<i class="fa fa-info-circle info" title="Question Text" aria-hidden="true"
-              id="qtextinfoico"></i></p>
+          <header>
+            <h4 class="headerlabel">Question Text</h4>
+          </header>
         </div>
-      </div>
-      <!-- Loop over all question data text -->
-      <div class="row" rv-each-interact="content.interactions">
+        <!-- Loop over all question data text -->
         <div class="col-sm-12">
-          <div rv-each-questiondata="content.canvas.data.questiondata">
-            <div class="input-group margin-bottom-sm">
-              <span class="input-group-addon"><strong><i class="glyphicon glyphicon-question-sign"></i></strong></span>
-              <input class="form-control txtEntry" type="text" rv-value="questiondata.text" rv-on-blur="handleItemChanged | args element"
-                placeholder="Question Title">
-            </div>
+          <div rv-each-qdata="content.canvas.data.questiondata">                        
+              <input role="button" class="option-value global-input" rv-show="qdata.customAttribs.isEdited" rv-value="qdata.text" 
+                            rv-on-blur="removeEditing | args qdata"></input>
+              <div class="option-value border-bottom-dashed" role="button" rv-hide="qdata.customAttribs.isEdited"  
+                            rv-on-click="editOptionText | args qdata">
+                            <span><i class="fa fa-pencil"></i></span>
+                            <span rv-text="qdata.text"></span>
+              </div>
+                    
           </div>
         </div>
       </div>
-</div>
-</div>
-<div class="panel panel-default">
-  <div class="panel-body">
-    <p class="questionlabel"><strong>1.3. Answer Choices</strong>&nbsp;<i class="fa fa-info-circle info" aria-hidden="true" title="Answer Choices"
-        id="ansinfoico"></i></p>
-    <div class="row" rv-each-interact="content.interactions">
-      <!-- Loop over all questiondata inside interaction -->
-      <div class="col-sm-12">
-        <div class="row form questions-editor" id="mcq-mr" rv-if="interact.MCQMR">
-          <ul class="list-unstyled nested-list editor sortable">
-            <!-- Loop over all options inside interaction  (mcq Array)-->
-            <li class="col-xs-12 colborder" rv-each-element="interact.MCQMR" rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index"
-              rv-interactIndex="%interact%">
-              <label class="checkbox">
-                <span class="invisible wrong pull-left"></span>
-                <input type="checkbox" name="optionsRadios" class="option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"></input>
+    </div>
+    </section>
+    <section id="instruction" class="section instruction border-bottom-shadow">
+      <div class="global-padding">
+        <div rv-hide="isInstructionEmpty" class="row">
+             <div class="col-sm-12">
+                <header>
+                  <h4 class="headerlabel">Instruction Text</h4>
+                </header>
+              </div>
+              <div class="col-sm-12" >
+                  <ul class="list-unstyled nested-list editor">
+                  <li class="col-xs-12 colborder mt-sm" rv-each-instruction="content.instructions"   rv-instructionIndex="%instruction%">  
+                    <div class="line-formatter">
+                      <span class="icon-pencil-class icon-pencil-instruction-class"><i class="fa fa-pencil"></i></span>
+                      <input role="button" class="option-value global-input outline-none noborder border-bottom-blue " rv-show="instruction.customAttribs.isEdited" 
+                          rv-value="instruction.text"
+                      placeholder="Add Instructions"  rv-on-blur="removeEditing | args instruction" ></input>
+                      <div class="option-value border-bottom-dashed" role="button" rv-hide="instruction.customAttribs.isEdited"  
+                      rv-on-click="editOptionText | args instruction">
+                      <span rv-text="instruction.text"></span>
+                      </div>
+                      <span class="icon-pos-class icon-pos-instruction-class">
+                          <a class="btn color-lightgray editor-icon delete-icon mcq-edit fa fa-times pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeInstruction | args instruction %instruction%"></a>            
+                      </span>
+                  </div>
+                </div>
+              </li>
+              </ul>              
+      </div>  
+      <div class="row mt-sm">
+        <div class="col-sm-12 dropdown">
+            <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">+ Add
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                  <li role="presentation"><a class='dropdown-toggle disabled' role="menuitem" href="#" rv-on-click="addInstruction" >Instruction Text</a></li>
+                  <li role="presentation"><a class='dropdown-toggle disabled' role="menuitem" href="#">Description Text</a></li>
+                </ul>
+        </div>
+      </div>     
+    </div>
+    </section>  
+    <section id="answer-choice"n class="section answer border-bottom-shadow">  
+      <div class="global-padding">        
+          <header>
+            <h4 class="headerlabel">Answer Choices
+                <span class="dropdown font-medium ml-md">
+                    <a href="#" class="dropdown-toggle color-lightgray text-underline" data-toggle="dropdown" aria-expanded="false">
+                        Single Correct Answer
+                        <b class="caret">
+                        </b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                          <a href="#">
+                              Single Correct Answer
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#">
+                              Multiple Correct Answer
+                          </a>
+                        </li>
+                      </ul>
+               </span>
+              </h4>            
+        </header>
+        <div>
+          <div class="row" rv-each-interact="content.interactions">
+            <!-- Loop over all questiondata inside interaction -->
+            <div class="col-sm-12">
+              <div class="row questions-editor" id="mcq-mr" rv-if="interact.MCQMR">
+                <ul class="list-unstyled nested-list editor sortable">
+                  <!-- Loop over all options inside interaction  (mcq Array)-->
+                  <li class="col-xs-12 colborder" rv-each-element="interact.MCQMR" rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index"
+                    rv-interactIndex="%interact%">
+                    <label class="checkbox">
+                  <span class="invisible wrong pull-left"></span>
+                  <input type="checkbox" name="optionsRadios" class="option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"></input>
                   <i></i>
                   <input class="option-value input-option" rv-show="element.customAttribs.isEdited" rv-value="element.customAttribs.value" rv-on-blur="removeEditing | args element"></input>
-                  <div class="option-value" rv-hide="element.customAttribs.isEdited" rv-text="element.customAttribs.value" rv-on-click="editOptionText | args element"></div>
-                  <span class="label label-success" rv-show="element.customAttribs.isCorrect">Correct Answer</span>
+                  <div class="option-value border-bottom-dashed" rv-hide="element.customAttribs.isEdited"  rv-on-click="editOptionText | args element">
+                      <span><i class="fa fa-pencil"></i></span>
+                      <span rv-text="element.customAttribs.value"></span>
+                  </div>
                   <span>
                     <a class="btn btn-danger editor-icon delete-icon mcq-edit fa fa-trash-o pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>
                     <a class="btn btn-default editor-icon drag-icon mcq-edit fa fa-bars pull-right" data-toggle="tooltip" title="Click & drag move this option"></a>
                     <a class="btn btn-default editor-icon mcq-edit fa fa-commenting fa-lg comment pull-right" data-toggle="tooltip" title="Click to add inline feedback" rv-id="element.customAttribs.value | btnId" rv-on-click="addInlineFeedback | args element.customAttribs.value"></a>
                   </span>
               </label>
-              <div class="modal fade" rv-id="element.customAttribs.key | modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                      <h4 class="modal-title" id="myModalLabel">Add Inline Feedback</h4>
-                    </div>
-                    <div class="modal-body">
-                      <div class="input-group vspacer">
-                        <span class="input-group-addon" id="basic-addon3">Feedback</span>
-                        <input type="text" class="form-control" rv-id="element.customAttribs.key" rv-value="element.customAttribs.feedback" rv-placeholder="element.customAttribs.value | placeholderText"
-                          rv-on-blur="setInlineFeedback | args element">
+                    <div class="modal fade" rv-id="element.customAttribs.key | modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                      aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Add Inline Feedback</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="input-group vspacer">
+                              <span class="input-group-addon" id="basic-addon3">Feedback</span>
+                              <input type="text" class="form-control" rv-id="element.customAttribs.key" rv-value="element.customAttribs.feedback" rv-placeholder="element.customAttribs.value | placeholderText"
+                                rv-on-blur="setInlineFeedback | args element">
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
-                    </div>
-                  </div>
-                </div>
+                  </li>
+                </ul>
               </div>
-            </li>
-          </ul>
-        </div>
-        <div class="row form questions-editor" id="mcq-sr" rv-if="interact.MCQSR">
-          <ul class="list-unstyled nested-list editor sortable">
-            <!-- Loop over all options inside interaction  (mcq Array)-->
-            <li class="col-xs-12" rv-each-element="interact.MCQSR" rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index"
-              rv-interactIndex="%interact%">
-              <label class="radio optionlabel">
-                  <span class="invisible wrong pull-left"></span>
-                  <input type="radio" name="optionsRadios" class="option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"></input><i></i>
-                  <input class="option-value input-option" rv-show="element.customAttribs.isEdited" rv-value="element.customAttribs.value" rv-on-blur="removeEditing | args element"></input>
-                  <div class="option-value" rv-hide="element.customAttribs.isEdited" rv-text="element.customAttribs.value" rv-on-click="editOptionText | args element"></div>
-                  <span class="label label-success" rv-show="element.customAttribs.isCorrect">Correct Answer</span>
-                <span>
-                  <a class="btn btn-danger editor-icon delete-icon mcq-edit fa fa-trash-o pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>
-                  <a class="btn btn-default editor-icon drag-icon mcq-edit fa fa-bars pull-right" data-toggle="tooltip" title="Click & drag move this option"></a>
-                  <a class="btn btn-default editor-icon mcq-edit fa fa-commenting fa-lg comment pull-right" data-toggle="tooltip" title="Click to add inline feedback" rv-id="element.customAttribs.key | btnId" rv-on-click="addInlineFeedback | args element.customAttribs.key"></a>
+              <div class="row questions-editor" id="mcq-sr" rv-if="interact.MCQSR">
+                <ul class="list-unstyled nested-list editor sortable">
+                  <!-- Loop over all options inside interaction  (mcq Array)-->
+                  <li class="col-xs-12 col-sm-12" rv-each-element="interact.MCQSR" rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index"
+                    rv-interactIndex="%interact%">
+                    <label class="radio optionlabel"> 
+                      <input type="radio" name="optionsRadios" class="option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"></input><i class="choices"></i>
+                      <span class="icon-pencil-class"><i class="fa fa-pencil"></i></span>    
+                      <input class="option-value input-option color-lightgray" rv-show="element.customAttribs.isEdited" rv-value="element.customAttribs.value" rv-on-blur="removeEditing | args element"></input>                      
+                      <div class="option-value border-bottom-dashed color-lightgray" rv-text="element.customAttribs.value" rv-hide="element.customAttribs.isEdited"  rv-on-click="editOptionText | args element"></div>
+                <span class="icon-pos-class">
+                  <a class="btn  color-lightgray editor-icon mcq-edit fa fa-comment-o comment pull-right" data-toggle="tooltip" title="Click to add inline feedback" rv-id="element.customAttribs.key | btnId" rv-on-click="addInlineFeedback | args element.customAttribs.key"></a>
+                  <a class="btn  color-lightgray editor-icon drag-icon mcq-edit fa fa-bars pull-right" data-toggle="tooltip" title="Click & drag move this option"></a>
+                  <a class="btn  color-lightgray editor-icon delete-icon mcq-edit fa fa-times pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>                
                 </span>
+
             </label>
-              <div class="modal fade" rv-id="element.customAttribs.key | modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                      <h4 class="modal-title" id="myModalLabel">Add Inline Feedback</h4>
-                    </div>
-                    <div class="modal-body">
-                      <div class="input-group vspacer">
-                        <span class="input-group-addon" id="basic-addon3">Feedback</span>
-                        <input type="text" class="form-control" rv-id="element.customAttribs.key" rv-value="element.customAttribs.feedback" rv-placeholder="element.customAttribs.value | placeholderText"
-                          rv-on-blur="setInlineFeedback | args element">
+                    <div class="modal fade" rv-id="element.customAttribs.key | modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                      aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Add Inline Feedback</h4>
+                          </div>
+                          <div class="modal-body">
+                            <div class="input-group vspacer">
+                              <span class="input-group-addon" id="basic-addon3">Feedback</span>
+                              <input type="text" class="form-control" rv-id="element.customAttribs.key" rv-value="element.customAttribs.feedback" rv-placeholder="element.customAttribs.value | placeholderText"
+                                rv-on-blur="setInlineFeedback | args element">
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
-                    </div>
-                  </div>
-                </div>
+                  </li>
+                </ul>              
+                <a class="add-item ml-xxl" rv-on-click="addItem | args content %interact%">
+                    <button type="button" class="btn btn-default btn-sm"></span>+ Add</button>
+                </a>
               </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="col xs-12 addbutton">
-        <a class="add-item" rv-on-click="addItem | args content %interact%">
-          <button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span>  Add a Choice</button></a>
-      </div>
-    </div>
-  </div>
-</div>
-</section>
-
-<section id="scores" class="section">
-  <header>
-    <span class="sectionlabel">2. Score&nbsp;<i class="fa fa-info-circle info" aria-hidden="true" title="Score" id="scoreinfoico"></i></span>
-  </header>
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="input-group margin-bottom-sm">
-        <span class="input-group-addon"><strong>Minimum</strong></span>
-        <input class="form-control txtEntry" type="text" rv-value="meta.score.min" rv-on-blur="handleItemChanged | args element"
-          placeholder="Define minimum Score">
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="input-group margin-bottom-sm">
-        <span class="input-group-addon"><strong>Maximum</strong></span>
-        <input class="form-control txtEntry" type="text" rv-value="meta.score.max" rv-on-blur="handleItemChanged | args element"
-          placeholder="Define maximum score">
-      </div>
-    </div>
-</section>
-
-<section id="feedback" class="section">
-  <header>
-    <span class="sectionlabel">3. Feedback&nbsp;<i class="fa fa-info-circle info" aria-hidden="true" title="Global Feedack" id="fbackinfoico"></i></span>
-  </header>
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <div class="row vspacer">
-        <div class="col-sm-12">
-          <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-thumbs-up fa-lg correct" aria-hidden="true"></i></span>
-            <input class="form-control txtEntry" type="text" rv-value="feedback.global.correct" rv-on-blur="handleItemChanged | args element"
-              placeholder="Feedback for Correct answer">
+            </div>
           </div>
+         </div>  
         </div>
+    </section>  
+    <section id="feedback" class="section feedback  border-bottom-shadow">
+      <div class="global-padding">
+        <a class="enable-feedback">
+            <button type="button" class="btn btn-default btn-sm"></span>Enable Feedback</button>
+        </a>
       </div>
-      <div class="row vspacer">
-        <div class="col-sm-12">
-          <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-thumbs-down fa-lg incorrect" aria-hidden="true"></i></span>
-            <input class="form-control txtEntry" type="text" rv-value="feedback.global.incorrect" rv-on-blur="handleItemChanged | args element"
-              placeholder="Feedback for Incorrect answer">
-          </div>
-        </div>
+    </section>
+    <section id="media" class="section border-bottom-shadow">
+      <div class="global-padding">
+        <a class="enable-media">
+            <button type="button" class="btn btn-default btn-sm"></span>Enable Media</button>
+        </a>
       </div>
-      <div class="row vspacer">
-        <div class="col-sm-12">
-          <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-square-o fa-lg" aria-hidden="true"></i></span>
-            <input class="form-control txtEntry" type="text" rv-value="feedback.global.empty" rv-on-blur="handleItemChanged | args element"
-              placeholder="Feedback for no response">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-</section>
-
-<section id="media" class="section">
-  <header>
-    <span class="sectionlabel">Media&nbsp;<i class="fa fa-info-circle info" aria-hidden="true" title="Media" id="mediainfoico"></i></span>
-  </header>
-  <p>Select files from you computer</p>
-  <div class="row">
-    <div class="col-sm-8">
-      <div class="media">
-        <ul class="list-group">
-          <li class="list-group-item">No Files available for this question. Uploaded files will be listed here.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="dropzone" id="dropzone">
-        <i class="fa fa-upload fa-5x" aria-hidden="true"></i><br>Drop Files here
-        <input type="file" id="mediaupload" style="display:none" />
-      </div>
-    </div>
-  </div>
-</section>
-</main>
+    </section>
+  </main>
 </div>

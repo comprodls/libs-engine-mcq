@@ -134,6 +134,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             //Process JSON for easy iteration in template
             //__parseAndUpdateJSONForRivets();
             __parseAndUpdateJSONForRivets();
+            console.log(JSON.stringify(__editedJsonContent, null, 4));
             /* ------ VALIDATION BLOCK END -------- */
 
             /* Apply the layout HTML to the dom */
@@ -300,6 +301,28 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 });
                 __editedJsonContent.content.interactions[i][type] = processedArray;
             }
+            __parseQuestionTextJSONForRivets();
+            __parseInstructionTextJSONForRivets();
+        }
+
+        function __parseQuestionTextJSONForRivets (){
+            __editedJsonContent.content.canvas.data.questiondata.forEach(function(element){
+                if(element.text == '') {
+                    element.text = "Enter Question Text."
+                }
+                element.customAttribs = {};
+                element.customAttribs.isEdited = false;
+            })
+        }
+
+        function __parseInstructionTextJSONForRivets (){
+            __editedJsonContent.content.instructions.forEach(function(element){
+                if(element.text == '') {
+                    element.text = "Enter Question Text."
+                }
+                element.customAttribs = {};
+                element.customAttribs.isEdited = false;
+            })
         }
 
 
@@ -366,7 +389,11 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 editOptionText: __editOptionText,
                 handleItemChanged: __handleItemChangedInEditor,
                 mcqmr: __editedJsonContent.MCQMR,
-                mcqsr: __editedJsonContent.MCQSR
+                mcqsr: __editedJsonContent.MCQSR,
+                removeInstruction : __removeInstruction,
+                addInstruction : __addInstruction,
+                isInstructionEmpty : false
+                // __editedJsonContent.content.instructions.length === 0 ? false : true
             });
         }
 
@@ -388,6 +415,14 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
+        /* Remove option item */
+        function __removeInstruction(event, instruction, index) {
+            console.log("instruction ", instruction, index);
+            __editedJsonContent.content.instructions.splice(index, 1);
+            __state.hasUnsavedChanges = true;
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
+        }
+
         /* Sets the edit mode on the option text. Allows the Author to edit the text  */
         function __editOptionText(event, element) {
             element.customAttribs.isEdited = !element.customAttribs.isEdited;
@@ -405,7 +440,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             }
             __state.hasUnsavedChanges = true;
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
-        }
+        }        
+        
 
         /* Add new option for the question */
         function __addItem(event, content, interaction) {
@@ -420,10 +456,19 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             __state.hasUnsavedChanges = true;
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
+
+        function __addInstruction() {
+            __editedJsonContent.content.instructions.push({"tag": "text",
+                                                           "text": "Modify this text to the desired Instruction text" ,
+                                                               "customAttribs": {
+                                                                "isEdited": false
+                                                                }
+                                                          });                                                             
+        }
         /*------------------------RIVETS END-------------------------------*/
 
         /* ---------------------- JQUERY BINDINGS ---------------------------------*/
-        /* Handling when options are sorted.
+        /* Handling when options are sorted. 
          * When dargging is stopped, get the previous and new index for dragged element.
          * Now instead of sortable, use these indexes to restructure array.
          * when the array would be updated, the rivets will detect the change and re-render

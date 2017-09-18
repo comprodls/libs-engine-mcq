@@ -16,39 +16,105 @@
  *
  *
  *******************************************************/
+ .global {
+    font-size: 1.125em;
+    font-family: "Open Sans";
+ }
+ .color-lightgray {
+    color: #5a5a5a;
+ }
 
-.main {
-    font-size: 1em;
+ .color-lightslategray {
+    color: #d5d5d5;
+ }
+
+ .global-border {
+    border: 1px solid  lightslategray;
 }
 
-.section {
-    margin: 0 0 30px 0;
-    padding: 5px 5px 10px 5px;
-    border-radius: 5px;
-    border: 1px solid #a1a1a1;
+.outline-none {
+    outline: none;
+}
+.noborder {
+  border: none;   
+}
+.global-input {
+    width: 100%;    
+}
+.global-padding {
+    padding: 10px;
 }
 
-.sectionlabel {
-    font-size: 24px;
-    font-weight: bold;
+.mt-sm {
+  margin-top: 15px;
 }
+
+.ml-md {
+  margin-left: 20px;
+}
+.ml-xxl {
+   margin-left: 60px; 
+}
+.ml-sm {
+    margin-left: 20px;
+}
+.border-bottom-dashed  {
+    border-bottom: 1px dashed #d5d5d5;
+}
+
+.border-bottom-blue  {
+    border-bottom: 1px solid #3276B1;
+}
+
+.border-top  {
+    border-top: 1px solid #d5d5d5
+}
+
+.border-left  {
+    border-left: 1px solid #d5d5d5
+}
+
+.border-right  {
+    border-right: 1px solid #d5d5d5
+}
+
+.border-bottom  {
+    border-bottom: 1px solid #d5d5d5
+}
+
+.border-bottom-shadow {
+    border-bottom: 1px solid #f3f3f3;
+    box-shadow: 0 12px 15px -20px #333;
+}
+
+.fa-pencil:before {
+ color: lightslategray;
+ }
+
+ .font-medium {
+    font-size: 14px;
+ }
+ .text-underline {
+    text-decoration: underline;
+ }
+
+
+
 
 
 /* Global CSS for the entire editor irrespective of the type*/
 
-#mcq-editor .form {
+ .form {
     padding: 15px 0 15px 3px;
 }
 
-#mcq-editor .form * {
-    margin: 0;
-}
 
-#mcq-editor .form-container {
+
+ .form-container {
     width: 100%;
 }
 
-#mcq-editor .modal {
+ .modal {
     position: absolute;
     left: 50%;
     /* now you must set a margin left under zero - value is a half width your window */
@@ -58,33 +124,23 @@
     margin-top: -250px;
 }
 
-#mcq-editor .add-container {
-    padding: 5px 15px 5px 0;
-    float: left;
-}
 
-#mcq-editor .add-container .add-item {
-    cursor: pointer;
-}
-
-#mcq-editor .input-option {
-    width: 80%;
+ .input-option {
+    width: 85%;
     border: none;
-    border-bottom: 1px black;
+    border-bottom: 1px solid #3276B1;;
+    outline: none;
 }
 
-#mcq-editor .correct {
+ .correct {
     color: green;
 }
 
-#mcq-editor .incorrect {
+ .incorrect {
     color: red;
 }
 
-#mcq-editor .addbutton {
-    margin-left: 5px;
-    padding: 5px 15px 5px 0px;
-}
+
 
 .info {
     font-size: 18px;
@@ -103,22 +159,12 @@
     border-top-color: red;
 }
 
-.txtEntry {
-    font-weight: normal;
-    font-size: 1em;
-}
 
 .popover-title .close {
     position: relative;
     bottom: 3px;
 }
 
-.media {
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #a1a1a1;
-    height: 215px;
-}
 
 .dropzone {
     background-color: #F2F2F2;
@@ -137,23 +183,16 @@
     margin-bottom: 5px;
 }
 
-.spacer {
-    margin-left: 10px;
-    margin-right: 10px;
-}
 
-.questionlabel {
-    padding: 5px 0 0 5px;
-}
 
 .comment {
     color: navy
 }
 
-.media_container>i {
-    position: relative;
-    top: calc(50% - 10px);
-    /* 50% - 3/4 of icon height */
+
+#mcq-sr li {    
+    position: static;
+    margin-top: 15px;    
 }
 
 
@@ -164,13 +203,13 @@
     position: relative;
 }
 
-#mcq-mr ul li {
+/*#mcq-mr ul li {
     padding: 10px;
     position: static;
     border-bottom: 1px solid #DDDDDD;
     border-top: 1px solid #DDDDDD;
 }
-
+*/
 #mcq-mr ul li.highlight {
     background-color: #F2F2F2;
     border-radius: 0px;
@@ -256,32 +295,12 @@
 
 /* Specific to the MCQ - SR type only*/
 
-#mcq-sr ul {
-    margin-left: 30px;
-    padding-left: 15px;
-    padding-bottom: 10px;
-    position: relative;
-}
-
-#mcq-sr ul li {
-    padding: 10px;
-    position: static;
-    border-bottom: 1px solid #DDDDDD;
-    border-top: 1px solid #DDDDDD;
-}
-
-#mcq-sr ul li.highlight {
-    background-color: #F2F2F2;
-    border-radius: 6px;
-    border-bottom: 1px solid #DDDDDD;
-}
-
-#mcq-sr ul li i {
-    height: 1.8em;
-    width: 1.8em;
+#mcq-sr ul li i.choices {
+    height: 2.6em;
+    width: 2.6em;
     border-radius: 50%;
     position: absolute;
-    top: 0;
+    top: -10px;
     left: 0;
     display: block;
     outline: 0;
@@ -290,9 +309,10 @@
     padding: 10px;
 }
 
-#mcq-sr ul li i:after {
-    background-color: #3276B1;
-    content: '';
+#mcq-sr ul li i.choices:after {
+   /* background-color: #FFF;
+    content: "\f00c";
+    color: green;
     border-radius: 50%;
     height: 1.1em;
     width: 1.1em;
@@ -300,13 +320,25 @@
     left: .29em;
     position: absolute;
     opacity: 0;
+    */
+    opacity: 0;
+    background-color: #FFF;
+    content: "\f00c";
+    color: green;
+    font-family: fontawesome;
+    font-size: 1.7em;
+    position: relative;
+    left: -4px;
+    top: -4px;
+    font-weight: 400;
+    font-style: normal;
 }
 
-#mcq-sr ul li.highlight i {
-    border-color: #3276B1;
+#mcq-sr ul li.highlight i.choices {
+    border-color: green;
 }
 
-#mcq-sr ul li.highlight i:after {
+#mcq-sr ul li.highlight i.choices:after {
     opacity: 1;
 }
 
@@ -329,10 +361,11 @@
 }
 
 #mcq-sr ul li .radio .option-value .input-option {
-    width: 80%;
+    width: 85%;
 }
 
 #mcq-sr ul li .radio div.option-value {
+    width: 85%;
     display: inline-block;
 }
 
@@ -365,4 +398,50 @@
 
 #mcq-sr ul li .optionlabel {
     width: 100%;
+}
+
+.icon-pos-class {
+    position: absolute;
+    right: 80px
+}
+
+.icon-pencil-class {
+    position: absolute;
+    left: 50px
+}
+.icon-pencil-instruction-class {
+    bottom: 5px;
+    left: 25px;}
+
+.option-value {
+    padding-left: 30px;
+}
+
+[contentEditable=true]:empty:not(:focus):before{
+    content:attr(data-text)
+}
+
+.textEditable[contentEditable=true]:empty:not(:focus):before{
+    content:attr(data-text)
+} 
+
+.textEditable[contentEditable=true]:not(:focus){
+    border-bottom: 1px dashed #d5d5d5;     
+} 
+
+.textEditable[contentEditable=true]:focus{
+    outline:none;
+    border: none;
+    border-bottom: 1px solid #3276B1;;
+    outline: none;
+}
+
+.line-formatter {
+    line-height: 1.8em;
+    cursor: pointer;
+    display: inline-block;
+    width: 95%;
+}
+.icon-pos-instruction-class{
+    bottom: 0px;
 }

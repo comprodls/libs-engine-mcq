@@ -410,6 +410,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         function __toggleQuestionTextEditing(event, element) {
             element.isEditing = !element.isEditing;
             $(event[0].currentTarget).siblings('.question-text-editor').focus();
+            activityAdaptor.autoResizeActivityIframe();
         }
 
         /* Remove option item */
@@ -421,6 +422,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 obj.interactions[interaction][type][option].customAttribs.index--;
             }
             __state.hasUnsavedChanges = true;
+            activityAdaptor.autoResizeActivityIframe();
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
@@ -438,6 +440,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             }
 
             __state.hasUnsavedChanges = true;
+            activityAdaptor.autoResizeActivityIframe();
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
@@ -446,6 +449,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             element.customAttribs.isEdited = !element.customAttribs.isEdited;
             $(event[0].currentTarget).parent().find('.option-value')[0].focus();
             event[0].preventDefault();
+            activityAdaptor.autoResizeActivityIframe();
         }
 
 
@@ -457,6 +461,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 element.isEditing = false;
             }
             __state.hasUnsavedChanges = true;
+            activityAdaptor.autoResizeActivityIframe();
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
@@ -472,6 +477,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             newObj.customAttribs.index = content.interactions[interaction][type].length;
             content.interactions[interaction][type].push(newObj);
             __state.hasUnsavedChanges = true;
+            activityAdaptor.autoResizeActivityIframe();
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
@@ -485,6 +491,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             });
             __editedJsonContent.isInstructionEmpty = false;
             $('#instructionLabel').show();
+            activityAdaptor.autoResizeActivityIframe();
         }
         /*------------------------RIVETS END-------------------------------*/
 
@@ -673,6 +680,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             $(modal).modal('show');
             // prevents the default action when the row is clicked.
             event.preventDefault();
+            activityAdaptor.autoResizeActivityIframe();
         }
 
         /** Updated the entered inline feedback in the JSON  */

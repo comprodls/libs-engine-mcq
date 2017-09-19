@@ -21008,7 +21008,7 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             //Process JSON for easy iteration in template
             //__parseAndUpdateJSONForRivets();
             __parseAndUpdateJSONForRivets();
-            console.log(JSON.stringify(__editedJsonContent, null, 4));
+
             /* ------ VALIDATION BLOCK END -------- */
 
             /* Apply the layout HTML to the dom */
@@ -21295,12 +21295,12 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
                 obj.interactions[interaction][type][option].customAttribs.index--;
             }
             __state.hasUnsavedChanges = true;
+            activityAdaptor.autoResizeActivityIframe();
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
         /* Remove option item */
         function __removeInstruction(event, instruction, index) {
-            console.log("instruction ", instruction, index);
             __editedJsonContent.content.instructions.splice(index, 1);
 
             if (__editedJsonContent.content.instructions.length > 0) {
@@ -21313,6 +21313,7 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             }
 
             __state.hasUnsavedChanges = true;
+            activityAdaptor.autoResizeActivityIframe();
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
@@ -21347,6 +21348,7 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             newObj.customAttribs.index = content.interactions[interaction][type].length;
             content.interactions[interaction][type].push(newObj);
             __state.hasUnsavedChanges = true;
+            activityAdaptor.autoResizeActivityIframe();
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
@@ -21360,6 +21362,7 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             });
             __editedJsonContent.isInstructionEmpty = false;
             $('#instructionLabel').show();
+            activityAdaptor.autoResizeActivityIframe();
         }
         /*------------------------RIVETS END-------------------------------*/
 
@@ -21548,6 +21551,7 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             $(modal).modal('show');
             // prevents the default action when the row is clicked.
             event.preventDefault();
+            activityAdaptor.autoResizeActivityIframe();
         }
 
         /** Updated the entered inline feedback in the JSON  */

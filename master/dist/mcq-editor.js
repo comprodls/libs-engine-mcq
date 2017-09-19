@@ -21284,6 +21284,7 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
         function __toggleQuestionTextEditing(event, element) {
             element.isEditing = !element.isEditing;
             $(event[0].currentTarget).siblings('.question-text-editor').focus();
+            activityAdaptor.autoResizeActivityIframe();
         }
 
         /* Remove option item */
@@ -21322,6 +21323,7 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             element.customAttribs.isEdited = !element.customAttribs.isEdited;
             $(event[0].currentTarget).parent().find('.option-value')[0].focus();
             event[0].preventDefault();
+            activityAdaptor.autoResizeActivityIframe();
         }
 
 
@@ -21333,6 +21335,7 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
                 element.isEditing = false;
             }
             __state.hasUnsavedChanges = true;
+            activityAdaptor.autoResizeActivityIframe();
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
@@ -21587,6 +21590,10 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             $("a.dropdown-toggle").click(function () {
                 $("#menu1").dropdown("toggle");
             });
+
+            $(window).on('resize', function(){
+                activityAdaptor.autoResizeActivityIframe();
+          });
         });
 
         /** End popover html section  */

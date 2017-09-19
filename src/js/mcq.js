@@ -202,7 +202,6 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
 
             /** Default feedback. This feedback will be shown if app doesn't wan't to override it by its own Feedback. */
             function showfeedback() {
-                activityAdaptor.autoResizeActivityIframe();
                 var type = __content.interactions[0]['type'];
 
                 if (type === 'MCQMR') {
@@ -264,6 +263,7 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                         }
                     })
                 }
+                activityAdaptor.autoResizeActivityIframe();
             }
             /* ---------------------- PUBLIC FUNCTIONS END ----------------------------*/
 
@@ -305,7 +305,7 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 var currentInteractionId = currentTarget.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
                 var currentChoice = currentTarget.getAttribute('name');
                 if (currentTarget.checked) {
-                        $(currentTarget).parent().parent("li").addClass("highlight");
+                    $(currentTarget).parent().parent("li").addClass("highlight");
                     if (!__content.user_answers[currentInteractionId]) {
                         __content.user_answers[currentInteractionId] = [];
                     }
@@ -413,9 +413,9 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 // Assuming that there is only one interaction.
                 var type = interactions[0]['type'];
 
-              
 
-               if (type === 'MCQMR') {
+
+                if (type === 'MCQMR') {
                     $('input[id^=option]').parent().parent().removeClass("highlight");
                     $('input[id^=option]').parent().parent().addClass("wrong");
                     for (var interaction in __correct_answers) {
@@ -423,16 +423,16 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                             for (var j = 0; j < __correct_answers[interaction]['correct'].length; j++) {
                                 $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").closest('li').removeClass("wrong");
                                 $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").closest('li').addClass("correct");
-                              //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').removeClass("wrong")
-                              //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').removeClass("state-error")
-                              //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').addClass("correct")
-                              //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').addClass("state-success")
+                                //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').removeClass("wrong")
+                                //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').removeClass("state-error")
+                                //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').addClass("correct")
+                                //  $("#" + interaction + " input[name='" + __correct_answers[interaction]['correct'][j] + "']").prev('span').addClass("state-success")
                             }
                         }
                         //$("[id^=rejoinder]").removeClass("invisible");
                     }
                 }
-                
+
 
                 if (type === 'MCQSR') {
                     var interactionid = Object.keys(__correct_answers);
@@ -449,7 +449,7 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                             $("#" + userAnswer).closest('li').removeClass('highlight');
                             $("#" + userAnswer).closest('li').addClass('wrong');
                         }
-                   //     $("#" + userAnswer).siblings('.answer').removeClass("invisible");
+                        //     $("#" + userAnswer).siblings('.answer').removeClass("invisible");
                     }
                 }
             }

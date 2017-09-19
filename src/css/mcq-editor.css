@@ -16,82 +16,94 @@
  *
  *
  *******************************************************/
- .global {
+
+.global {
     font-size: 1.125em;
     font-family: "Open Sans";
     color: #5a5a5a;
- }
- .color-gray {
-    color: #5a5a5a;
- }
- .color-lightslategray {
-    color: #d5d5d5;
- }
- 
- .color-lightgray {
-    color: #9D9D9D;
- }
- .bg-white {
-    background-color: #FFF; 
- }
-
-  
- .global-border {
-    border: 1px solid  lightslategray;
 }
+
+.color-gray {
+    color: #5a5a5a;
+}
+
+.color-lightslategray {
+    color: #d5d5d5;
+}
+
+.color-lightgray {
+    color: #9D9D9D;
+}
+
+.bg-white {
+    background-color: #FFF;
+}
+
+.global-border {
+    border: 1px solid lightslategray;
+}
+
 .font-semibold {
     font-weight: 600;
 }
+
 .outline-none {
     outline: none;
 }
+
 .noborder {
-  border: none;   
+    border: none;
 }
+
 .global-input {
-    width: 100%;    
+    width: 100%;
 }
+
 .global-padding {
     padding: 10px;
 }
 
 .mt-sm {
-  margin-top: 15px;
+    margin-top: 15px;
 }
 
 .ml-md {
-  margin-left: 20px;
+    margin-left: 20px;
 }
+
 .ml-xxl {
-   margin-left: 60px; 
+    margin-left: 60px;
 }
+
 .ml-sm {
     margin-left: 15px;
 }
+
 .mb-sm {
     margin-bottom: 15px;
 }
-.border-bottom-dashed  {
+
+.border-bottom-dashed {
     border-bottom: 1px dashed #d5d5d5;
 }
 
-.border-bottom-blue  {
+.border-bottom-blue {
     border-bottom: 1px solid #162375;
 }
 
-.border-top  {
+.border-top {
     border-top: 1px solid #d5d5d5
 }
 
-.border-left  {
+.border-left {
     border-left: 1px solid #d5d5d5
 }
 
-.border-right  {
+.border-right {
     border-right: 1px solid #d5d5d5
 }
 
-.border-bottom  {
+.border-bottom {
     border-bottom: 1px solid #d5d5d5
 }
 
@@ -101,33 +113,29 @@
 }
 
 .fa-pencil:before {
- color: lightslategray;
- }
+    color: lightslategray;
+}
 
- .font-medium {
+.font-medium {
     font-size: 14px;
- }
- .text-underline {
+}
+
+.text-underline {
     text-decoration: underline;
- }
-
-
-
+}
 
 
 /* Global CSS for the entire editor irrespective of the type*/
 
- .form {
+.form {
     padding: 15px 0 15px 3px;
 }
 
-
-
- .form-container {
+.form-container {
     width: 100%;
 }
 
- .modal {
+.modal {
     position: absolute;
     left: 50%;
     /* now you must set a margin left under zero - value is a half width your window */
@@ -137,23 +145,21 @@
     margin-top: -250px;
 }
 
-
- .input-option {
+.input-option {
     width: 85%;
     border: none;
-    border-bottom: 1px solid #162375;;
+    border-bottom: 1px solid #162375;
+    ;
     outline: none;
 }
 
- .correct {
+.correct {
     color: green;
 }
 
- .incorrect {
+.incorrect {
     color: red;
 }
-
-
 
 .info {
     font-size: 18px;
@@ -172,12 +178,10 @@
     border-top-color: red;
 }
 
-
 .popover-title .close {
     position: relative;
     bottom: 3px;
 }
-
 
 .dropzone {
     background-color: #F2F2F2;
@@ -196,16 +200,13 @@
     margin-bottom: 5px;
 }
 
-
-
 .comment {
     color: navy
 }
 
-
-#mcq-sr li {    
+#mcq-sr li {
     position: static;
-    margin-top: 15px;    
+    margin-top: 15px;
 }
 
 
@@ -216,6 +217,7 @@
     position: relative;
 }
 
+
 /*#mcq-mr ul li {
     padding: 10px;
     position: static;
@@ -223,6 +225,7 @@
     border-top: 1px solid #DDDDDD;
 }
 */
+
 #mcq-mr ul li.highlight {
     background-color: #F2F2F2;
     border-radius: 0px;
@@ -323,7 +326,7 @@
 }
 
 #mcq-sr ul li i.choices:after {
-   /* background-color: #FFF;
+    /* background-color: #FFF;
     content: "\f00c";
     color: green;
     border-radius: 50%;
@@ -423,6 +426,7 @@
     left: 50px;
     bottom: 0px;
 }
+
 .icon-pencil-instruction-class {
     bottom: 5px;
     left: 16px;
@@ -433,22 +437,23 @@
     font-weight: normal;
 }
 
-[contentEditable=true]:empty:not(:focus):before{
-    content:attr(data-text)
+[contentEditable=true]:empty:not(:focus):before {
+    content: attr(data-text)
 }
 
-.textEditable[contentEditable=true]:empty:not(:focus):before{
-    content:attr(data-text)
-} 
+.textEditable[contentEditable=true]:empty:not(:focus):before {
+    content: attr(data-text)
+}
 
-.textEditable[contentEditable=true]:not(:focus){
-    border-bottom: 1px dashed #d5d5d5;     
-} 
+.textEditable[contentEditable=true]:not(:focus) {
+    border-bottom: 1px dashed #d5d5d5;
+}
 
-.textEditable[contentEditable=true]:focus{
-    outline:none;
+.textEditable[contentEditable=true]:focus {
+    outline: none;
     border: none;
-    border-bottom: 1px solid #162375;;
+    border-bottom: 1px solid #162375;
+    ;
     outline: none;
 }
 
@@ -458,12 +463,13 @@
     display: inline-block;
     width: 100%;
 }
-.icon-pos-instruction-class{
+
+.icon-pos-instruction-class {
     bottom: 4px;
     right: 5px;
 }
 
- i.correct {
+i.correct {
     height: 2.6em;
     width: 2.6em;
     border-radius: 50%;
@@ -477,7 +483,7 @@
     padding: 10px;
 }
 
- i.correct:after {
+i.correct:after {
     opacity: 0.7;
     background-color: #FFF;
     content: "\f087";
@@ -498,7 +504,6 @@ i.correct {
 highlight i.correct:after {
     opacity: 1;
 }
-
 
 i.incorrect {
     height: 2.6em;

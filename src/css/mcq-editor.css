@@ -565,6 +565,6 @@ i.incorrect:after {
     border-color: #122b40;
 }
 .ribbon-adjustments {
-    margin: 0px !important;
+    margin: 0 5px 0 5px !important;
 
 }

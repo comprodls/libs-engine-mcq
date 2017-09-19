@@ -134,7 +134,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             //Process JSON for easy iteration in template
             //__parseAndUpdateJSONForRivets();
             __parseAndUpdateJSONForRivets();
-            console.log(JSON.stringify(__editedJsonContent, null, 4));
+
             /* ------ VALIDATION BLOCK END -------- */
 
             /* Apply the layout HTML to the dom */
@@ -426,7 +426,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
         /* Remove option item */
         function __removeInstruction(event, instruction, index) {
-            console.log("instruction ", instruction, index);
             __editedJsonContent.content.instructions.splice(index, 1);
 
             if (__editedJsonContent.content.instructions.length > 0) {

@@ -13,7 +13,7 @@
         </div>
         <!-- Loop over all question data text -->
         <div class="col-sm-12 mt-sm">
-          <div rv-each-qdata="content.canvas.data.questiondata">
+          <div class="text-box" rv-each-qdata="content.canvas.data.questiondata">
               <span class="icon-pencil-class icon-pencil-instruction-class"><i class="fa fa-pencil"></i></span>                        
               <input role="button" class="option-value global-input outline-none noborder border-bottom-blue" rv-show="qdata.customAttribs.isEdited" rv-value="qdata.text" 
                             rv-on-blur="removeEditing | args qdata"></input>
@@ -36,9 +36,9 @@
               </div>
               <div class="col-sm-12" >
                   <ul class="list-unstyled nested-list editor">
-                  <li class="colborder mt-sm" rv-each-instruction="content.instructions"   rv-instructionIndex="%instruction%">  
+                  <li class="text-box colborder mt-sm" rv-each-instruction="content.instructions"   rv-instructionIndex="%instruction%">  
                     <div class="line-formatter">
-                      <span class="icon-pencil-class  icon-pencil-instruction-class bottom"><i class="fa fa-pencil"></i></span>
+                      <span class="icon-pencil-class  icon-pencil-instruction-class"><i class="fa fa-pencil"></i></span>
                       <input role="button" class="option-value global-input outline-none noborder border-bottom-blue" rv-show="instruction.customAttribs.isEdited" 
                           rv-value="instruction.text"
                       placeholder="Add Instructions"  rv-on-blur="removeEditing | args instruction" ></input>

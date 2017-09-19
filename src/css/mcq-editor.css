@@ -425,7 +425,7 @@
 }
 .icon-pencil-instruction-class {
     bottom: 5px;
-    left: 16px;
+    left: 0px;
 }
 
 .option-value {
@@ -538,4 +538,9 @@ i.incorrect:after {
 
 .bottom {
     bottom: 12px;
+}
+
+
+.text-box {
+    position: relative;
 }

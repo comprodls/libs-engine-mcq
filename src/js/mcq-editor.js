@@ -134,7 +134,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             //Process JSON for easy iteration in template
             //__parseAndUpdateJSONForRivets();
             __parseAndUpdateJSONForRivets();
-            console.log(JSON.stringify(__editedJsonContent, null, 4));
+
             /* ------ VALIDATION BLOCK END -------- */
 
             /* Apply the layout HTML to the dom */
@@ -268,6 +268,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         function __parseAndUpdateJSONForRivets() {
             __editedJsonContent.MCQMR = false;
             __editedJsonContent.MCQSR = false;
+            __editedJsonContent.isInstructionEmpty = true;
+
             for (var i = 0; i < __interactionIds.length; i++) {
                 var processedArray = [];
                 var interaction = __editedJsonContent.content.interactions[i];
@@ -305,24 +307,30 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             __parseInstructionTextJSONForRivets();
         }
 
-        function __parseQuestionTextJSONForRivets (){
-            __editedJsonContent.content.canvas.data.questiondata.forEach(function(element){
-                if(element.text == '') {
-                    element.text = "Enter Question Text."
+        function __parseQuestionTextJSONForRivets() {
+            __editedJsonContent.content.canvas.data.questiondata.forEach(function (element) {
+                if (element.text == '') {
+                    element.text = 'Placeholder Question text. Update "Me" with a valid Question text';
                 }
                 element.customAttribs = {};
                 element.customAttribs.isEdited = false;
             })
         }
 
-        function __parseInstructionTextJSONForRivets (){
-            __editedJsonContent.content.instructions.forEach(function(element){
-                if(element.text == '') {
-                    element.text = "Enter Question Text."
+        function __parseInstructionTextJSONForRivets() {
+            __editedJsonContent.content.instructions.forEach(function (element) {
+                if (element.text == '' || element.tag == '') {
+                    element.text = 'Placeholder Instruction text. Update "Me" with a valid Instruction text for this question'
                 }
                 element.customAttribs = {};
                 element.customAttribs.isEdited = false;
             })
+
+            if (__editedJsonContent.content.instructions.length > 0) {
+                __editedJsonContent.isInstructionEmpty = false;
+            } else {
+                __editedJsonContent.isInstructionEmpty = true;
+            }
         }
 
 
@@ -390,10 +398,11 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 handleItemChanged: __handleItemChangedInEditor,
                 mcqmr: __editedJsonContent.MCQMR,
                 mcqsr: __editedJsonContent.MCQSR,
-                removeInstruction : __removeInstruction,
-                addInstruction : __addInstruction,
-                isInstructionEmpty : false
-                // __editedJsonContent.content.instructions.length === 0 ? false : true
+                removeInstruction: __removeInstruction,
+                addInstruction: __addInstruction,
+                isInstructionEmpty: __editedJsonContent.isInstructionEmpty,
+                isFeedbackGlobal: __editedJsonContent.feedback['global'] !== undefined ? true : false,
+                isFeedbackInteraction: __editedJsonContent.feedback['global'] === undefined ? false : true
             });
         }
 
@@ -417,8 +426,17 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
         /* Remove option item */
         function __removeInstruction(event, instruction, index) {
-            console.log("instruction ", instruction, index);
             __editedJsonContent.content.instructions.splice(index, 1);
+
+            if (__editedJsonContent.content.instructions.length > 0) {
+                __editedJsonContent.isInstructionEmpty = false;
+                $('#instructionLabel').show();
+            }
+            else {
+                __editedJsonContent.isInstructionEmpty = true;
+                $('#instructionLabel').hide();
+            }
+
             __state.hasUnsavedChanges = true;
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
@@ -440,8 +458,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             }
             __state.hasUnsavedChanges = true;
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
-        }        
-        
+        }
+
 
         /* Add new option for the question */
         function __addItem(event, content, interaction) {
@@ -458,12 +476,15 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         }
 
         function __addInstruction() {
-            __editedJsonContent.content.instructions.push({"tag": "text",
-                                                           "text": "Modify this text to the desired Instruction text" ,
-                                                               "customAttribs": {
-                                                                "isEdited": false
-                                                                }
-                                                          });                                                             
+            __editedJsonContent.content.instructions.push({
+                "tag": "text",
+                "text": 'Placeholder Instruction text. Update "Me" with a valid Instruction text for this question',
+                "customAttribs": {
+                    "isEdited": false
+                }
+            });
+            __editedJsonContent.isInstructionEmpty = false;
+            $('#instructionLabel').show();
         }
         /*------------------------RIVETS END-------------------------------*/
 
@@ -683,72 +704,12 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             $('.dropdown-menu').click(function (e) {
                 e.stopPropagation();
             });
-            //$('[data-toggle="tooltip"]').tooltip();
 
-            $('#qtypeinfoico').popover(qtypecontent);
-            $('#instinfoico').popover(intructcontent);
-            $('#qtextinfoico').popover(qtextcontent);
-            $('#ansinfoico').popover(answercontent);
-            $('#scoreinfoico').popover(scorecontent);
-            $('#fbackinfoico').popover(fbackcontent);
-            $('#mediainfoico').popover(mediacontent);
-
-            /***** Dismiss all popovers by clicking outside, don't dismiss if clicking inside the popover content  **************/
-
-            $('html').on('click', function (e) {
-                if (typeof $(e.target).data('original-title') == 'undefined' &&
-                    !$(e.target).parents().is('.popover.in')) {
-                    $('[data-original-title]').popover('hide');
-                }
+            $("a.dropdown-toggle").click(function () {
+                $("#menu1").dropdown("toggle");
             });
-
         });
 
-        /**
-         * This section contains the html content for the popovers
-         * 
-         */
-
-        var qtypecontent = {
-            content: '<div class="popmsg"><p>The MCQ Engine supports 2 types of questions:</p><div class="row"><ul><li><strong>MCQSR</strong> - Multiple Choice Question Single Response</li><li><strong>MCQMR</strong> - Multiple Choice Question Multiple Response</li></ul></div></div>',
-            html: true,
-            placement: 'right'
-        }
-        var intructcontent = {
-            content: '<div class="popmsg"><p><strong>Use the textfield below to enter instructions for this question.</strong></p></div></div>',
-            html: true,
-            placement: 'right'
-        }
-
-        var qtextcontent = {
-            content: '<div class="popmsg"><p><strong>Use the textfield below to enter instructions for this question.</strong></p></div></div>',
-            html: true,
-            placement: 'right'
-        }
-
-        var answercontent = {
-            content: '<div class="popmsg"><p><strong>Use this section to Add / Edit / Re-order / Remove Choices.</strong></p><ul><li>Click on Answer text to edit/modify the answer.</li><li>Use the buttons on the right to Add inline feedback, reorder the answers or remove and option.</li><li>Use the <strong>Add Choice</strong> button to add a new option.</li><li>Click the Check box on the left to mark an answer correct.</li></ul></div></div>',
-            html: true,
-            placement: 'right'
-        };
-
-        var scorecontent = {
-            content: '<div class="popmsg"><p>Use the text fields below to enter minimum and maximum score possible for this question. A number between 0 and 1 is permitted in this field.</p></div>',
-            html: true,
-            placement: 'right'
-        }
-
-        var fbackcontent = {
-            content: '<div class="popmsg"><p>Use the text fields below to enter enter global feedback for user response.</p><ul><li><strong>Correct</strong>: The feedback to be given when user answers correctly</li><li><strong>InCorrect</strong>: The feedback to be given when user answer is incorrect</li><li><strong>Empty</strong>: The feedback to be given when user does not answer the question</li></ul></div>',
-            html: true,
-            placement: 'right'
-        }
-
-        var mediacontent = {
-            content: '<div class="popmsg"><p>Allows the author to upload media elements like images, videos related to this question. <i>Note: This feature is currently not supported.</i></p></div>',
-            html: true,
-            placement: 'right'
-        }
         /** End popover html section  */
         return {
             /*Engine-Shell Interface*/

@@ -27,13 +27,21 @@ main {
     font-size: 1.25em;
 }
 
+.color-lightgray {
+    color: #5a5a5a;
+ }
+
 .instruction {
-    color: #414040;
-    font-size: 20px;
+    color: #5a5a5a;
+    font-size: 18px;
+    font-style: italic;
 }
 
 .interactions {
     font-size: 1.15em;
+}
+.mt-md {
+    margin-top: 20px;
 }
 
 ul {

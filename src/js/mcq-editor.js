@@ -310,7 +310,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         function __parseQuestionTextJSONForRivets() {
             __editedJsonContent.content.canvas.data.questiondata.forEach(function (element) {
                 if (element.text == '') {
-                    element.text = "Enter Question Text."
+                    element.text = 'Placeholder Question text. Update "Me" with a valid Question text';
                 }
                 element.customAttribs = {};
                 element.customAttribs.isEdited = false;
@@ -319,8 +319,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
         function __parseInstructionTextJSONForRivets() {
             __editedJsonContent.content.instructions.forEach(function (element) {
-                if (element.text == '') {
-                    element.text = "Enter Question Text."
+                if (element.text == '' || element.tag == '') {
+                    element.text = 'Placeholder Instruction text. Update "Me" with a valid Instruction text for this question'
                 }
                 element.customAttribs = {};
                 element.customAttribs.isEdited = false;

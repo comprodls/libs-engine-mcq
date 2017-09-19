@@ -392,7 +392,9 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 mcqsr: __editedJsonContent.MCQSR,
                 removeInstruction : __removeInstruction,
                 addInstruction : __addInstruction,
-                isInstructionEmpty : false
+                isInstructionEmpty : false,
+                isFeedbackGlobal: __editedJsonContent.feedback['global'] !== undefined ? true : false, 
+                isFeedbackInteraction: __editedJsonContent.feedback['global'] === undefined ? false : true
                 // __editedJsonContent.content.instructions.length === 0 ? false : true
             });
         }

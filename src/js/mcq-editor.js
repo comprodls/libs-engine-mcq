@@ -716,6 +716,10 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             $("a.dropdown-toggle").click(function () {
                 $("#menu1").dropdown("toggle");
             });
+
+            $(window).on('resize', function(){
+                activityAdaptor.autoResizeActivityIframe();
+          });
         });
 
         /** End popover html section  */

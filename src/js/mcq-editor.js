@@ -479,7 +479,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         function __addInstruction() {
             __editedJsonContent.content.instructions.push({
                 "tag": "text",
-                "text": "Modify this text to the desired Instruction text",
+                "text": 'Placeholder Instruction text. Update "Me" with a valid Instruction text for this question',
                 "customAttribs": {
                     "isEdited": false
                 }

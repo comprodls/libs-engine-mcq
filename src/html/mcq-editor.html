@@ -55,9 +55,9 @@
           <div class="col-sm-12 dropdown">
             <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">+ Add
                 </button>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-              <li role="presentation"><a class='dropdown-toggle disabled' role="menuitem" href="#" rv-on-click="addInstruction">Instruction Text</a></li>
-              <li role="presentation"><a class='dropdown-toggle disabled' role="menuitem" href="#">Description Text</a></li>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="left: 15px;">
+              <li class="border-bottom-dashed" role="presentation"><a class='dropdown-toggle disabled' role="menuitem" href="#" rv-on-click="addInstruction">Instruction Text</a></li>
+              <li class="border-bottom-dashed" role="presentation"><a class='dropdown-toggle disabled' role="menuitem" href="#">Description Text</a></li>
             </ul>
           </div>
         </div>
@@ -68,7 +68,7 @@
         <header>
           <h4 class="headerlabel font-semibold color-gray">Answer Choices
             <span class="dropdown font-medium ml-md">
-                    <a href="#" class="dropdown-toggle color-lightgray text-underline" data-toggle="dropdown" aria-expanded="false">
+                    <a href="#" class="dropdown-toggle color-lightgray text-underline font-normal" data-toggle="dropdown" aria-expanded="false">
                         Single Correct Answer
                         <b class="caret">
                         </b>
@@ -184,10 +184,10 @@
     </section>
     <section id="feedback" class="section feedback  border-bottom-shadow">
       <div class="global-padding">
-        <div class="row mt-sm">
+        <div class="row mt-sm mb-sm">
           <div class="col-sm-12">
             <a class="enable-feedback">
-              <button type="button" class="btn btn-default font-semibold color-gray"><h4>Enable Feedback</h4></button>
+              <button type="button" class="btn btn-default active-btn"><h4 class="font-semibold color-gray">Enable Feedback</h4></button>
             </a>
           </div>
         </div>
@@ -249,9 +249,9 @@
 </div>
 </section>
 <section id="media" class="section border-bottom-shadow">
-  <div class="global-padding">
+  <div class="global-padding mt-sm mb-sm">
     <a class="enable-media">
-            <button type="button" class="btn btn-default font-semibold color-gray"><h4>Enable Media</h4></button>
+            <button type="button" class="btn btn-default active-btn"><h4 class="color-gray font-semibold">Enable Media</h4></button>
         </a>
   </div>
 </section>

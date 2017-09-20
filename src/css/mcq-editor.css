@@ -18,7 +18,7 @@
  *******************************************************/
 
 .global {
-    font-size: 1.125em;
+    font-size: 1.3em;
     font-family: "Open Sans";
     color: #5a5a5a;
 }
@@ -429,7 +429,7 @@
 
 .icon-pencil-class {
     position: absolute;
-    left: 50px;
+    left: 54px;
     bottom: 0px;
 }
 
@@ -591,4 +591,8 @@ i.incorrect:after {
 
 li.col-xs-12.col-sm-12.bg-white:hover {
     background-color: #fdf9e6;
+}
+
+#mcq-sr .option-value {
+    padding-left: 30px;
 }

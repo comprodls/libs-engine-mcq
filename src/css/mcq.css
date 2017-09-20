@@ -64,7 +64,7 @@ ul {
 }
 
 li:hover {
-    background: #d9e6ed;
+    background: #fdf9e6;
 }
 
 /* Specific to the MCQ - SR type only*/
@@ -82,12 +82,12 @@ li:hover {
 }
 
 #mcq-sr li:hover {
-    background: #d9e6ed;
+    background: #fdf9e6;
     cursor: pointer;
 }
 
 #mcq-sr li.highlight {
-    background-color: #F7fbff;
+    background-color: #F7e9d4;
     border-radius: 6px;
     border-bottom: 1px solid #DDDDDD;
 }

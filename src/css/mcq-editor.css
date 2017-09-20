@@ -20,7 +20,7 @@
 .global {
     font-size: 1.3em;
     font-family: "Open Sans";
-    color: #5a5a5a;
+    color: #585858;
 }
 
 .color-gray {
@@ -32,7 +32,7 @@
 }
 
 .color-lightgray {
-    color: #5f5f5e;
+    color: #585858;
 }
 
 .bg-white {

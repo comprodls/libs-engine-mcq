@@ -402,7 +402,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 addInstruction: __addInstruction,
                 isInstructionEmpty: __editedJsonContent.isInstructionEmpty,
                 isFeedbackGlobal: __editedJsonContent.feedback['global'] !== undefined ? true : false,
-                isFeedbackInteraction: __editedJsonContent.feedback['global'] === undefined ? false : true
+                isFeedbackInteraction: __editedJsonContent.feedback['global'] === undefined ? false : true,
+                autoGrowTextArea: __autoGrowTextArea
             });
         }
 
@@ -455,6 +456,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
         /* Remove edit mode on blur*/
         function __removeEditing(event, element) {
+            __autoGrowTextArea(event);
             if (element.customAttribs) {
                 element.customAttribs.isEdited = false;
             } else {
@@ -720,8 +722,46 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             $(window).on('resize', function(){
                 activityAdaptor.autoResizeActivityIframe();
           });
-        });
 
+          
+          /*var textarea = document.querySelector('textarea');
+          
+          textarea.addEventListener('keydown', autosize);
+                       
+          function autosize(){
+            var el = this;
+            setTimeout(function(){
+              el.style.cssText = 'height:auto; padding:0';
+              // for box-sizing other than "content-box" use:
+              // el.style.cssText = '-moz-box-sizing:content-box';
+              el.style.cssText = 'height:' + el.scrollHeight + 'px';
+            },0);
+            
+          }*/
+
+           
+        });
+        function __autoGrowTextArea(event)
+        {
+        //console.log("textarea ", event);
+        var textField = event.currentTarget || event[0].currentTarget;
+        //  console.log("textarea ", textField.scrollHeight , " ",  textField.clientHeight); 
+        /*  if (textField.clientHeight < textField.scrollHeight)          
+          {
+            textField.style.height = textField.scrollHeight + "px";
+            if (textField.clientHeight < textField.scrollHeight)
+            {
+              textField.style.height = 
+                (textField.scrollHeight * 2 - textField.clientHeight) + "px";
+            }
+          }
+          console.log(textField.scrollHeight * 2 - textField.clientHeight);
+          */
+          textField.style.height = 'auto';
+          textField.style.height =  textField.scrollHeight-4 +"px";
+        }
+       
+      
         /** End popover html section  */
         return {
             /*Engine-Shell Interface*/
@@ -731,4 +771,5 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             "saveItemInEditor": saveItemInEditor
         };
     };
+    
 });

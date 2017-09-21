@@ -37,9 +37,10 @@
             <ul class="list-unstyled nested-list editor">
               <li class="text-box colborder mt-sm" rv-each-instruction="content.instructions" rv-instructionIndex="%instruction%">
                 <div class="line-formatter">
-                  <span class="icon-pencil-class  icon-pencil-instruction-class"><i class="fa fa-pencil"></i></span>                                   
+                  <span class="icon-pencil-class  icon-pencil-instruction-class"><i class="fa fa-pencil"></i></span>
                   <textarea rows="1" role="button" class="option-value global-input outline-none noborder border-bottom-blue" rv-show="instruction.customAttribs.isEdited"
-                    rv-value="instruction.text" placeholder="Add Instructions" rv-on-blur="removeEditing | args instruction" rv-on-focus="autoGrowTextArea" rv-on-keyup="autoGrowTextArea"></textarea>
+                    rv-value="instruction.text" placeholder="Add Instructions" rv-on-blur="removeEditing | args instruction"
+                    rv-on-focus="autoGrowTextArea" rv-on-keyup="autoGrowTextArea"></textarea>
                   <div class="option-value border-bottom-dashed" role="button" rv-hide="instruction.customAttribs.isEdited" rv-on-click="editOptionText | args instruction">
                     <span rv-text="instruction.text"></span>
                   </div>
@@ -143,7 +144,7 @@
                     <label class="radio optionlabel"> 
                       <input type="radio" name="optionsRadios" class="option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"></input><i class="choices"></i>
                       <span class="icon-pencil-class"><i class="fa fa-pencil"></i></span>    
-                      <textarea rows="1" role="button" class="textarea option-value input-option color-lightgray" rv-show="element.customAttribs.isEdited" rv-value="element.customAttribs.value" rv-on-blur="removeEditing | args element" rv-on-focus="autoGrowTextArea" rv-on-keyup="autoGrowTextArea"></textarea>                      
+                      <textarea rows="1" role="button" class="option-value input-option color-lightgray" rv-show="element.customAttribs.isEdited" rv-value="element.customAttribs.value" rv-on-blur="removeEditing | args element" rv-on-focus="autoGrowTextArea" rv-on-keyup="autoGrowTextArea"></textarea>                      
                       <div class="option-value border-bottom-dashed color-lightgray" rv-text="element.customAttribs.value" rv-hide="element.customAttribs.isEdited"  rv-on-click="editOptionText | args element"></div>
                 <span class="icon-pos-class">
                   <a class="btn color-lightgray editor-icon delete-icon mcq-edit fa fa-times" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>                

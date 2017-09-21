@@ -175,6 +175,13 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 __saveResults(true);
                 $('input[id^=option]').attr("disabled", true);
                 $('input[class^=mcqsroption]').attr("disabled", true);
+               
+                $('li[class^=line-item]').hover(function(){
+                 $(this).addClass('disable-li-hover');
+                });
+                $('label[class^=line-item-label]').hover(function(){
+                    $(this).addClass('disable-li-hover');
+                })
             }
 
             /**

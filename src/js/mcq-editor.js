@@ -379,6 +379,26 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             };
 
 
+			 rivets.binders['content-editable'] = {
+                bind: function (el) {
+                    var that = this;
+                    el.setAttribute("contenteditable", true);
+                    this.callback = function (e) {
+                        that.publish();
+                    };
+                    el.addEventListener("blur", this.callback);
+                },
+                unbind: function (el) {
+                    el.removeEventListener("blur", this.callback);
+                },
+                getValue: function (el) {
+                    return el.innerText;
+                },
+                routine: function (el, value) {
+                    el.innerText = value;
+                }
+            };
+			
             /* 
               * Bind data to template using rivets
               */

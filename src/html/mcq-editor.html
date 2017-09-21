@@ -15,10 +15,7 @@
           <div class="col-sm-12 mt-sm">
             <div class="text-box" rv-each-qdata="content.canvas.data.questiondata">
               <span class="icon-pencil-class icon-pencil-instruction-class"><i class="fa fa-pencil"></i></span>
-              <textarea rows="1" role="button" class="option-value global-input outline-none noborder border-bottom-blue" rv-show="qdata.customAttribs.isEdited"
-                rv-value="qdata.text" rv-on-blur="removeEditing | args qdata" rv-on-focus="autoGrowTextArea" rv-on-keyup="autoGrowTextArea"></textarea>
-              <div class="option-value border-bottom-dashed" role="button" rv-hide="qdata.customAttribs.isEdited" rv-on-click="editOptionText | args qdata">
-                <span rv-text="qdata.text"></span>
+              <div rv-content-editable="qdata.text" class="option-value border-bottom-dashed" role="button">
               </div>
             </div>
           </div>

@@ -85,7 +85,6 @@ li:hover {
     background: #fdf9e6;
     cursor: pointer;
 }
-
 #mcq-sr li.highlight {
     background-color: #F7fbff;
     border-radius: 6px;
@@ -331,6 +330,14 @@ li:hover {
 .align-2-item {    
     display: flex;
     align-items: center;
+}
+.disable-li-hover  {
+    cursor: default;
+}
+
+.disable-li-hover:hover  {
+    background-color: #F7fbff !important;
+    cursor: default !important;
 }
 
 /*  --- Ends ---  */

@@ -134,7 +134,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             //Process JSON for easy iteration in template
             //__parseAndUpdateJSONForRivets();
             __parseAndUpdateJSONForRivets();
-
+            console.log(JSON.stringify(__editedJsonContent, null, 2));
             /* ------ VALIDATION BLOCK END -------- */
 
             /* Apply the layout HTML to the dom */
@@ -146,7 +146,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             /* ---------------------- SETUP EVENTHANDLER STARTS----------------------------*/
             //On CLICK of Radio buttons    
             $(document).on('change', '.editor .checkbox input:checkbox', __handleCheckboxButtonClick);
-            $(document).on('change', '.editor .radio input:radio', __handleRadioButtonClick);
+           // $(document).on('change', '.editor label.radio', __handleRadioButtonClick);
+            $(document).on('click', '.editor label.radio', __handleRadioButtonClick);
             //Drag of list items (re-ordering)
             __bindSortable();
             /* ---------------------- SETUP EVENTHANDLER ENDS------------------------------*/
@@ -371,6 +372,10 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 return text;
             };
 
+            rivets.formatters.idcreator = function (key, idvalue) {
+                return idvalue + key;
+            }
+
             rivets.formatters.btnId = function (obj) {
                 var text = "btn";
                 obj = obj.replace(/[\. ,:-]+/g, '');
@@ -395,7 +400,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     return el.innerText;
                 },
                 routine: function (el, value) {
-                    el.innerText = value;
+                    el.innerHTML = value;
                 }
             };
 			
@@ -613,10 +618,10 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             var currentTarget = event.currentTarget;
             var quesIndex = 0;
             var interactionIndex = parseInt($(currentTarget).parent().parent("li").attr('interactIndex'));
-            $("label.radio").parent().removeClass("highlight");
-            $(currentTarget).parent().parent("li").addClass("highlight");
-            $('.correct-answer').hide();
-            $(currentTarget).siblings('.correct-answer').show();
+            $("label.radio").parent('li').removeClass("highlight");
+            $(currentTarget).closest("li").addClass("highlight");
+            //$('.correct-answer').hide();
+            //$(currentTarget).siblings('.correct-answer').show();
             __state.hasUnsavedChanges = true;
             /* Update the isCorrect property for each option*/
             __editedJsonContent.content.interactions[interactionIndex].MCQSR.forEach(function (obj, index) {

@@ -21,8 +21,12 @@
     font-size: 1.3em;
     font-family: "Open Sans";
     color: #585858;
+    padding: 10px;
 }
 
+.outline-none {
+    outline: none;
+}
 .color-gray {
     color: #343434;
 }
@@ -51,28 +55,31 @@
     font-weight: 400;
 }
 
-.outline-none {
-    outline: none;
-}
-
 .noborder {
     border: none;
 }
 
-.global-input {
-    width: 98%;
-}
-
-.global-padding {
-    padding: 10px;
+.adjusted-width {
+    width: 96%;
 }
 
 .mt-sm {
     margin-top: 15px;
 }
 
+
+.mt-md {
+    margin-top: 20px;
+}
+
 .ml-md {
     margin-left: 20px;
+}
+.ml-xl {
+    margin-left: 40px;
+}
+.mt-xs {
+    margin-top: 5px;   
 }
 
 .ml-xxl {
@@ -87,12 +94,37 @@
     margin-bottom: 15px;
 }
 
+.mb-md {
+    margin-bottom: 20px;
+}
+
+.mb-add-offset {
+    margin-bottom: 25px;
+}
+
+.mr-1em {
+  margin-right: 1em;  
+}
+
+.pl-md {
+    padding-left: 25px;
+}
+.pr-3pc {
+    padding-right: 3%;
+}
+
+.pr-7pc {
+    padding-right: 3%;
+}
+
 .border-bottom-dashed {
     border-bottom: 1px dashed #d5d5d5;
+    transition: border-color 0.5s ease-in-out;
 }
 
 .border-bottom-blue {
     border-bottom: 1px solid #6778e3;
+    transition: border-color 0.5s ease-in-out;
 }
 
 .border-top {
@@ -128,35 +160,6 @@
     text-decoration: underline;
 }
 
-
-/* Global CSS for the entire editor irrespective of the type*/
-
-.form {
-    padding: 15px 0 15px 3px;
-}
-
-.form-container {
-    width: 100%;
-}
-
-.modal {
-    position: absolute;
-    left: 50%;
-    /* now you must set a margin left under zero - value is a half width your window */
-    margin-left: -312px;
-    /* this same situation is with height - example */
-    top: 55%;
-    margin-top: -250px;
-}
-
-.input-option {
-    width: 94%;
-    border: none;
-    border-bottom: 1px solid #162375;
-    ;
-    outline: none;
-}
-
 .correct {
     color: green;
 }
@@ -165,328 +168,58 @@
     color: red;
 }
 
-.info {
-    font-size: 18px;
-    color: black;
-    text-decoration: none;
-}
-
-.popmsg {
-    font-size: 12px;
-    padding: 2px 2px 2px 2px;
-}
-
-.popcol {
-    padding: 1px 1px 1px 1px;
-    border-top: 2px;
-    border-top-color: red;
-}
-
-.popover-title .close {
-    position: relative;
-    bottom: 3px;
-}
-
-.dropzone {
-    background-color: #F2F2F2;
-    height: 215px;
-    padding-top: 60px;
-    margin-bottom: 10px;
-    border: dotted;
-    text-align: center;
-    vertical-align: middle;
-    border: 2px dashed;
-    border-radius: 5px;
-}
-
-.vspacer {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-.comment {
-    color: navy
-}
-
-#mcq-sr li {
-    position: static;
-    margin-top: 15px;
-}
-
-
-/* Specific to MCQ MR type*/
-
-#mcq-mr ul {
-    padding-bottom: 10px;
-    position: relative;
-}
-
-
-/*#mcq-mr ul li {
-    padding: 10px;
-    position: static;
-    border-bottom: 1px solid #DDDDDD;
-    border-top: 1px solid #DDDDDD;
-}
-*/
-
-#mcq-mr ul li.highlight {
-    background-color: #F2F2F2;
-    border-radius: 0px;
-    border-bottom: 1px solid #DDDDDD;
-}
-
-#mcq-mr ul li i {
-    height: 1.8em;
-    width: 1.8em;
-    border-radius: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: block;
-    outline: 0;
-    border: 1px solid #BDBDBD;
-    background: #FFF;
-}
-
-#mcq-mr ul li i:after {
-    background-color: #666666;
-    content: '';
-    border-radius: 0;
-    height: 1.1em;
-    width: 1.1em;
-    top: .3em;
-    left: .3em;
-    position: absolute;
-    opacity: 0;
-}
-
-#mcq-mr ul li.highlight i {
-    border-color: #F2F2F2;
-}
-
-#mcq-mr ul li.highlight i:after {
-    opacity: 1;
-}
-
-#mcq-mr ul li .checkbox {
-    font-size: 1em;
-    line-height: 1.8em;
-    color: #3D3D3D;
-    cursor: pointer;
-    padding-left: 45px!important;
-}
-
-#mcq-mr ul li .checkbox input {
-    /*position: absolute;*/
-    left: 0px;
-}
-
-#mcq-mr ul li .checkbox .option-value {
-    position: static!important;
-    left: -9999;
-}
-
-#mcq-mr ul li .checkbox div.option-value {
-    /*display: inline-block;*/
-    font-weight: normal;
-    float: left;
-    width: 98%;
-}
-
-#mcq-mr ul li .checkbox .correct-answer {
-    font-weight: 700;
-}
-
-#mcq-mr ul li .editor-icon {
-    cursor: pointer;
-}
-
-#mcq-mr ul li .editor-icon.mcq-edit {
-    margin: 2px;
-}
-
-#mcq-mr ul li .delete-icon.mcq-edit {
-    right: 20px;
-}
-
-#mcq-mr ul li .drag-icon.mcq-edit {
-    right: 0px;
-}
-
-
-/* Specific to the MCQ - SR type only*/
-
-#mcq-sr ul li i.choices {
-    height: 2.6em;
-    width: 2.6em;
-    border-radius: 50%;
-    position: absolute;
-    top: -6px;
-    left: 0;
-    display: block;
-    outline: 0;
-    border: 1px solid #BDBDBD;
-    background: #FFF;
-    padding: 10px;
-}
-
-#mcq-sr ul li i.choices:after {
-    /* background-color: #FFF;
-    content: "\f00c";
-    color: green;
-    border-radius: 50%;
-    height: 1.1em;
-    width: 1.1em;
-    top: .29em;
-    left: .29em;
-    position: absolute;
-    opacity: 0;
-    */
-    opacity: 0;
-    background-color: #FFF;
-    content: "\f00c";
-    color: green;
-    font-family: fontawesome;
-    font-size: 1.7em;
-    position: relative;
-    left: -4px;
-    top: -4px;
-    font-weight: 400;
-    font-style: normal;
-}
-
-#mcq-sr ul li.highlight i.choices {
-    border-color: green;
-}
-
-#mcq-sr ul li.highlight i.choices:after {
-    opacity: 0.7;
-}
-
-#mcq-sr ul li .radio {
-    font-size: 1em;
-    line-height: 1.8em;
-    color: #3D3D3D;
-    cursor: pointer;
-    display: inline-block;
-    padding-left: 45px!important;
-}
-
-#mcq-sr ul li .radio input {
-    position: absolute;
-    left: -9999px;
-}
-
-#mcq-sr ul li .radio .option-value {
-    position: static!important;
-}
-
-#mcq-sr ul li .radio .option-value .input-option {
-    width: 85%;
-}
-
-#mcq-sr ul li .radio div.option-value {
-    width: 90%;
-    display: inline-block;
-}
-
-#mcq-sr ul li .radio .correct-answer {
-    font-weight: 700;
-}
-
-#mcq-sr ul li .editor-icon-container {
-    display: inline-block;
-    position: relative;
-    padding-top: 5px;
-}
-
-#mcq-sr ul li .editor-icon-container .editor-icon {
-    cursor: pointer;
-}
-
-#mcq-sr ul li .editor-icon-container .editor-icon.mcqsr-edit {
-    position: absolute;
-    right: 60px;
-}
-
-#mcq-sr ul li .editor-icon-container .delete-icon.mcqsr-edit {
-    right: 40px;
-}
-
-#mcq-sr ul li .editor-icon-container .drag-icon.mcqsr-edit {
-    right: 20px;
-}
-
-#mcq-sr ul li .optionlabel {
-    width: 100%;
-}
-
-.icon-pos-class {
-    position: absolute;
-    right: 1%;
-}
-
-.icon-pencil-class {
-    position: relative;
-    float: left;
-    left: 20px;
-    bottom: 0px;
-}
-
-.icon-pencil-instruction-class {
-    bottom: 5px;
-    left: 17px;
-    top: 1px;
-}
-
-.option-value {
-    padding-left: 25px;
-    font-weight: normal;
-    padding-right: 6%;
-    float: left;
-    width: 97%;
-    min-height: 32px;
-}
-
 [contentEditable=true]:empty:not(:focus):before {
     content: attr(data-text)
 }
 
-.textEditable[contentEditable=true]:empty:not(:focus):before {
-    content: attr(data-text)
-}
 
 .textEditable[contentEditable=true]:not(:focus) {
     border-bottom: 1px dashed #d5d5d5;
 }
 
-.textEditable[contentEditable=true]:focus {
-    outline: none;
+[contentEditable=true]:focus {
     border: none;
     border-bottom: 1px solid #162375;
-    ;
     outline: none;
 }
 
-.line-formatter {
+.option-div[contentEditable=true]:focus {
+    border: none;
+    border-bottom: 1px solid #162375;
+    outline: none;
+}
+.option-div {
     line-height: 1.8em;
+    width: 94%;
+}
+
+
+.ribbon-adjustments {
+   margin: 0px 15px 0px 15px !important;
+}
+
+.icon-horizontal-align {
+    position: absolute;
+    right: 14px;
+}
+
+a:hover {
+    text-decoration: none;
     cursor: pointer;
-    display: inline-block;
-    width: 100%;
 }
 
-.icon-pos-instruction-class {
-    bottom: 4px;
-    right: 5px;
+
+.hide-option {
+    position: absolute;
+    left: -9999px;
 }
 
-i.correct {
-    height: 2.6em;
-    width: 2.6em;
+i.choices {
+    height: 2.35em;
+    width: 2.35em;
     border-radius: 50%;
     position: absolute;
-    top: -10px;
+    top: -30px;
     left: 0;
     display: block;
     outline: 0;
@@ -495,124 +228,97 @@ i.correct {
     padding: 10px;
 }
 
-i.correct:after {
-    opacity: 0.7;
+i.choices:after {    
+    opacity: 0;
     background-color: #FFF;
-    content: "\f087";
+    content: "\f00c";
     color: green;
     font-family: fontawesome;
-    font-size: 1.7em;
+    font-size: 1.6em;
     position: relative;
     left: -4px;
-    top: -4px;
+    top: -10px;
     font-weight: 400;
     font-style: normal;
 }
 
-i.correct {
+li.highlight i.choices {
     border-color: green;
 }
 
-highlight i.correct:after {
-    opacity: 1;
-}
-
-i.incorrect {
-    height: 2.6em;
-    width: 2.6em;
-    border-radius: 50%;
-    position: absolute;
-    top: -10px;
-    left: 0;
-    display: block;
-    outline: 0;
-    border: 1px solid #BDBDBD;
-    background: #FFF;
-    padding: 10px;
-}
-
-i.incorrect:after {
+li.highlight i.choices:after {
     opacity: 0.7;
-    background-color: #FFF;
-    content: "\f087";
-    color: red;
-    font-family: fontawesome;
-    font-size: 1.7em;
+}
+
+i.choices:hover {
+    cursor: pointer;
+}
+
+.vertical-center-align {
+   display: flex;
+   align-items: center; 
+}
+
+.vertical-bottom-align {
+    display: flex;
+    align-items: flex-end; 
+ }
+
+.vertical-align-self  {
+    align-self: center;
+}
+
+.option-icon-pencil {
     position: relative;
-    left: -4px;
-    top: -4px;
-    font-weight: 400;
-    font-style: normal;
+    left: 15px;
 }
 
-i.incorrect {
-    border-color: red;
+.icon-box {
+    width: 7%;
+    position: absolute;
+    right: -25px;
 }
 
-i.incorrect:after {
-    opacity: 1;
+.icon-pencil {
+    position: absolute;
+    bottom: 20px;
+}
+.bottom{
+    bottom: 0px; 
 }
 
-.bottom {
-    bottom: 12px;
+.no-margin-left {
+   margin-left: 0; 
 }
+@media  (max-width: 1240px) {
+    .icon-box {
+        width: 7%;
+        right: -10px;
+    }
 
-.text-box {
-    position: relative;
-    border
-}
-
-.active-btn {
-    min-width: 170px;
-    border-style: dashed;
-}
-
-.btn-default.active.focus,
-.btn-default.active:focus,
-.btn-default.active:hover,
-.btn-default:active.focus,
-.btn-default:active:focus,
-.btn-default:active:hover,
-.open>.dropdown-toggle.btn-default.focus,
-.open>.dropdown-toggle.btn-default:focus,
-.open>.dropdown-toggle.btn-default:hover {
-    color: #fff;
-    background-color: #204d74;
-    border-color: #122b40;
-}
-
-.ribbon-adjustments {
-    margin: 0 5px 0 5px !important;
-}
-
-@media (min-width: 750px) {
-    #mcq-sr ul li .radio div.option-value {
-        width: 94%;
+    .option-div {
+        width: 92%;
     }
 }
 
-@media (min-width: 1010px) {
-    #mcq-sr ul li .radio div.option-value {
-        width: 96%;
+@media  (max-width: 980px ) {
+    .icon-box {
+        width: 8%;
+        right: 0px;
+    }
+    .option-div {
+        width: 90%;
     }
 }
 
-#mcq-sr .option-value {
-    padding-left: 30px;
+@media  (max-width: 720px) {
+    .icon-box {
+        width: 10%;
+        right: -10px;
+    }
+
+    .option-div {
+        width: 86%;
+    }
 }
 
-textarea {
-    /* box-sizing: padding-box; */
-    overflow: hidden;
-    /* demo only: */
-    display: block;
-    resize: none;
-    padding: 0px;
-    min-height: 33px;
-    /* height: auto; */
-    padding-bottom: 1px;
-}
-
-.textarea {
-    display: inline-block;
-}

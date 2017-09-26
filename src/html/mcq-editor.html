@@ -4,7 +4,7 @@
   <main class="main global">
     <section id="question" class="section question">
       <!-- Loop over all instructions text -->
-      <div class="global-padding">
+      <div class="section-box">
         <div class="row">
           <div class="col-sm-12">
             <header>
@@ -13,12 +13,9 @@
           </div>
           <!-- Loop over all question data text -->
           <div class="col-sm-12 mt-sm">
-            <div class="text-box" rv-each-qdata="content.canvas.data.questiondata">
-              <span class="icon-pencil-class icon-pencil-instruction-class"><i class="fa fa-pencil"></i></span>
-              <textarea rows="1" role="button" class="option-value global-input outline-none noborder border-bottom-blue" rv-show="qdata.customAttribs.isEdited"
-                rv-value="qdata.text" rv-on-blur="removeEditing | args qdata" rv-on-focus="autoGrowTextArea" rv-on-keyup="autoGrowTextArea"></textarea>
-              <div class="option-value border-bottom-dashed" role="button" rv-hide="qdata.customAttribs.isEdited" rv-on-click="editOptionText | args qdata">
-                <span rv-text="qdata.text"></span>
+            <div class="text-box vertical-bottom-align" rv-each-qdata="content.canvas.data.questiondata">
+              <span class="pull-left icon-pencil bottom"><i class="fa fa-pencil"></i></span>
+              <div rv-content-editable="qdata.text" style="width: 100%;" data-text="Please Enter Question Test here." class="pl-md border-bottom-dashed" role="button">
               </div>
             </div>
           </div>
@@ -26,7 +23,7 @@
       </div>
     </section>
     <section id="instruction" class="section instruction border-bottom-shadow">
-      <div class="global-padding">
+      <div class="section-box mt-sm">
         <div class="row">
           <div class="col-sm-12" id="instructionLabel" rv-hide="isInstructionEmpty">
             <header>
@@ -34,25 +31,20 @@
             </header>
           </div>
           <div class="col-sm-12">
-            <ul class="list-unstyled nested-list editor">
-              <li class="text-box colborder mt-sm" rv-each-instruction="content.instructions" rv-instructionIndex="%instruction%">
-                <div class="line-formatter">
-                  <span class="icon-pencil-class  icon-pencil-instruction-class"><i class="fa fa-pencil"></i></span>
-                  <textarea rows="1" role="button" class="option-value global-input outline-none noborder border-bottom-blue" rv-show="instruction.customAttribs.isEdited"
-                    rv-value="instruction.text" placeholder="Add Instructions" rv-on-blur="removeEditing | args instruction"
-                    rv-on-focus="autoGrowTextArea" rv-on-keyup="autoGrowTextArea"></textarea>
-                  <div class="option-value border-bottom-dashed" role="button" rv-hide="instruction.customAttribs.isEdited" rv-on-click="editOptionText | args instruction">
-                    <span rv-text="instruction.text"></span>
-                  </div>
-                  <span class="icon-pos-class icon-pos-instruction-class">
-                          <a class="btn color-lightgray editor-icon delete-icon mcq-edit fa fa-times pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeInstruction | args instruction %instruction%"></a>            
-                      </span>
+            <ul class="list-unstyled nested-list">
+              <li class="text-box colborder mt-sm mb-add-offset" rv-each-instruction="content.instructions" rv-instructionIndex="%instruction%">
+                <div class="vertical-bottom-align">
+                  <span class="pull-left icon-pencil"><i class="fa fa-pencil"></i></span>
+                  <div rv-content-editable="instruction.text" style="width: 100%;" data-text='Placeholder Instruction text. Update "Me" with a valid Instruction text for this question.' class="pr-3pc pl-md border-bottom-dashed" role="button"></div>
+                  <span class="pull-right icon-horizontal-align">
+                          <a class="color-lightgray fa fa-times outline-none" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeInstruction | args instruction %instruction%"></a>            
+                  </span>
                 </div>
               </li>
           </div>
           </ul>
         </div>
-        <div class="row mt-sm mb-sm">
+        <div class="row mb-add-offset">
           <div class="col-sm-12 dropdown">
             <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">+ Add
                 </button>
@@ -65,7 +57,7 @@
       </div>
     </section>
     <section id="answer-choice" n class="section answer border-bottom-shadow">
-      <div class="global-padding">
+      <div class="section-box">
         <header>
           <h4 class="headerlabel font-semibold color-gray">Answer Options
             <span class="dropdown font-medium ml-md">
@@ -89,102 +81,38 @@
                </span>
           </h4>
         </header>
-        <div>
-          <div class="row" rv-each-interact="content.interactions">
-            <!-- Loop over all questiondata inside interaction -->
-            <div class="col-sm-12">
-              <div class="row questions-editor" id="mcq-mr" rv-if="interact.MCQMR">
-                <ul class="list-unstyled nested-list editor sortable">
-                  <!-- Loop over all options inside interaction  (mcq Array)-->
-                  <li class="col-xs-12 colborder" rv-each-element="interact.MCQMR" rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index"
-                    rv-interactIndex="%interact%">
-                    <label class="checkbox">
-                  <span class="invisible wrong pull-left"></span>
-                  <input type="checkbox" name="optionsRadios" class="option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"></input>
-                  <i></i>
-                  <textarea rows="1" role="button" class="option-value input-option" rv-show="element.customAttribs.isEdited" rv-value="element.customAttribs.value" rv-on-blur="removeEditing | args element"></textarea>
-                  <div class="option-value border-bottom-dashed" rv-hide="element.customAttribs.isEdited"  rv-on-click="editOptionText | args element">
-                      <span><i class="fa fa-pencil"></i></span>
-                      <span rv-text="element.customAttribs.value"></span>
+        <div class="row mt-md" rv-each-interact="content.interactions">
+          <!-- Loop over all questiondata inside interaction -->
+            <div class="col-sm-12 questions-editor" id="mcq-sr" rv-if="interact.MCQSR">
+              <ul class="list-unstyled nested-list editor sortable">
+                <!-- Loop over all options inside interaction  (mcq Array)-->
+                <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.MCQSR" rv-class-highlight="element.customAttribs.isCorrect"
+                  rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">                    
+                  <div>                      
+                    <label class="radio optionlabel" rv-for="%element% | idcreator element.customAttribs.id"><i class="choices"></i></label>
+                    <input type="radio" name="optionsRadios" rv-id="%element% | idcreator element.customAttribs.id" class="hide-option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"/>
                   </div>
-                  <span>
-                    <a class="btn btn-danger editor-icon delete-icon mcq-edit fa fa-trash-o pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>
-                    <a class="btn btn-default editor-icon drag-icon mcq-edit fa fa-bars pull-right" data-toggle="tooltip" title="Click & drag move this option"></a>
-                  </span>
-              </label>
-                    <div class="modal fade" rv-id="element.customAttribs.key | modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                      aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">Add Inline Feedback</h4>
-                          </div>
-                          <div class="modal-body">
-                            <div class="input-group vspacer">
-                              <span class="input-group-addon" id="basic-addon3">Feedback</span>
-                              <input type="text" class="form-control" rv-id="element.customAttribs.key" rv-value="element.customAttribs.feedback" rv-placeholder="element.customAttribs.value | placeholderText"
-                                rv-on-blur="setInlineFeedback | args element">
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-              <div class="row questions-editor" id="mcq-sr" rv-if="interact.MCQSR">
-                <ul class="list-unstyled nested-list editor sortable">
-                  <!-- Loop over all options inside interaction  (mcq Array)-->
-                  <li class="col-xs-12 col-sm-12 bg-white" rv-each-element="interact.MCQSR" rv-class-highlight="element.customAttribs.isCorrect"
-                    rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">
-                    <label class="radio optionlabel"> 
-                      <input type="radio" name="optionsRadios" class="option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"></input><i class="choices"></i>
-                      <span class="icon-pencil-class"><i class="fa fa-pencil"></i></span>    
-                      <textarea rows="1" role="button" class="option-value input-option color-lightgray" rv-show="element.customAttribs.isEdited" rv-value="element.customAttribs.value" rv-on-blur="removeEditing | args element" rv-on-focus="autoGrowTextArea" rv-on-keyup="autoGrowTextArea"></textarea>                      
-                      <div class="option-value border-bottom-dashed color-lightgray" rv-text="element.customAttribs.value" rv-hide="element.customAttribs.isEdited"  rv-on-click="editOptionText | args element"></div>
-                <span class="icon-pos-class">
-                  <a class="btn color-lightgray editor-icon delete-icon mcq-edit fa fa-times" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>                
-                  <a class="btn color-lightgray editor-icon drag-icon mcq-edit fa fa-bars" data-toggle="tooltip" title="Click & drag move this option"></a>
-                </span>
-            </label>
-                    <div class="modal fade" rv-id="element.customAttribs.key | modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                      aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">Add Inline Feedback</h4>
-                          </div>
-                          <div class="modal-body">
-                            <div class="input-group vspacer">
-                              <span class="input-group-addon" id="basic-addon3">Feedback</span>
-                              <input type="text" class="form-control" rv-id="element.customAttribs.key" rv-value="element.customAttribs.feedback" rv-placeholder="element.customAttribs.value | placeholderText"
-                                rv-on-blur="setInlineFeedback | args element">
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                <a class="add-item ml-xxl" rv-on-click="addItem | args content %interact%">
-                    <button type="button" class="btn btn-default btn-sm mt-sm mb-sm"></span>+ Add</button>
-                </a>
-              </div>
+                  <div class="vertical-bottom-align" style="width: 100%">
+                    <span class="ml-xl pull-left mt-xs option-icon-pencil"><i class="fa fa-pencil"></i></span>    
+                    <div rv-content-editable="element.customAttribs.value" data-text="Please enter answer option here." class="option-div adjusted-width pr-7pc pl-md border-bottom-dashed" role="button"></div>
+                    <span class="pull-right  icon-box vertical-align-self">
+                      <a class="color-lightgray drag-icon fa fa-times outline-none mr-1em" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>                                      
+                      <a class="color-lightgray drag-icon fa fa-bars outline-none " data-toggle="tooltip" title="Click & drag move this option"></a>                      
+                    </span>
+                  </div>
+                </li>
+              </ul>
+              <a class="add-item ml-xxl" rv-on-click="addItem | args content %interact%">
+                  <button type="button" class="btn btn-default btn-sm mt-sm mb-sm"></span>+ Add</button>
+              </a>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section id="feedback" class="section feedback  border-bottom-shadow">
-      <div class="global-padding">
+          </div> 
+         <div>           
+         </div>        
+    </div>
+</section>
+<section id="feedback" class="section feedback  border-bottom-shadow">
+      <div class="section-box">
         <div class="row mt-sm mb-sm">
           <div class="col-sm-12">
             <a class="enable-feedback">
@@ -192,68 +120,17 @@
             </a>
           </div>
         </div>
-        <div rv-hide="true" class="row">
-          <div class="col-sm-12">
-            <header>
-              <h4 class="feedbacklabel">Feedback<span class="ml-md"><i class="fa fa-minus-circle" aria-hidden="true"></i></span></h4>
-            </header>
-          </div>
-          <div class="col-sm-12 mt-sm">
-            <ul rv-show="isFeedbackGlobal" class="list-unstyled nested-list editor">
-              <li class="col-xs-12 colborder mt-sm" rv-instructionIndex="%feedbackitem%">
-                <div class="line-formatter">
-                  <span class="feedback-icon"><i class="correct"></i></span>
-                  <span class="icon-pencil-class"><i class="fa fa-pencil"></i></span>
-                  <input role="button" class="option-value global-input outline-none noborder border-bottom-blue " rv-show="instruction.customAttribs.isEdited"
-                    rv-value="feedback.correct" placeholder="Add Instructions" rv-on-blur="removeEditing | args instruction"></input>
-                  <div class="option-value border-bottom-dashed" role="button">
-                    <span rv-text="feedback.correct"></span>
-                  </div>
-                  <span class="icon-pos-class icon-pos-instruction-class">
-                          <a class="btn color-lightgray editor-icon delete-icon mcq-edit fa fa-times pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeInstruction | args instruction %instruction%"></a>            
-                      </span>
-                </div>
-              </li>
-              <li class="col-xs-12 colborder mt-sm" rv-instructionIndex="%feedbackitem%">
-                <div class="line-formatter">
-                  <span class="feedback-icon"><i class="incorrect"></i></span>
-                  <span class="icon-pencil-class"><i class="fa fa-pencil"></i></span>
-                  <input role="button" class="option-value global-input outline-none noborder border-bottom-blue " rv-show="instruction.customAttribs.isEdited"
-                    rv-value="feedback.incorrect" placeholder="Add Instructions" rv-on-blur="removeEditing | args instruction"></input>
-                  <div class="option-value border-bottom-dashed" role="button">
-                    <span rv-text="feedback.incorrect"></span>
-                  </div>
-                  <span class="icon-pos-class icon-pos-instruction-class">
-                          <a class="btn color-lightgray editor-icon delete-icon mcq-edit fa fa-times pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeInstruction | args instruction %instruction%"></a>            
-                      </span>
-                </div>
-              </li>
-            </ul>
-            <ul rv-show="isFeedbackInteraction" class="list-unstyled nested-list editor">
-              <li class="col-xs-12 colborder mt-sm" rv-each-feedbackitem="content.feedback" rv-instructionIndex="%feedbackitem%">
-                <div class="line-formatter">
-                  <span class="icon-pencil-class icon-pencil-instruction-class"><i class="fa fa-pencil"></i></span>
-                  <input role="button" class="option-value global-input outline-none noborder border-bottom-blue " rv-show="instruction.customAttribs.isEdited"
-                    rv-value="instruction.text" placeholder="Add Instructions" rv-on-blur="removeEditing | args instruction"></input>
-                  <div class="option-value border-bottom-dashed" role="button" rv-hide="instruction.customAttribs.isEdited" rv-on-click="editOptionText | args instruction">
-                    <span rv-text="instruction.text"></span>
-                  </div>
-                  <span class="icon-pos-class icon-pos-instruction-class">
-                        <a class="btn color-lightgray editor-icon delete-icon mcq-edit fa fa-times pull-right" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeInstruction | args instruction %instruction%"></a>            
-                    </span>
-                </div>
-          </div>
-          </li>
-          </ul>
-        </div>
       </div>
-</div>
 </section>
 <section id="media" class="section border-bottom-shadow">
-  <div class="global-padding mt-sm mb-sm">
-    <a class="enable-media">
+  <div class="section-box">
+      <div class="row mt-sm mb-sm">
+          <div class="col-sm-12">
+          <a class="enable-media">
             <button type="button" class="btn btn-default active-btn"><h4 class="color-gray font-semibold">Enable Media</h4></button>
         </a>
+        </div> 
+    </div>    
   </div>
 </section>
 </main>

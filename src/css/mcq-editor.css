@@ -119,12 +119,12 @@
 
 .border-bottom-dashed {
     border-bottom: 1px dashed #d5d5d5;
-    transition: border-color 0.3s ease-in-out;
+    transition: border-color 0.5s ease-in-out;
 }
 
 .border-bottom-blue {
     border-bottom: 1px solid #6778e3;
-    transition: border-color 0.3s ease-in-out;
+    transition: border-color 0.5s ease-in-out;
 }
 
 .border-top {

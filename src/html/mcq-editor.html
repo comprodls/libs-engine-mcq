@@ -35,7 +35,7 @@
               <li class="text-box colborder mt-sm mb-add-offset" rv-each-instruction="content.instructions" rv-instructionIndex="%instruction%">
                 <div class="vertical-bottom-align">
                   <span class="pull-left icon-pencil"><i class="fa fa-pencil"></i></span>
-                  <div rv-content-editable="instruction.text" style="width: 100%;" data-text="Please Enter Instruction Test here." class="pr-3pc pl-md border-bottom-dashed" role="button"></div>
+                  <div rv-content-editable="instruction.text" style="width: 100%;" data-text='Placeholder Instruction text. Update "Me" with a valid Instruction text for this question.' class="pr-3pc pl-md border-bottom-dashed" role="button"></div>
                   <span class="pull-right icon-horizontal-align">
                           <a class="color-lightgray fa fa-times outline-none" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeInstruction | args instruction %instruction%"></a>            
                   </span>
@@ -94,7 +94,7 @@
                   </div>
                   <div class="vertical-bottom-align" style="width: 100%">
                     <span class="ml-xl pull-left mt-xs option-icon-pencil"><i class="fa fa-pencil"></i></span>    
-                    <div rv-content-editable="element.customAttribs.value" data-text="Please Enter Instruction Test here." class="option-div adjusted-width pr-7pc pl-md border-bottom-dashed" role="button"></div>
+                    <div rv-content-editable="element.customAttribs.value" data-text="Please enter answer option here." class="option-div adjusted-width pr-7pc pl-md border-bottom-dashed" role="button"></div>
                     <span class="pull-right  icon-box vertical-align-self">
                       <a class="color-lightgray drag-icon fa fa-times outline-none mr-1em" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>                                      
                       <a class="color-lightgray drag-icon fa fa-bars outline-none " data-toggle="tooltip" title="Click & drag move this option"></a>                      

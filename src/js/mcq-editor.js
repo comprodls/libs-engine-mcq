@@ -400,6 +400,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     return el.innerText;
                 },
                 routine: function (el, value) {
+                    activityAdaptor.autoResizeActivityIframe();
+                    __handleItemChangedInEditor();
                     el.innerHTML = value;
                 }
             };

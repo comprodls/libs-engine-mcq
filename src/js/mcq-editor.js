@@ -397,11 +397,12 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     el.removeEventListener("blur", this.callback);
                 },
                 getValue: function (el) {
-                    return el.innerText;
-                },
-                routine: function (el, value) {
                     activityAdaptor.autoResizeActivityIframe();
                     __handleItemChangedInEditor();
+                    return el.innerText;
+
+                },
+                routine: function (el, value) {
                     el.innerHTML = value;
                 }
             };

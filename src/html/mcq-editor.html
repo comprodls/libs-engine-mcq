@@ -90,7 +90,7 @@
               <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.MCQMR" rv-class-highlight="element.customAttribs.isCorrect"
                 rv-elementIndex="element.customAttribs.index"  rv-interactIndex="%interact%">                    
                 <div>                      
-                  <label class="checkbox optionlabel" rv-for="%element% | idcreator element.customAttribs.id"><i class="square-icon choices"></i></label>
+                  <label class="checkbox optionlabel" rv-for="%element% | idcreator element.customAttribs.id" ><i class="square-icon choices"></i></label>
                   <input type="checkbox" name="optionsRadios" rv-id="%element% | idcreator element.customAttribs.id" class="hide-option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"/>
                 </div>
                 <div class="vertical-bottom-align" style="width: 100%">
@@ -104,7 +104,7 @@
               </li>
             </ul>
           </div>
-            <div class="col-sm-12 questions-editor mt-md" id="mcq-sr" rv-if="interact.MCQSR">
+            <div class="col-sm-12 editor questions-editor mt-md" id="mcq-sr" rv-if="interact.MCQSR">
               <ul class="list-unstyled nested-list editor sortable">
                 <!-- Loop over all options inside interaction  (mcq Array)-->
                 <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.MCQSR" rv-class-highlight="element.customAttribs.isCorrect"

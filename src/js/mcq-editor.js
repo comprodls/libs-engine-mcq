@@ -145,7 +145,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
             /* ---------------------- SETUP EVENTHANDLER STARTS----------------------------*/
             //On CLICK of Radio buttons    
-            $(document).on('change', '.editor .checkbox input:checkbox', __handleCheckboxButtonClick);
+            $(document).on('click', '.editor label.checkbox', __handleCheckboxButtonClick);
            // $(document).on('change', '.editor label.radio', __handleRadioButtonClick);
             $(document).on('click', '.editor label.radio', __handleRadioButtonClick);
             //Drag of list items (re-ordering)
@@ -582,16 +582,18 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             var interactionType = __editedJsonContent.content.interactions[interactionIndex].type;
             var currentChoice = $(currentTarget).attr('key');
             var checked = $(currentTarget).prop("checked");
-
+            console.log(" outer ");
             if (checked) {
+                console.log(" asdfjj sdf sjadf asdk jasfas jjasjh ");
                 $(currentTarget).prop('checked', checked);
                 $(currentTarget).parent().parent("li").addClass("highlight");
-                $(currentTarget).siblings('.correct-answer').show();
+                //$(currentTarget).siblings('.correct-answer').show();
             }
             else {
+                console.log(" in other checked ");
                 $(currentTarget).prop('checked', checked);
                 $(currentTarget).parent().parent("li").removeClass("highlight");
-                $(currentTarget).siblings('.correct-answer').hide();
+               // $(currentTarget).siblings('.correct-answer').hide();
             }
             __state.hasUnsavedChanges = true;
 

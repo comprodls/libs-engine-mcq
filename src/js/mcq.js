@@ -209,10 +209,7 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
 
             /** Default feedback. This feedback will be shown if app doesn't wan't to override it by its own Feedback. */
             function showfeedback() {
-                 activityAdaptor.autoResizeActivityIframe();
-                console.log(JSON.stringify(__content, null, 2));
                 var type = __content.interactions[0]['type'];
-                console.log(JSON.stringify(__feedback, null, 4));
                 if (type === 'MCQMR') {
                     for (var prop in __feedback) {
                         __feedbackState[prop] = false;
@@ -247,6 +244,7 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
 
                         if (countCorrectInteractionAttempt === Object.keys(__correct_answers).length) return isCorrect = true;
                         if (countCorrectInteractionAttempt !== Object.keys(__correct_answers).length) return isCorrect = false;
+                        activityAdaptor.autoResizeActivityIframe();
                         return isCorrect;
                     }
                 }
@@ -272,7 +270,7 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                         }
                     })
                 }
-               
+                activityAdaptor.autoResizeActivityIframe();               
             }
             /* ---------------------- PUBLIC FUNCTIONS END ----------------------------*/
 

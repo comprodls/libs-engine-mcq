@@ -56,41 +56,42 @@
         </div>
       </div>
     </section>
-    <section id="answer-choice" n class="section answer border-bottom-shadow">
+    <section id="answer-choice"  class="section answer border-bottom-shadow">
       <div class="section-box">
-        <header>
-          <h4 class="headerlabel font-semibold color-gray">Answer Options
-            <span class="dropdown font-medium ml-md">
-                    <a href="#" class="dropdown-toggle color-lightgray text-underline font-normal" data-toggle="dropdown" aria-expanded="false">
-                        Single Correct Answer
-                        <b class="caret">
-                        </b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                          <a href="#">
+        <div class="row no-margin-left" rv-each-interact="content.interactions">
+            <header>
+                <h4 class="headerlabel font-semibold color-gray">Answer Options
+                  <span class="dropdown font-medium ml-md">
+                          <a href="#" class="dropdown-toggle color-lightgray text-underline font-normal" data-toggle="dropdown" aria-expanded="false">
                               Single Correct Answer
+                              <b class="caret">
+                              </b>
                           </a>
-                        </li>
-                        <li>
-                          <a href="#">
-                              Multiple Correct Answer
-                          </a>
-                        </li>
-                      </ul>
-               </span>
-          </h4>
-        </header>
-        <div class="row mt-md" rv-each-interact="content.interactions">
+                          <ul class="dropdown-menu">
+                              <li>
+                                <a href="#">
+                                    Single Correct Answer
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#">
+                                    Multiple Correct Answer
+                                </a>
+                              </li>
+                            </ul>
+                     </span>
+                </h4>
+              </header>              
           <!-- Loop over all questiondata inside interaction -->
-          <div class="col-sm-12 questions-editor" id="mcq-mr" rv-if="interact.MCQMR">
+          <div class="col-sm-12 questions-editor mt-md" id="mcq-mr" rv-if="interact.MCQMR">
+            
             <ul class="list-unstyled nested-list editor sortable">
               <!-- Loop over all options inside interaction  (mcq Array)-->
-              <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.MCQSR" rv-class-highlight="element.customAttribs.isCorrect"
-                rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">                    
+              <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.MCQMR" rv-class-highlight="element.customAttribs.isCorrect"
+                rv-elementIndex="element.customAttribs.index"  rv-interactIndex="%interact%">                    
                 <div>                      
-                  <label class="radio optionlabel" rv-for="%element% | idcreator element.customAttribs.id"><i class="choices"></i></label>
-                  <input type="radio" name="optionsRadios" rv-id="%element% | idcreator element.customAttribs.id" class="hide-option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"/>
+                  <label class="checkbox optionlabel" rv-for="%element% | idcreator element.customAttribs.id"><i class="square-icon choices"></i></label>
+                  <input type="checkbox" name="optionsRadios" rv-id="%element% | idcreator element.customAttribs.id" class="hide-option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"/>
                 </div>
                 <div class="vertical-bottom-align" style="width: 100%">
                   <span class="ml-xl pull-left mt-xs option-icon-pencil"><i class="fa fa-pencil"></i></span>    
@@ -102,17 +103,14 @@
                 </div>
               </li>
             </ul>
-            <a class="add-item ml-xxl" rv-on-click="addItem | args content %interact%">
-                <button type="button" class="btn btn-default btn-sm mt-sm mb-sm"></span>+ Add</button>
-            </a>
           </div>
-            <div class="col-sm-12 questions-editor" id="mcq-sr" rv-if="interact.MCQSR">
+            <div class="col-sm-12 questions-editor mt-md" id="mcq-sr" rv-if="interact.MCQSR">
               <ul class="list-unstyled nested-list editor sortable">
                 <!-- Loop over all options inside interaction  (mcq Array)-->
                 <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.MCQSR" rv-class-highlight="element.customAttribs.isCorrect"
                   rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">                    
                   <div>                      
-                    <label class="radio optionlabel" rv-for="%element% | idcreator element.customAttribs.id"><i class="choices"></i></label>
+                    <label class="radio optionlabel" rv-for="%element% | idcreator element.customAttribs.id"><i class="round-icon choices"></i></label>
                     <input type="radio" name="optionsRadios" rv-id="%element% | idcreator element.customAttribs.id" class="hide-option mcq-option" rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect"/>
                   </div>
                   <div class="vertical-bottom-align" style="width: 100%">
@@ -125,10 +123,11 @@
                   </div>
                 </li>
               </ul>
-              <a class="add-item ml-xxl" rv-on-click="addItem | args content %interact%">
-                  <button type="button" class="btn btn-default btn-sm mt-sm mb-sm"></span>+ Add</button>
-              </a>
+              
             </div>
+            <a class="add-item ml-xxl" rv-on-click="addItem | args content %interact%">
+                <button type="button" class="btn btn-default btn-sm mt-sm mb-sm"></span>+ Add</button>
+            </a>
          </div> 
         </div>                 
 </section>

@@ -217,7 +217,6 @@ a:hover {
 i.choices {
     height: 2.35em;
     width: 2.35em;
-    border-radius: 50%;
     position: absolute;
     top: -30px;
     left: 0;
@@ -254,6 +253,10 @@ i.choices:hover {
     cursor: pointer;
 }
 
+.round-icon{
+    border-radius: 50%;
+}
+
 .vertical-center-align {
    display: flex;
    align-items: center; 
@@ -272,6 +275,7 @@ i.choices:hover {
     position: relative;
     left: 15px;
 }
+
 
 .icon-box {
     width: 7%;

@@ -14,26 +14,26 @@
         <!-- prompt Will be shown only if prompt text is available for interaction /-->
         <p class="prompt"></p>
         <ul class="options list-unstyled nested-list" id="mcq-mr" rv-if="interaction.MCQMR">
-          <li class="line-item option" rv-each-optionitem="interaction.options | propertyList">
-            <label class="line-item-label checkbox input-label" rv-for="%optionitem%   | idcreator 'option'" >
-                  <span class="rejoinder invisible pull-left" rv-id="%optionitem% | idcreator 'rejoinder'"></span><i></i>
+          <li class="line-item option " rv-each-optionitem="interaction.options | propertyList">
+            <label class="line-item-label checkbox input-label align-2-item" rv-for="%optionitem%   | idcreator 'option'" >
+              <span class="pull-left">
+                  <i></i>                   
                   <input class="option option-value mcq-option option-input" rv-id="%optionitem%   | idcreator 'option'" type="checkbox" 
                           rv-name="optionitem.key" rv-id="optionitem.key" data-val="{optionitem.key}"autocomplete="off" />
-                  <span class='option-content' rv-text="optionitem.value">{optionitem.value}</span>
-                  <div></div>                    
+              </span>            
+              <span class='option-content' rv-text="optionitem.value">{optionitem.value}</span>                                  
              </label>
           </li>
         </ul>
         <ul class="list-unstyled nested-list"  id="mcq-sr" rv-if="interaction.MCQSR">
           <li class="line-item" rv-each-element="interaction.options | propertyList">
-            <label class="line-item-label radio radio-lg" rv-for="element.key" >
+            <label class="line-item-label radio radio-lg" rv-for="element.key">
              <span>
                 <i></i>
                 <span class="answer invisible wrong pull-left"></span>
                 <input type="radio" name="optionsRadios" class="mcqsroption" rv-id="element.key" rv-value="element.value">
              </span>
               <span class="content option-content" rv-text="element.value"></span>
-             
             </label>
           </li>
         </ul>
@@ -43,7 +43,9 @@
     <section class="feedback">
       <div class="row">
         <div class="col-sm-12 col-md-12">
-          <div class="alert alert-success align-2-item" role="alert" rv-show="showFeedback.correct" ><span><i class="fa fa-2x fa-smile-o"></i>&nbsp;</span><span rv-text="feedback.global.correct"></span>
+          <div class="alert alert-success align-2-item" role="alert" rv-show="showFeedback.correct" >
+            <span><i class="fa fa-2x fa-smile-o"></i>&nbsp;</span>
+            <span rv-text="feedback.global.correct"></span>
           </div>
         </div>
       </div>

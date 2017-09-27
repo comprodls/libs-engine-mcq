@@ -209,8 +209,10 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
 
             /** Default feedback. This feedback will be shown if app doesn't wan't to override it by its own Feedback. */
             function showfeedback() {
+                 activityAdaptor.autoResizeActivityIframe();
+                console.log(JSON.stringify(__content, null, 2));
                 var type = __content.interactions[0]['type'];
-
+                console.log(JSON.stringify(__feedback, null, 4));
                 if (type === 'MCQMR') {
                     for (var prop in __feedback) {
                         __feedbackState[prop] = false;
@@ -270,7 +272,7 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                         }
                     })
                 }
-                activityAdaptor.autoResizeActivityIframe();
+               
             }
             /* ---------------------- PUBLIC FUNCTIONS END ----------------------------*/
 
@@ -309,17 +311,17 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
             */
             function __handleCheckboxClick(event) {
                 var currentTarget = event.currentTarget;
-                var currentInteractionId = currentTarget.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
+                var currentInteractionId = currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
                 var currentChoice = currentTarget.getAttribute('name');
                 if (currentTarget.checked) {
-                    $(currentTarget).parent().parent("li").addClass("highlight");
+                    $(currentTarget).closest("li").addClass("highlight");
                     if (!__content.user_answers[currentInteractionId]) {
                         __content.user_answers[currentInteractionId] = [];
                     }
                     __content.user_answers[currentInteractionId].push(currentChoice);
                 } else {
                     remove(__content.user_answers[currentInteractionId], currentChoice);
-                    $(currentTarget).parent().parent("li").removeClass("highlight");
+                    $(currentTarget).closest("li").removeClass("highlight");
                 }
                 //$(document).triggerHandler('userAnswered');
                 __savePartial(currentInteractionId);
@@ -419,12 +421,9 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 var interactions = __content.interactions;
                 // Assuming that there is only one interaction.
                 var type = interactions[0]['type'];
-
-
-
                 if (type === 'MCQMR') {
-                    $('input[id^=option]').parent().parent().removeClass("highlight");
-                    $('input[id^=option]').parent().parent().addClass("wrong");
+                    $('input[id^=option]').closest('li').removeClass("highlight");
+                    $('input[id^=option]').closest('li').addClass("wrong");
                     for (var interaction in __correct_answers) {
                         if (__correct_answers.hasOwnProperty(interaction)) {
                             for (var j = 0; j < __correct_answers[interaction]['correct'].length; j++) {

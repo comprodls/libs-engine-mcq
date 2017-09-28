@@ -423,7 +423,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 setInlineFeedback: __setInlineFeedback,
                 addInlineFeedback: __addInlineFeedback,
                 editOptionText: __editOptionText,
-                handleItemChanged: __handleItemChangedInEditor,
                 mcqmr: __editedJsonContent.MCQMR,
                 mcqsr: __editedJsonContent.MCQSR,
                 removeInstruction: __removeInstruction,
@@ -581,7 +580,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             var currentChoice = $(currentTarget).attr('key');
             var checkedLabel = $(currentTarget).attr("checked");
             var currentChoice = $(currentTarget).siblings('input').attr('key');
-            var checked = $("input[type=checkbox][key=" + currentChoice + "]").prop("checked");
+            var checked = $(currentTarget).siblings('input').prop('checked');
+           // var checked = $("input[type=checkbox][key=" + currentChoice + "]").prop("checked");
 
             __state.hasUnsavedChanges = true;
 

@@ -134,7 +134,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             //Process JSON for easy iteration in template
             //__parseAndUpdateJSONForRivets();
             __parseAndUpdateJSONForRivets();
-           // console.log(JSON.stringify(__editedJsonContent, null, 2));
+            console.log(JSON.stringify(__editedJsonContent, null, 2));
             /* ------ VALIDATION BLOCK END -------- */
 
             /* Apply the layout HTML to the dom */
@@ -146,7 +146,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             /* ---------------------- SETUP EVENTHANDLER STARTS----------------------------*/
             //On CLICK of Radio buttons    
             $(document).on('click', '.editor label.checkbox', __handleCheckboxButtonClick);
-           // $(document).on('change', '.editor label.radio', __handleRadioButtonClick);
+            // $(document).on('change', '.editor label.radio', __handleRadioButtonClick);
             $(document).on('click', '.editor label.radio', __handleRadioButtonClick);
             //Drag of list items (re-ordering)
             __bindSortable();
@@ -384,7 +384,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             };
 
 
-			 rivets.binders['content-editable'] = {
+            rivets.binders['content-editable'] = {
                 bind: function (el) {
                     var that = this;
                     el.setAttribute("contenteditable", true);
@@ -406,7 +406,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     el.innerHTML = value;
                 }
             };
-			
+
             /* 
               * Bind data to template using rivets
               */
@@ -423,14 +423,13 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 setInlineFeedback: __setInlineFeedback,
                 addInlineFeedback: __addInlineFeedback,
                 editOptionText: __editOptionText,
-                handleItemChanged: __handleItemChangedInEditor,
                 mcqmr: __editedJsonContent.MCQMR,
                 mcqsr: __editedJsonContent.MCQSR,
                 removeInstruction: __removeInstruction,
                 addInstruction: __addInstruction,
                 isInstructionEmpty: __editedJsonContent.isInstructionEmpty,
                 isFeedbackGlobal: __editedJsonContent.feedback['global'] !== undefined ? true : false,
-                isFeedbackInteraction: __editedJsonContent.feedback['global'] === undefined ? false : true                
+                isFeedbackInteraction: __editedJsonContent.feedback['global'] === undefined ? false : true
             });
         }
 
@@ -576,20 +575,14 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         function __handleCheckboxButtonClick(event) {
             var currentTarget = event.currentTarget;
             var quesIndex = 0;
-            var interactionIndex = parseInt($(currentTarget).parent().parent("li").attr('interactIndex'));
+            var interactionIndex = parseInt($(currentTarget).closest("li").attr('interactIndex'));
             var interactionType = __editedJsonContent.content.interactions[interactionIndex].type;
             var currentChoice = $(currentTarget).attr('key');
             var checkedLabel = $(currentTarget).attr("checked");
-            var currentChoice =  $(currentTarget).siblings('input').attr('key');
+            var currentChoice = $(currentTarget).siblings('input').attr('key');
             var checked = $(currentTarget).siblings('input').prop('checked');
-            if (checked) {
-                $(currentTarget).prop('checked', checked);
-                $(currentTarget).parent().parent("li").addClass("highlight");
-            }
-            else {
-                $(currentTarget).prop('checked', checked);
-                $(currentTarget).parent().parent("li").removeClass("highlight");
-            }
+           // var checked = $("input[type=checkbox][key=" + currentChoice + "]").prop("checked");
+
             __state.hasUnsavedChanges = true;
 
             /* Update the isCorrect property for each option*/
@@ -597,16 +590,14 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 if (__editedJsonContent.content.interactions[interactionIndex][interactionType][index].customAttribs.key == currentChoice) {
 
                     if (checked) {
-                        __editedJsonContent.content.interactions[interactionIndex][interactionType][index].customAttribs.isCorrect = true;
+                        var idx = __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.indexOf(currentChoice);
+                        __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.splice(idx, 1);
+                    }
+                    else {
                         var idx = __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.indexOf(currentChoice);
                         if (idx < 0) {
                             __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.push(currentChoice);
                         }
-                    }
-                    else {
-                        __editedJsonContent.content.interactions[interactionIndex][interactionType][index].customAttribs.isCorrect = false;
-                        var idx = __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.indexOf(currentChoice);
-                        __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.splice(idx, 1);
                     }
                 }
             });
@@ -742,12 +733,12 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 $("#menu1").dropdown("toggle");
             });
 
-            $(window).on('resize', function(){
+            $(window).on('resize', function () {
                 activityAdaptor.autoResizeActivityIframe();
-          });
-          
+            });
+
         });
-      
+
         /** End popover html section  */
         return {
             /*Engine-Shell Interface*/
@@ -757,5 +748,5 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             "saveItemInEditor": saveItemInEditor
         };
     };
-    
+
 });

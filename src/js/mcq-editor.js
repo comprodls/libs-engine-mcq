@@ -134,7 +134,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             //Process JSON for easy iteration in template
             //__parseAndUpdateJSONForRivets();
             __parseAndUpdateJSONForRivets();
-            console.log(JSON.stringify(__editedJsonContent, null, 2));
             /* ------ VALIDATION BLOCK END -------- */
 
             /* Apply the layout HTML to the dom */
@@ -398,7 +397,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 },
                 getValue: function (el) {
                     activityAdaptor.autoResizeActivityIframe();
-                    __handleItemChangedInEditor();
+                    activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);                    
                     return el.innerText;
 
                 },
@@ -666,8 +665,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     __finalJSONContent.content.instructions[idx]['tag'] = 'text';
                 }
             })
-
-            // console.log(JSON.stringify(__finalJSONContent, null, 4));
             return __finalJSONContent;
         }
 
@@ -716,7 +713,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             else {
                 __editedJsonContent.feedback[interactionid][choice] = feedbacktxt;
             }
-            __handleItemChangedInEditor();
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);              
         }
 
         $(document).on('click', "a.drag-icon", function () {

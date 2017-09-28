@@ -397,7 +397,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 },
                 getValue: function (el) {
                     activityAdaptor.autoResizeActivityIframe();
-                    activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);                    
+                    __handleItemChangedInEditor();
                     return el.innerText;
 
                 },
@@ -426,6 +426,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 mcqsr: __editedJsonContent.MCQSR,
                 removeInstruction: __removeInstruction,
                 addInstruction: __addInstruction,
+                handleItemChanged: __handleItemChangedInEditor,
                 isInstructionEmpty: __editedJsonContent.isInstructionEmpty,
                 isFeedbackGlobal: __editedJsonContent.feedback['global'] !== undefined ? true : false,
                 isFeedbackInteraction: __editedJsonContent.feedback['global'] === undefined ? false : true

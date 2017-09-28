@@ -21008,7 +21008,6 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             //Process JSON for easy iteration in template
             //__parseAndUpdateJSONForRivets();
             __parseAndUpdateJSONForRivets();
-            console.log(JSON.stringify(__editedJsonContent, null, 2));
             /* ------ VALIDATION BLOCK END -------- */
 
             /* Apply the layout HTML to the dom */
@@ -21301,6 +21300,7 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
                 mcqsr: __editedJsonContent.MCQSR,
                 removeInstruction: __removeInstruction,
                 addInstruction: __addInstruction,
+                handleItemChanged: __handleItemChangedInEditor,
                 isInstructionEmpty: __editedJsonContent.isInstructionEmpty,
                 isFeedbackGlobal: __editedJsonContent.feedback['global'] !== undefined ? true : false,
                 isFeedbackInteraction: __editedJsonContent.feedback['global'] === undefined ? false : true
@@ -21540,8 +21540,6 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
                     __finalJSONContent.content.instructions[idx]['tag'] = 'text';
                 }
             })
-
-            // console.log(JSON.stringify(__finalJSONContent, null, 4));
             return __finalJSONContent;
         }
 
@@ -21590,7 +21588,7 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             else {
                 __editedJsonContent.feedback[interactionid][choice] = feedbacktxt;
             }
-            __handleItemChangedInEditor();
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);              
         }
 
         $(document).on('click', "a.drag-icon", function () {

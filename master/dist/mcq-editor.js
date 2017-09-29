@@ -21270,12 +21270,11 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
                     el.removeEventListener("blur", this.callback);
                 },
                 getValue: function (el) {
-                    activityAdaptor.autoResizeActivityIframe();
-                    __handleItemChangedInEditor();
                     return el.innerText;
-
                 },
                 routine: function (el, value) {
+                    activityAdaptor.autoResizeActivityIframe();
+                    __handleItemChangedInEditor();
                     el.innerHTML = value;
                 }
             };
@@ -21455,7 +21454,7 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             var checkedLabel = $(currentTarget).attr("checked");
             var currentChoice = $(currentTarget).siblings('input').attr('key');
             var checked = $(currentTarget).siblings('input').prop('checked');
-           // var checked = $("input[type=checkbox][key=" + currentChoice + "]").prop("checked");
+            // var checked = $("input[type=checkbox][key=" + currentChoice + "]").prop("checked");
 
             __state.hasUnsavedChanges = true;
 
@@ -21508,6 +21507,7 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
          * can use it to repaint the updated json.
          */
         function __transformJSONtoOriginialForm() {
+            console.log("Before: ", JSON.stringify(__editedJsonContent, null, 4));
             __finalJSONContent = jQuery.extend(true, {}, __editedJsonContent);
             //var newObj = {};
             var optionsArr = [];
@@ -21540,6 +21540,9 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
                     __finalJSONContent.content.instructions[idx]['tag'] = 'text';
                 }
             })
+
+            console.log("After ", JSON.stringify(__finalJSONContent, null, 4));
+
             return __finalJSONContent;
         }
 
@@ -21588,7 +21591,7 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             else {
                 __editedJsonContent.feedback[interactionid][choice] = feedbacktxt;
             }
-            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);              
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
         $(document).on('click', "a.drag-icon", function () {

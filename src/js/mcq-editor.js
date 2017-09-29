@@ -633,9 +633,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
          * can use it to repaint the updated json.
          */
         function __transformJSONtoOriginialForm() {
-            console.log("Before: ", JSON.stringify(__editedJsonContent, null, 4));
             __finalJSONContent = jQuery.extend(true, {}, __editedJsonContent);
-            //var newObj = {};
             var optionsArr = [];
             var interactions = __finalJSONContent.content.interactions;
 
@@ -666,9 +664,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     __finalJSONContent.content.instructions[idx]['tag'] = 'text';
                 }
             })
-
-            console.log("After ", JSON.stringify(__finalJSONContent, null, 4));
-
             return __finalJSONContent;
         }
 

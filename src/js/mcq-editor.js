@@ -396,12 +396,11 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     el.removeEventListener("blur", this.callback);
                 },
                 getValue: function (el) {
-                    activityAdaptor.autoResizeActivityIframe();
-                    activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);                    
                     return el.innerText;
-
                 },
                 routine: function (el, value) {
+                    activityAdaptor.autoResizeActivityIframe();
+                    __handleItemChangedInEditor();
                     el.innerHTML = value;
                 }
             };
@@ -426,6 +425,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 mcqsr: __editedJsonContent.MCQSR,
                 removeInstruction: __removeInstruction,
                 addInstruction: __addInstruction,
+                handleItemChanged: __handleItemChangedInEditor,
                 isInstructionEmpty: __editedJsonContent.isInstructionEmpty,
                 isFeedbackGlobal: __editedJsonContent.feedback['global'] !== undefined ? true : false,
                 isFeedbackInteraction: __editedJsonContent.feedback['global'] === undefined ? false : true
@@ -580,7 +580,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             var checkedLabel = $(currentTarget).attr("checked");
             var currentChoice = $(currentTarget).siblings('input').attr('key');
             var checked = $(currentTarget).siblings('input').prop('checked');
-           // var checked = $("input[type=checkbox][key=" + currentChoice + "]").prop("checked");
+            // var checked = $("input[type=checkbox][key=" + currentChoice + "]").prop("checked");
 
             __state.hasUnsavedChanges = true;
 
@@ -634,7 +634,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
          */
         function __transformJSONtoOriginialForm() {
             __finalJSONContent = jQuery.extend(true, {}, __editedJsonContent);
-            //var newObj = {};
             var optionsArr = [];
             var interactions = __finalJSONContent.content.interactions;
 
@@ -713,7 +712,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             else {
                 __editedJsonContent.feedback[interactionid][choice] = feedbacktxt;
             }
-            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);              
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
         $(document).on('click', "a.drag-icon", function () {

@@ -96,6 +96,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             correct: false,
             incorrect: false
         }
+        var viewbinder;
 
         /********************************************************/
         /*                  ENGINE-SHELL INIT FUNCTION
@@ -421,7 +422,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             /* 
               * Bind data to template using rivets
               */
-            rivets.bind($('#mcq-editor'), {
+              viewbinder = rivets.bind($('#mcq-editor'), {
                 meta: __editedJsonContent.meta,
                 content: __editedJsonContent.content,
                 toggleQuestionTextEditing: __toggleQuestionTextEditing,
@@ -454,7 +455,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                if(selectedType == 'MCQMR'){
                    __editedJsonContent['MCQMR'] = true;
                    __editedJsonContent['MCQSR'] = false;
-                   __editedJsonContent.responses[key].correct = []; 
+                   __editedJsonContent.responses[key].correct = [];
                 } else {
                    __editedJsonContent['MCQSR'] = true;
                    __editedJsonContent['MCQMR'] = false;
@@ -474,9 +475,12 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 }
                })
             }
+            viewbinder.update({mcqmr:__editedJsonContent['MCQMR']});
+            viewbinder.update({mcqsr:__editedJsonContent['MCQSR']});
             activityAdaptor.autoResizeActivityIframe();
             __handleItemChangedInEditor();
-        }            
+        } 
+
         /* Toggle between editing and read-only mode for question text */
         function __toggleQuestionTextEditing(event, element) {
             element.isEditing = !element.isEditing;
@@ -714,7 +718,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 }
             })
 
-            console.log("transform content: ", __finalJSONContent);
+            //console.log("transform content: ", __finalJSONContent);
             return __finalJSONContent;
         }
 
@@ -786,6 +790,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 activityAdaptor.autoResizeActivityIframe();
             });
 
+           
         });
 
         /** End popover html section  */

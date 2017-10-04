@@ -83,7 +83,7 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
             var INTERACTION_REFERENCE_STR = "http://www.comprodls.com/m1.0/interaction/mcq";
 
             /*
-             * Constants.
+             * `Cons`tants.
              */
             var __constants = {
                 /* CONSTANT for PLATFORM Save Status NO ERROR */

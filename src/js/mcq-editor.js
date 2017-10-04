@@ -296,17 +296,32 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                         }
                     });
 
-                    if (__editedJsonContent.responses[__interactionIds[i]].correct.indexOf(processedObj.customAttribs.key) > -1) {
-                        processedObj.customAttribs.isCorrect = true;
+                    if (type === 'MCQSR') {
+                        var responseObj = __editedJsonContent.responses[__interactionIds[i]].correct;
+                        var len = Object.keys(responseObj).length
+
+                        if (len > 0 && __editedJsonContent.responses[__interactionIds[i]].correct.indexOf(processedObj.customAttribs.key) > -1) {
+                            processedObj.customAttribs.isCorrect = true;
+                        }
+                        else {
+                            processedObj.customAttribs.isCorrect = false;
+                        }
                     }
-                    else {
-                        processedObj.customAttribs.isCorrect = false;
+
+                    if (type === 'MCQMR') {
+                        var responseObj = __editedJsonContent.responses[__interactionIds[i]].correct;
+                        if (responseObj.length > 0 && __editedJsonContent.responses[__interactionIds[i]].correct.indexOf(processedObj.customAttribs.key) > -1) {
+                            processedObj.customAttribs.isCorrect = true;
+                        }
+                        else {
+                            processedObj.customAttribs.isCorrect = false;
+                        }
                     }
+
+
                     processedArray.push(processedObj);
                 });
-                __editedJsonContent.content.interactions[i]['MCQMR'] = processedArray;
-                __editedJsonContent.content.interactions[i]['MCQSR'] = processedArray;
-                
+                __editedJsonContent.content.interactions[i][type] = processedArray;
             }
             __parseQuestionTextJSONForRivets();
             __parseInstructionTextJSONForRivets();
@@ -389,11 +404,12 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 return text;
             };
 
-            rivets.formatters.interactTypeVal = function(key){
-                var types = { 'MCQMR' : "Multiple Choice Question",
-                              'MCQSR' : "Single Choice Question"  
-                            };
-                 return types[key]           ;
+            rivets.formatters.interactTypeVal = function (key) {
+                var types = {
+                    'MCQMR': "Multiple Choice Question",
+                    'MCQSR': "Single Choice Question"
+                };
+                return types[key];
             };
 
 
@@ -415,14 +431,14 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 routine: function (el, value) {
                     activityAdaptor.autoResizeActivityIframe();
                     __handleItemChangedInEditor();
-                        el.innerHTML = value;
+                    el.innerHTML = value;
                 }
             };
 
             /* 
               * Bind data to template using rivets
               */
-              viewbinder = rivets.bind($('#mcq-editor'), {
+            viewbinder = rivets.bind($('#mcq-editor'), {
                 meta: __editedJsonContent.meta,
                 content: __editedJsonContent.content,
                 toggleQuestionTextEditing: __toggleQuestionTextEditing,
@@ -443,43 +459,47 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 isInstructionEmpty: __editedJsonContent.isInstructionEmpty,
                 isFeedbackGlobal: __editedJsonContent.feedback['global'] !== undefined ? true : false,
                 isFeedbackInteraction: __editedJsonContent.feedback['global'] === undefined ? false : true,
-                changeQuestionType : __changeQuestionType
+                changeQuestionType: __changeQuestionType
             });
         }
 
-        function __changeQuestionType(event, selectedType , interaction ) {
-            if(selectedType === interaction.type) {
+        function __changeQuestionType(event, selectedType, interaction) {
+            var optionsArray;
+            if (selectedType === interaction.type) {
                 return;
             } else {
-               var key = interaction.key; 
-               if(selectedType == 'MCQMR'){
-                   __editedJsonContent['MCQMR'] = true;
-                   __editedJsonContent['MCQSR'] = false;
-                   __editedJsonContent.responses[key].correct = [];
+                var key = interaction.key;
+                __editedJsonContent[interaction.type] = false;
+                __editedJsonContent[selectedType] = true;
+
+                if (selectedType == 'MCQMR') {
+                    __editedJsonContent.responses[key].correct = [];
                 } else {
-                   __editedJsonContent['MCQSR'] = true;
-                   __editedJsonContent['MCQMR'] = false;
-                   __editedJsonContent.responses[key].correct = {};
-               }
-               __editedJsonContent.content.interactions.forEach(function(element){
-                  if(element.key ===  key) { 
-                        element.type = selectedType;
-                        element['MCQSR'].forEach(function(option){
-                            option.customAttribs.isCorrect = false;
-                            option.customAttribs.isEdited = false;
-                    })
-                        element['MCQMR'].forEach(function(option){
-                            option.customAttribs.isCorrect = false;
-                            option.customAttribs.isEdited = false;
-                    })
+                    __editedJsonContent.responses[key].correct = {};
                 }
-               })
+                __editedJsonContent.content.interactions.forEach(function (element) {
+
+                    if (element.key === key) {
+                        element[interaction.type].forEach(function (option) {
+                            option.customAttribs.isCorrect = false;
+                            option.customAttribs.isEdited = false;
+                        });
+
+                        optionsArray = element[interaction.type];
+                        delete element[interaction.type]
+                        element.type = selectedType;
+                        element[selectedType] = optionsArray;
+                    }
+                })
             }
-            viewbinder.update({mcqmr:__editedJsonContent['MCQMR']});
-            viewbinder.update({mcqsr:__editedJsonContent['MCQSR']});
+            viewbinder.update({ mcqmr: __editedJsonContent['MCQMR'] });
+            viewbinder.update({ mcqsr: __editedJsonContent['MCQSR'] });
+            viewbinder.update({ content: __editedJsonContent.content });
+
+            __state.hasUnsavedChanges = true;
             activityAdaptor.autoResizeActivityIframe();
-            __handleItemChangedInEditor();
-        } 
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
+        }
 
         /* Toggle between editing and read-only mode for question text */
         function __toggleQuestionTextEditing(event, element) {
@@ -492,10 +512,19 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         function __removeItem(event, element, interaction) {
             var interactionid = element.customAttribs.id;
             var type = __editedJsonContent.content.interactions[interaction].type;
-            __editedJsonContent.content.interactions[interaction][type].splice(element.customAttribs.index, 1);
-            for (var option = element.index; option < __editedJsonContent.content.interactions[interaction][type].length; option++) {
-                obj.interactions[interaction][type][option].customAttribs.index--;
-            }
+            var inputAttribId = element.customAttribs.key;
+
+            // Delete the select option attribs based on the current position in the array
+            __editedJsonContent.content.interactions[interaction][type].forEach(function (attrib, idx) {
+                if (inputAttribId === attrib.customAttribs.key) {
+                    __editedJsonContent.content.interactions[interaction][type].splice(idx, 1);
+                }
+            });
+
+            __editedJsonContent.content.interactions[interaction][type].forEach(function (el, idx) {
+                __editedJsonContent.content.interactions[interaction][type][idx].customAttribs.index = idx;
+            })
+
             __state.hasUnsavedChanges = true;
             activityAdaptor.autoResizeActivityIframe();
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
@@ -543,15 +572,20 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
 
         /* Add new option for the question */
-        function __addItem(event, content, interaction) {
-            var type = content.interactions[interaction]['type'];
-            var newObj = {};
-            newObj.customAttribs = {};
-            newObj.customAttribs.key = __guid();
-            newObj.customAttribs.value = "";
-            newObj.customAttribs.isEdited = true;
-            newObj.customAttribs.index = content.interactions[interaction][type].length;
-            content.interactions[interaction][type].push(newObj);
+        function __addItem(event, interaction) {
+            var type = __editedJsonContent.content.interactions[interaction]['type'];
+            var id = __editedJsonContent.content.interactions[interaction]['key'];
+            var newObj = {
+                "customAttribs": {
+                    "key": __guid(),
+                    "value": "Placeholder option text. Please replace with valid option text",
+                    "isEdited": true,
+                    "index": __editedJsonContent.content.interactions[interaction][type].length,
+                    "id": __editedJsonContent.content.interactions[interaction]['key'],
+                    "isCorrect": false
+                }
+            };
+            __editedJsonContent.content.interactions[interaction][type].push(newObj);
             __state.hasUnsavedChanges = true;
             activityAdaptor.autoResizeActivityIframe();
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
@@ -630,7 +664,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             var checkedLabel = $(currentTarget).attr("checked");
             var currentChoice = $(currentTarget).siblings('input').attr('key');
             var checked = $(currentTarget).siblings('input').prop('checked');
-           // var checked = $("input[type=checkbox][key=" + currentChoice + "]").prop("checked");
+            // var checked = $("input[type=checkbox][key=" + currentChoice + "]").prop("checked");
 
             __state.hasUnsavedChanges = true;
 
@@ -673,13 +707,9 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
-
-
         function __handleItemChangedInEditor() {
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
-
-
 
         /* Transform the processedJSON to originally received form so that the platform
          * can use it to repaint the updated json.
@@ -717,8 +747,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     __finalJSONContent.content.instructions[idx]['tag'] = 'text';
                 }
             })
-
-            //console.log("transform content: ", __finalJSONContent);
             return __finalJSONContent;
         }
 
@@ -769,7 +797,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             else {
                 __editedJsonContent.feedback[interactionid][choice] = feedbacktxt;
             }
-            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);              
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
         $(document).on('click', "a.drag-icon", function () {
@@ -790,7 +818,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 activityAdaptor.autoResizeActivityIframe();
             });
 
-           
+
         });
 
         /** End popover html section  */

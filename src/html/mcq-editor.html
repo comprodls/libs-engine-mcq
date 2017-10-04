@@ -67,22 +67,21 @@
                 <a href="#" class="dropdown-toggle color-lightgray text-underline font-normal" 
                              data-toggle="dropdown"  aria-expanded="false">
                   <span rv-text="interact.type | interactTypeVal"></span>
-                  <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li rv-class-active='mcqsr'>
-                    <a href="#" id="MCQSR" rv-text= "'MCQSR' | interactTypeVal" rv-on-click="changeQuestionType |  args 'MCQSR' interact"></a>
-                  </li>
-                  <li rv-class-active='mcqmr'>
-                    <a href="#" id="MCQMR" rv-text= "'MCQMR' | interactTypeVal" rv-on-click="changeQuestionType |  args 'MCQMR' interact"></a>
-                  </li>
-                </ul>
+              <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li rv-class-active='mcqsr'>
+                  <a href="#" id="MCQSR" rv-text="'MCQSR' | interactTypeVal" rv-on-click="changeQuestionType |  args 'MCQSR' interact"></a>
+                </li>
+                <li rv-class-active='mcqmr'>
+                  <a href="#" id="MCQMR" rv-text="'MCQMR' | interactTypeVal" rv-on-click="changeQuestionType |  args 'MCQMR' interact"></a>
+                </li>
+              </ul>
               </span>
             </h4>
           </header>
           <!-- Loop over all questiondata inside interaction -->
           <div class="col-sm-12 questions-editor mt-md" id="mcq-mr" rv-if="mcqmr">
-
             <ul class="list-unstyled nested-list editor sortable">
               <!-- Loop over all options inside interaction  (mcq Array)-->
               <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.MCQMR" rv-class-highlight="element.customAttribs.isCorrect"
@@ -104,7 +103,7 @@
               </li>
             </ul>
           </div>
-          <div class="col-sm-12  questions-editor mt-md" id="mcq-sr" rv-show="mcqsr"  rv-hide="mcqmr">
+          <div class="col-sm-12  questions-editor mt-md" id="mcq-sr" rv-if="mcqsr">
             <ul class="list-unstyled nested-list editor sortable">
               <!-- Loop over all options inside interaction  (mcq Array)-->
               <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.MCQSR" rv-class-highlight="element.customAttribs.isCorrect"
@@ -121,15 +120,14 @@
                   <span class="pull-right  icon-box vertical-align-self">
                       <a class="color-lightgray drag-icon fa fa-times outline-none mr-1em" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>                                      
                       <a class="color-lightgray drag-icon fa fa-bars outline-none " data-toggle="tooltip" title="Click & drag move this option"></a>                      
-                    </span>
+                  </span>
                 </div>
               </li>
             </ul>
-
           </div>
-          <a class="add-item ml-xxl" rv-on-click="addItem | args content %interact%">
-                <button type="button" class="btn btn-default btn-sm mt-sm mb-sm"></span>+ Add</button>
-            </a>
+          <a class="add-item ml-xxl" rv-on-click="addItem | args %interact%">
+            <button type="button" class="btn btn-default btn-sm mt-sm mb-sm"></span>+ Add</button>
+          </a>
         </div>
       </div>
     </section>

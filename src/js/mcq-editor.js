@@ -507,20 +507,22 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             var type = __editedJsonContent.content.interactions[interaction].type;
             var inputAttribId = element.customAttribs.key;
 
-            // Delete the select option attribs based on the current position in the array
-            __editedJsonContent.content.interactions[interaction]["answeroptions"].forEach(function (attrib, idx) {
-                if (inputAttribId === attrib.customAttribs.key) {
-                    __editedJsonContent.content.interactions[interaction]["answeroptions"].splice(idx, 1);
-                }
-            });
+            if (__editedJsonContent.content.interactions[interaction]["answeroptions"].length > 1) {
+                // Delete the select option attribs based on the current position in the array
+                __editedJsonContent.content.interactions[interaction]["answeroptions"].forEach(function (attrib, idx) {
+                    if (inputAttribId === attrib.customAttribs.key) {
+                        __editedJsonContent.content.interactions[interaction]["answeroptions"].splice(idx, 1);
+                    }
+                });
 
-            __editedJsonContent.content.interactions[interaction]["answeroptions"].forEach(function (el, idx) {
-                __editedJsonContent.content.interactions[interaction]["answeroptions"][idx].customAttribs.index = idx;
-            })
+                __editedJsonContent.content.interactions[interaction]["answeroptions"].forEach(function (el, idx) {
+                    __editedJsonContent.content.interactions[interaction]["answeroptions"][idx].customAttribs.index = idx;
+                })
 
-            __state.hasUnsavedChanges = true;
-            activityAdaptor.autoResizeActivityIframe();
-            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
+                __state.hasUnsavedChanges = true;
+                activityAdaptor.autoResizeActivityIframe();
+                activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
+            }
         }
 
 

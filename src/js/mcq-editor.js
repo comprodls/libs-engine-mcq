@@ -96,6 +96,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             correct: false,
             incorrect: false
         }
+        var viewbinder;
 
         /********************************************************/
         /*                  ENGINE-SHELL INIT FUNCTION
@@ -295,17 +296,33 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                         }
                     });
 
-                    if (__editedJsonContent.responses[__interactionIds[i]].correct.indexOf(processedObj.customAttribs.key) > -1) {
-                        processedObj.customAttribs.isCorrect = true;
+                    if (type === 'MCQSR') {
+                        var responseObj = __editedJsonContent.responses[__interactionIds[i]].correct;
+                        var len = Object.keys(responseObj).length
+
+                        if (len > 0 && __editedJsonContent.responses[__interactionIds[i]].correct.indexOf(processedObj.customAttribs.key) > -1) {
+                            processedObj.customAttribs.isCorrect = true;
+                        }
+                        else {
+                            processedObj.customAttribs.isCorrect = false;
+                        }
                     }
-                    else {
-                        processedObj.customAttribs.isCorrect = false;
+
+                    if (type === 'MCQMR') {
+                        var responseObj = __editedJsonContent.responses[__interactionIds[i]].correct;
+                        if (responseObj.length > 0 && __editedJsonContent.responses[__interactionIds[i]].correct.indexOf(processedObj.customAttribs.key) > -1) {
+                            processedObj.customAttribs.isCorrect = true;
+                        }
+                        else {
+                            processedObj.customAttribs.isCorrect = false;
+                        }
                     }
+
+
                     processedArray.push(processedObj);
                 });
-                __editedJsonContent.content.interactions[i]['MCQMR'] = processedArray;
-                __editedJsonContent.content.interactions[i]['MCQSR'] = processedArray;
-                
+                __editedJsonContent.content.interactions[i]['answeroptions'] = processedArray;
+
             }
             __parseQuestionTextJSONForRivets();
             __parseInstructionTextJSONForRivets();
@@ -388,11 +405,12 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 return text;
             };
 
-            rivets.formatters.interactTypeVal = function(key){
-                var types = { 'MCQMR' : "Multiple Choice Question",
-                              'MCQSR' : "Single Choice Question"  
-                            };
-                 return types[key]           ;
+            rivets.formatters.interactTypeVal = function (key) {
+                var types = {
+                    'MCQMR': "Multiple Choice Question",
+                    'MCQSR': "Single Choice Question"
+                };
+                return types[key];
             };
 
 
@@ -414,14 +432,14 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 routine: function (el, value) {
                     activityAdaptor.autoResizeActivityIframe();
                     __handleItemChangedInEditor();
-                        el.innerHTML = value;
+                    el.innerHTML = value;
                 }
             };
 
             /* 
               * Bind data to template using rivets
               */
-            rivets.bind($('#mcq-editor'), {
+            viewbinder = rivets.bind($('#mcq-editor'), {
                 meta: __editedJsonContent.meta,
                 content: __editedJsonContent.content,
                 toggleQuestionTextEditing: __toggleQuestionTextEditing,
@@ -442,41 +460,40 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 isInstructionEmpty: __editedJsonContent.isInstructionEmpty,
                 isFeedbackGlobal: __editedJsonContent.feedback['global'] !== undefined ? true : false,
                 isFeedbackInteraction: __editedJsonContent.feedback['global'] === undefined ? false : true,
-                changeQuestionType : __changeQuestionType
+                changeQuestionType: __changeQuestionType
             });
         }
 
-        function __changeQuestionType(event, selectedType , interaction ) {
-            if(selectedType === interaction.type) {
+        function __changeQuestionType(event, selectedType, interaction) {
+            if (selectedType === interaction.type) {
                 return;
             } else {
-               var key = interaction.key; 
-               if(selectedType == 'MCQMR'){
-                   __editedJsonContent['MCQMR'] = true;
-                   __editedJsonContent['MCQSR'] = false;
-                   __editedJsonContent.responses[key].correct = []; 
+                var key = interaction.key;
+
+                __editedJsonContent[interaction.type] = false;
+                __editedJsonContent[selectedType] = true;
+
+                if (selectedType == 'MCQMR') {
+                    __editedJsonContent.responses[key].correct = [];
                 } else {
-                   __editedJsonContent['MCQSR'] = true;
-                   __editedJsonContent['MCQMR'] = false;
-                   __editedJsonContent.responses[key].correct = {};
-               }
-               __editedJsonContent.content.interactions.forEach(function(element){
-                  if(element.key ===  key) { 
-                        element.type = selectedType;
-                        element['MCQSR'].forEach(function(option){
-                            option.customAttribs.isCorrect = false;
-                            option.customAttribs.isEdited = false;
-                    })
-                        element['MCQMR'].forEach(function(option){
-                            option.customAttribs.isCorrect = false;
-                            option.customAttribs.isEdited = false;
-                    })
+                    __editedJsonContent.responses[key].correct = {};
                 }
-               })
+                __editedJsonContent.content.interactions.forEach(function (element) {
+                    if (element.key === key) {
+                        element.type = selectedType;
+                        element["answeroptions"].forEach(function (option) {
+                            option.customAttribs.isCorrect = false;
+                            option.customAttribs.isEdited = false;
+                        })
+                    }
+                })
             }
+            viewbinder.update({ mcqmr: __editedJsonContent['MCQMR'] });
+            viewbinder.update({ mcqsr: __editedJsonContent['MCQSR'] });
+            $('#answer-choice .dropdown .dropdown-toggle').dropdown('toggle');
             activityAdaptor.autoResizeActivityIframe();
             __handleItemChangedInEditor();
-        }            
+        }
         /* Toggle between editing and read-only mode for question text */
         function __toggleQuestionTextEditing(event, element) {
             element.isEditing = !element.isEditing;
@@ -488,10 +505,19 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         function __removeItem(event, element, interaction) {
             var interactionid = element.customAttribs.id;
             var type = __editedJsonContent.content.interactions[interaction].type;
-            __editedJsonContent.content.interactions[interaction][type].splice(element.customAttribs.index, 1);
-            for (var option = element.index; option < __editedJsonContent.content.interactions[interaction][type].length; option++) {
-                obj.interactions[interaction][type][option].customAttribs.index--;
-            }
+            var inputAttribId = element.customAttribs.key;
+
+            // Delete the select option attribs based on the current position in the array
+            __editedJsonContent.content.interactions[interaction]["answeroptions"].forEach(function (attrib, idx) {
+                if (inputAttribId === attrib.customAttribs.key) {
+                    __editedJsonContent.content.interactions[interaction]["answeroptions"].splice(idx, 1);
+                }
+            });
+
+            __editedJsonContent.content.interactions[interaction]["answeroptions"].forEach(function (el, idx) {
+                __editedJsonContent.content.interactions[interaction]["answeroptions"][idx].customAttribs.index = idx;
+            })
+
             __state.hasUnsavedChanges = true;
             activityAdaptor.autoResizeActivityIframe();
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
@@ -540,14 +566,13 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
         /* Add new option for the question */
         function __addItem(event, content, interaction) {
-            var type = content.interactions[interaction]['type'];
             var newObj = {};
             newObj.customAttribs = {};
             newObj.customAttribs.key = __guid();
             newObj.customAttribs.value = "";
             newObj.customAttribs.isEdited = true;
-            newObj.customAttribs.index = content.interactions[interaction][type].length;
-            content.interactions[interaction][type].push(newObj);
+            newObj.customAttribs.index = content.interactions[interaction]["answeroptions"].length;
+            content.interactions[interaction]["answeroptions"].push(newObj);
             __state.hasUnsavedChanges = true;
             activityAdaptor.autoResizeActivityIframe();
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
@@ -600,12 +625,12 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
                     var type = __editedJsonContent.content.interactions[interactIndex].type;
                     /* Instead do the sorting manually*/
-                    var removedItem = __editedJsonContent.content.interactions[interactIndex][type].splice(prevIndex, 1);
-                    __editedJsonContent.content.interactions[interactIndex][type].splice(currentIndex, 0, removedItem[0]);
+                    var removedItem = __editedJsonContent.content.interactions[interactIndex]["answeroptions"].splice(prevIndex, 1);
+                    __editedJsonContent.content.interactions[interactIndex]["answeroptions"].splice(currentIndex, 0, removedItem[0]);
 
                     /* Update index property of customAttribs for each element*/
-                    $.each(__editedJsonContent.content.interactions[interactIndex][type], function (index, value) {
-                        __editedJsonContent.content.interactions[interactIndex][type][index].customAttribs.index = index;
+                    $.each(__editedJsonContent.content.interactions[interactIndex]["answeroptions"], function (index, value) {
+                        __editedJsonContent.content.interactions[interactIndex]["answeroptions"][index].customAttribs.index = index;
                     });
 
                     __state.hasUnsavedChanges = true;
@@ -626,13 +651,13 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             var checkedLabel = $(currentTarget).attr("checked");
             var currentChoice = $(currentTarget).siblings('input').attr('key');
             var checked = $(currentTarget).siblings('input').prop('checked');
-           // var checked = $("input[type=checkbox][key=" + currentChoice + "]").prop("checked");
+            // var checked = $("input[type=checkbox][key=" + currentChoice + "]").prop("checked");
 
             __state.hasUnsavedChanges = true;
 
             /* Update the isCorrect property for each option*/
-            __editedJsonContent.content.interactions[interactionIndex][interactionType].forEach(function (obj, index) {
-                if (__editedJsonContent.content.interactions[interactionIndex][interactionType][index].customAttribs.key == currentChoice) {
+            __editedJsonContent.content.interactions[interactionIndex]["answeroptions"].forEach(function (obj, index) {
+                if (__editedJsonContent.content.interactions[interactionIndex]["answeroptions"][index].customAttribs.key == currentChoice) {
 
                     if (checked) {
                         var idx = __editedJsonContent.responses[__interactionIds[interactionIndex]].correct.indexOf(currentChoice);
@@ -658,11 +683,11 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             $(currentTarget).closest("li").addClass("highlight");
             __state.hasUnsavedChanges = true;
             /* Update the isCorrect property for each option*/
-            __editedJsonContent.content.interactions[interactionIndex].MCQSR.forEach(function (obj, index) {
-                if (__editedJsonContent.content.interactions[interactionIndex].MCQSR[index].customAttribs.key == $(currentTarget).siblings('input').attr('key')) {
-                    __editedJsonContent.content.interactions[interactionIndex].MCQSR[index].customAttribs.isCorrect = true;
+            __editedJsonContent.content.interactions[interactionIndex]["answeroptions"].forEach(function (obj, index) {
+                if (__editedJsonContent.content.interactions[interactionIndex]["answeroptions"][index].customAttribs.key == $(currentTarget).siblings('input').attr('key')) {
+                    __editedJsonContent.content.interactions[interactionIndex]["answeroptions"][index].customAttribs.isCorrect = true;
                 } else {
-                    __editedJsonContent.content.interactions[interactionIndex].MCQSR[index].customAttribs.isCorrect = false;
+                    __editedJsonContent.content.interactions[interactionIndex]["answeroptions"][index].customAttribs.isCorrect = false;
                 }
             });
             __editedJsonContent.responses[__interactionIds[interactionIndex]].correct = $(currentTarget).siblings('input').attr('key');
@@ -688,7 +713,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
             interactions.forEach(function (interaction, inx) {
                 var type = interaction.type;
-                var optionsArray = interaction[type];
+                var optionsArray = interaction["answeroptions"];
                 var interactionid = interaction.key;
                 optionsArray.forEach(function (each, idx) {
                     var newObj = {};
@@ -714,7 +739,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 }
             })
 
-            console.log("transform content: ", __finalJSONContent);
+            //console.log("transform content: ", __finalJSONContent);
             return __finalJSONContent;
         }
 
@@ -765,7 +790,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             else {
                 __editedJsonContent.feedback[interactionid][choice] = feedbacktxt;
             }
-            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);              
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
         $(document).on('click', "a.drag-icon", function () {

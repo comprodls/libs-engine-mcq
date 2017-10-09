@@ -13,7 +13,7 @@
           </div>
           <!-- Loop over all question data text -->
           <div class="col-sm-12 mt-sm">
-            <div class="text-box vertical-bottom-align" rv-each-qdata="content.canvas.data.questiondata">
+            <div class="text-box vertical-bottom-align" rv-each-qdata="editorContent.content.canvas.data.questiondata">
               <span class="pull-left icon-pencil bottom"><i class="fa fa-pencil"></i></span>
               <div rv-content-editable="qdata.text" style="width: 100%;" data-text="Please Enter Question Test here." class="pl-md border-bottom-dashed"
                 role="button">
@@ -33,7 +33,7 @@
           </div>
           <div class="col-sm-12">
             <ul class="list-unstyled nested-list">
-              <li class="text-box colborder mt-sm mb-add-offset" rv-each-instruction="content.instructions" rv-instructionIndex="%instruction%">
+              <li class="text-box colborder mt-sm mb-add-offset" rv-each-instruction="editorContent.content.instructions" rv-instructionIndex="%instruction%">
                 <div class="vertical-bottom-align">
                   <span class="pull-left icon-pencil"><i class="fa fa-pencil"></i></span>
                   <div rv-content-editable="instruction.text" style="width: 100%;" data-text='Placeholder Instruction text. Update "Me" with a valid Instruction text for this question.'
@@ -60,7 +60,7 @@
     </section>
     <section id="answer-choice" class="section answer border-bottom-shadow">
       <div class="section-box">
-        <div class="row no-margin-left" rv-each-interact="content.interactions">
+        <div class="row no-margin-left" rv-each-interact="editorContent.content.interactions">
           <header>
             <h4 class="headerlabel font-semibold color-gray">Answer Options
               <span class="dropdown font-medium ml-md">
@@ -82,7 +82,7 @@
             </h4>
           </header>
           <!-- Loop over all questiondata inside interaction -->
-          <div class="col-sm-12 questions-editor mt-md" id="mcq-mr" rv-if="mcqmr">
+          <div class="col-sm-12 questions-editor mt-md" id="mcq-mr" rv-if="editorContent.MCQMR">
 
             <ul class="list-unstyled nested-list editor sortable">
               <!-- Loop over all options inside interaction  (mcq Array)-->
@@ -105,7 +105,7 @@
               </li>
             </ul>
           </div>
-          <div class="col-sm-12  questions-editor mt-md" id="mcq-sr" rv-if="mcqsr">
+          <div class="col-sm-12  questions-editor mt-md" id="mcq-sr" rv-if="editorContent.MCQSR">
             <ul class="list-unstyled nested-list editor sortable">
               <!-- Loop over all options inside interaction  (mcq Array)-->
               <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.answeroptions"
@@ -128,7 +128,7 @@
             </ul>
 
           </div>
-          <a class="add-item ml-xxl" rv-on-click="addItem | args content %interact%">
+          <a class="add-item ml-xxl" rv-on-click="addItem | args %interact%">
                 <button type="button" class="btn btn-default btn-sm mt-sm mb-sm"></span>+ Add</button>
             </a>
         </div>

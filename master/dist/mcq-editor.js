@@ -373,7 +373,7 @@ define('text',['module'], function (module) {
 });
 
 
-define('text!../html/mcq-editor.html',[],function () { return '<!-- Engine Editor Template -->\r\n\r\n<div class="mcq-body main-container" id="mcq-editor">\r\n  <main class="main global">\r\n    <section id="question" class="section question">\r\n      <!-- Loop over all instructions text -->\r\n      <div class="section-box">\r\n        <div class="row">\r\n          <div class="col-sm-12">\r\n            <header>\r\n              <h4 class="headerlabel font-semibold color-gray">Question Text</h4>\r\n            </header>\r\n          </div>\r\n          <!-- Loop over all question data text -->\r\n          <div class="col-sm-12 mt-sm">\r\n            <div class="text-box vertical-bottom-align" rv-each-qdata="content.canvas.data.questiondata">\r\n              <span class="pull-left icon-pencil bottom"><i class="fa fa-pencil"></i></span>\r\n              <div rv-content-editable="qdata.text" style="width: 100%;" data-text="Please Enter Question Test here." class="pl-md border-bottom-dashed"\r\n                role="button">\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n    <section id="instruction" class="section instruction border-bottom-shadow">\r\n      <div class="section-box mt-sm">\r\n        <div class="row">\r\n          <div class="col-sm-12" id="instructionLabel" rv-hide="isInstructionEmpty">\r\n            <header>\r\n              <h4 class="headerlabel font-semibold color-gray">Instruction Text</h4>\r\n            </header>\r\n          </div>\r\n          <div class="col-sm-12">\r\n            <ul class="list-unstyled nested-list">\r\n              <li class="text-box colborder mt-sm mb-add-offset" rv-each-instruction="content.instructions" rv-instructionIndex="%instruction%">\r\n                <div class="vertical-bottom-align">\r\n                  <span class="pull-left icon-pencil"><i class="fa fa-pencil"></i></span>\r\n                  <div rv-content-editable="instruction.text" style="width: 100%;" data-text=\'Placeholder Instruction text. Update "Me" with a valid Instruction text for this question.\'\r\n                    class="pr-3pc pl-md border-bottom-dashed" role="button"></div>\r\n                  <span class="pull-right icon-horizontal-align">\r\n                          <a class="color-lightgray fa fa-times outline-none" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeInstruction | args instruction %instruction%"></a>            \r\n                  </span>\r\n                </div>\r\n              </li>\r\n          </div>\r\n          </ul>\r\n        </div>\r\n        <div class="row mb-add-offset">\r\n          <div class="col-sm-12 dropdown">\r\n            <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">+ Add\r\n                </button>\r\n            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="left: 15px;">\r\n              <li class="border-bottom-dashed" role="presentation"><a class=\'dropdown-toggle disabled\' role="menuitem" href="#" rv-on-click="addInstruction">Instruction Text</a></li>\r\n              <li class="border-bottom-dashed" role="presentation"><a class=\'dropdown-toggle disabled\' role="menuitem" href="#">Description Text</a></li>\r\n            </ul>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n    <section id="answer-choice" class="section answer border-bottom-shadow">\r\n      <div class="section-box">\r\n        <div class="row no-margin-left" rv-each-interact="content.interactions">\r\n          <header>\r\n            <h4 class="headerlabel font-semibold color-gray">Answer Options\r\n              <span class="dropdown font-medium ml-md">\r\n                          <a href="#" class="dropdown-toggle color-lightgray text-underline font-normal" \r\n                             data-toggle="dropdown"  aria-expanded="false">\r\n                              <span rv-text="interact.type | interactTypeVal"></span>\r\n              <b class="caret">\r\n                              </b>\r\n              </a>\r\n              <ul class="dropdown-menu">\r\n                <li rv-class-active=\'mcqsr\'>\r\n                  <a href="#" id="MCQSR" rv-text="\'MCQSR\' | interactTypeVal" rv-on-click="changeQuestionType |  args \'MCQSR\' interact"></a>\r\n                </li>\r\n                <li rv-class-active=\'mcqmr\'>\r\n                  <a href="#" id="MCQMR" rv-text="\'MCQMR\' | interactTypeVal" rv-on-click="changeQuestionType |  args \'MCQMR\' interact"></a>\r\n                </li>\r\n              </ul>\r\n              </span>\r\n            </h4>\r\n          </header>\r\n          <!-- Loop over all questiondata inside interaction -->\r\n          <div class="col-sm-12 questions-editor mt-md" id="mcq-mr" rv-if="mcqmr">\r\n\r\n            <ul class="list-unstyled nested-list editor sortable">\r\n              <!-- Loop over all options inside interaction  (mcq Array)-->\r\n              <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.answeroptions"\r\n                rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">\r\n                <div>\r\n                  <label class="checkbox optionlabel" rv-for="%element% | idcreator element.customAttribs.id"><i class="square-icon choices"></i></label>\r\n                  <input type="checkbox" name="optionsRadios" rv-id="%element% | idcreator element.customAttribs.id" class="hide-option mcq-option"\r\n                    rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect" />\r\n                </div>\r\n                <div class="vertical-bottom-align" style="width: 100%">\r\n                  <span class="ml-xl pull-left mt-xs option-icon-pencil"><i class="fa fa-pencil"></i></span>\r\n                  <div rv-content-editable="element.customAttribs.value" data-text="Placeholder answer option text. Please update with valid answer option text"\r\n                    class="option-div adjusted-width pr-7pc pl-md border-bottom-dashed" role="button"></div>\r\n                  <span class="pull-right  icon-box vertical-align-self">\r\n                    <a class="color-lightgray drag-icon fa fa-times outline-none mr-1em" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>                                      \r\n                    <a class="color-lightgray drag-icon fa fa-bars outline-none " data-toggle="tooltip" title="Click & drag move this option"></a>                      \r\n                  </span>\r\n                </div>\r\n              </li>\r\n            </ul>\r\n          </div>\r\n          <div class="col-sm-12  questions-editor mt-md" id="mcq-sr" rv-if="mcqsr">\r\n            <ul class="list-unstyled nested-list editor sortable">\r\n              <!-- Loop over all options inside interaction  (mcq Array)-->\r\n              <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.answeroptions"\r\n                rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">\r\n                <div>\r\n                  <label class="radio optionlabel" rv-for="%element% | idcreator element.customAttribs.id"><i class="round-icon choices"></i></label>\r\n                  <input type="radio" name="optionsRadios" rv-id="%element% | idcreator element.customAttribs.id" class="hide-option mcq-option"\r\n                    rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect" />\r\n                </div>\r\n                <div class="vertical-bottom-align" style="width: 100%">\r\n                  <span class="ml-xl pull-left mt-xs option-icon-pencil"><i class="fa fa-pencil"></i></span>\r\n                  <div rv-content-editable="element.customAttribs.value" data-text="Placeholder answer option text. Please update with valid answer option text"\r\n                    class="option-div adjusted-width pr-7pc pl-md border-bottom-dashed" role="button"></div>\r\n                  <span class="pull-right  icon-box vertical-align-self">\r\n                      <a class="color-lightgray drag-icon fa fa-times outline-none mr-1em" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>                                      \r\n                      <a class="color-lightgray drag-icon fa fa-bars outline-none " data-toggle="tooltip" title="Click & drag move this option"></a>                      \r\n                    </span>\r\n                </div>\r\n              </li>\r\n            </ul>\r\n\r\n          </div>\r\n          <a class="add-item ml-xxl" rv-on-click="addItem | args content %interact%">\r\n                <button type="button" class="btn btn-default btn-sm mt-sm mb-sm"></span>+ Add</button>\r\n            </a>\r\n        </div>\r\n      </div>\r\n    </section>\r\n    <section id="feedback" class="section feedback  border-bottom-shadow">\r\n      <div class="section-box">\r\n        <div class="row mt-sm mb-sm">\r\n          <div class="col-sm-12">\r\n            <a class="enable-feedback">\r\n              <button type="button" class="btn btn-default active-btn"><h4 class="font-semibold color-gray">Enable Feedback</h4></button>\r\n            </a>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n    <section id="media" class="section border-bottom-shadow">\r\n      <div class="section-box">\r\n        <div class="row mt-sm mb-sm">\r\n          <div class="col-sm-12">\r\n            <a class="enable-media">\r\n            <button type="button" class="btn btn-default active-btn"><h4 class="color-gray font-semibold">Enable Media</h4></button>\r\n        </a>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n  </main>\r\n</div>';});
+define('text!../html/mcq-editor.html',[],function () { return '<!-- Engine Editor Template -->\r\n\r\n<div class="mcq-body main-container" id="mcq-editor">\r\n  <main class="main global">\r\n    <section id="question" class="section question">\r\n      <!-- Loop over all instructions text -->\r\n      <div class="section-box">\r\n        <div class="row">\r\n          <div class="col-sm-12">\r\n            <header>\r\n              <h4 class="headerlabel font-semibold color-gray">Question Text</h4>\r\n            </header>\r\n          </div>\r\n          <!-- Loop over all question data text -->\r\n          <div class="col-sm-12 mt-sm">\r\n            <div class="text-box vertical-bottom-align" rv-each-qdata="editorContent.content.canvas.data.questiondata">\r\n              <span class="pull-left icon-pencil bottom"><i class="fa fa-pencil"></i></span>\r\n              <div rv-content-editable="qdata.text" style="width: 100%;" data-text="Please Enter Question Test here." class="pl-md border-bottom-dashed"\r\n                role="button">\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n    <section id="instruction" class="section instruction border-bottom-shadow">\r\n      <div class="section-box mt-sm">\r\n        <div class="row">\r\n          <div class="col-sm-12" id="instructionLabel" rv-hide="isInstructionEmpty">\r\n            <header>\r\n              <h4 class="headerlabel font-semibold color-gray">Instruction Text</h4>\r\n            </header>\r\n          </div>\r\n          <div class="col-sm-12">\r\n            <ul class="list-unstyled nested-list">\r\n              <li class="text-box colborder mt-sm mb-add-offset" rv-each-instruction="editorContent.content.instructions" rv-instructionIndex="%instruction%">\r\n                <div class="vertical-bottom-align">\r\n                  <span class="pull-left icon-pencil"><i class="fa fa-pencil"></i></span>\r\n                  <div rv-content-editable="instruction.text" style="width: 100%;" data-text=\'Placeholder Instruction text. Update "Me" with a valid Instruction text for this question.\'\r\n                    class="pr-3pc pl-md border-bottom-dashed" role="button"></div>\r\n                  <span class="pull-right icon-horizontal-align">\r\n                          <a class="color-lightgray fa fa-times outline-none" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeInstruction | args instruction %instruction%"></a>            \r\n                  </span>\r\n                </div>\r\n              </li>\r\n          </div>\r\n          </ul>\r\n        </div>\r\n        <div class="row mb-add-offset">\r\n          <div class="col-sm-12 dropdown">\r\n            <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">+ Add\r\n                </button>\r\n            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="left: 15px;">\r\n              <li class="border-bottom-dashed" role="presentation"><a class=\'dropdown-toggle disabled\' role="menuitem" href="#" rv-on-click="addInstruction">Instruction Text</a></li>\r\n              <li class="border-bottom-dashed" role="presentation"><a class=\'dropdown-toggle disabled\' role="menuitem" href="#">Description Text</a></li>\r\n            </ul>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n    <section id="answer-choice" class="section answer border-bottom-shadow">\r\n      <div class="section-box">\r\n        <div class="row no-margin-left" rv-each-interact="editorContent.content.interactions">\r\n          <header>\r\n            <h4 class="headerlabel font-semibold color-gray">Answer Options\r\n              <span class="dropdown font-medium ml-md">\r\n                          <a href="#" class="dropdown-toggle color-lightgray text-underline font-normal" \r\n                             data-toggle="dropdown"  aria-expanded="false">\r\n                              <span rv-text="interact.type | interactTypeVal"></span>\r\n              <b class="caret">\r\n                              </b>\r\n              </a>\r\n              <ul class="dropdown-menu">\r\n                <li rv-class-active=\'mcqsr\'>\r\n                  <a href="#" id="MCQSR" rv-text="\'MCQSR\' | interactTypeVal" rv-on-click="changeQuestionType |  args \'MCQSR\' interact"></a>\r\n                </li>\r\n                <li rv-class-active=\'mcqmr\'>\r\n                  <a href="#" id="MCQMR" rv-text="\'MCQMR\' | interactTypeVal" rv-on-click="changeQuestionType |  args \'MCQMR\' interact"></a>\r\n                </li>\r\n              </ul>\r\n              </span>\r\n            </h4>\r\n          </header>\r\n          <!-- Loop over all questiondata inside interaction -->\r\n          <div class="col-sm-12 questions-editor mt-md" id="mcq-mr" rv-if="editorContent.MCQMR">\r\n\r\n            <ul class="list-unstyled nested-list editor sortable">\r\n              <!-- Loop over all options inside interaction  (mcq Array)-->\r\n              <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.answeroptions"\r\n                rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">\r\n                <div>\r\n                  <label class="checkbox optionlabel" rv-for="%element% | idcreator element.customAttribs.id"><i class="square-icon choices"></i></label>\r\n                  <input type="checkbox" name="optionsRadios" rv-id="%element% | idcreator element.customAttribs.id" class="hide-option mcq-option"\r\n                    rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect" />\r\n                </div>\r\n                <div class="vertical-bottom-align" style="width: 100%">\r\n                  <span class="ml-xl pull-left mt-xs option-icon-pencil"><i class="fa fa-pencil"></i></span>\r\n                  <div rv-content-editable="element.customAttribs.value" data-text="Placeholder answer option text. Please update with valid answer option text"\r\n                    class="option-div adjusted-width pr-7pc pl-md border-bottom-dashed" role="button"></div>\r\n                  <span class="pull-right  icon-box vertical-align-self">\r\n                    <a class="color-lightgray drag-icon fa fa-times outline-none mr-1em" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>                                      \r\n                    <a class="color-lightgray drag-icon fa fa-bars outline-none " data-toggle="tooltip" title="Click & drag move this option"></a>                      \r\n                  </span>\r\n                </div>\r\n              </li>\r\n            </ul>\r\n          </div>\r\n          <div class="col-sm-12  questions-editor mt-md" id="mcq-sr" rv-if="editorContent.MCQSR">\r\n            <ul class="list-unstyled nested-list editor sortable">\r\n              <!-- Loop over all options inside interaction  (mcq Array)-->\r\n              <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.answeroptions"\r\n                rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index" rv-interactIndex="%interact%">\r\n                <div>\r\n                  <label class="radio optionlabel" rv-for="%element% | idcreator element.customAttribs.id"><i class="round-icon choices"></i></label>\r\n                  <input type="radio" name="optionsRadios" rv-id="%element% | idcreator element.customAttribs.id" class="hide-option mcq-option"\r\n                    rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect" />\r\n                </div>\r\n                <div class="vertical-bottom-align" style="width: 100%">\r\n                  <span class="ml-xl pull-left mt-xs option-icon-pencil"><i class="fa fa-pencil"></i></span>\r\n                  <div rv-content-editable="element.customAttribs.value" data-text="Placeholder answer option text. Please update with valid answer option text"\r\n                    class="option-div adjusted-width pr-7pc pl-md border-bottom-dashed" role="button"></div>\r\n                  <span class="pull-right  icon-box vertical-align-self">\r\n                      <a class="color-lightgray drag-icon fa fa-times outline-none mr-1em" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>                                      \r\n                      <a class="color-lightgray drag-icon fa fa-bars outline-none " data-toggle="tooltip" title="Click & drag move this option"></a>                      \r\n                    </span>\r\n                </div>\r\n              </li>\r\n            </ul>\r\n\r\n          </div>\r\n          <a class="add-item ml-xxl" rv-on-click="addItem | args %interact%">\r\n                <button type="button" class="btn btn-default btn-sm mt-sm mb-sm"></span>+ Add</button>\r\n            </a>\r\n        </div>\r\n      </div>\r\n    </section>\r\n    <section id="feedback" class="section feedback  border-bottom-shadow">\r\n      <div class="section-box">\r\n        <div class="row mt-sm mb-sm">\r\n          <div class="col-sm-12">\r\n            <a class="enable-feedback">\r\n              <button type="button" class="btn btn-default active-btn"><h4 class="font-semibold color-gray">Enable Feedback</h4></button>\r\n            </a>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n    <section id="media" class="section border-bottom-shadow">\r\n      <div class="section-box">\r\n        <div class="row mt-sm mb-sm">\r\n          <div class="col-sm-12">\r\n            <a class="enable-media">\r\n            <button type="button" class="btn btn-default active-btn"><h4 class="color-gray font-semibold">Enable Media</h4></button>\r\n        </a>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n  </main>\r\n</div>';});
 
 /*
  * Require-CSS RequireJS css! loader plugin
@@ -20963,14 +20963,11 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
         var __interactionTags = [];
         var __finalJSONContent = {};
         var uniqueId;
-        var __quesEdited = {};
-        __quesEdited.isEditing = false;
         var __feedbackEditing = {};
         __feedbackEditing = {
             correct: false,
             incorrect: false
         }
-        var viewbinder;
 
         /********************************************************/
         /*                  ENGINE-SHELL INIT FUNCTION
@@ -21004,14 +21001,11 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             }
 
             // Process JSON to remove interaction tags and initiate __interactionIds and __interactionTags Arrays
-            //__parseAndUpdateJSONForInteractions();
             __parseAndUpdateJSONForInteractions();
+
             //Process JSON for easy iteration in template
-            //__parseAndUpdateJSONForRivets();
             __parseAndUpdateJSONForRivets();
             /* ------ VALIDATION BLOCK END -------- */
-
-            //console.log(JSON.stringify(__editedJsonContent, null, 4));
 
             /* Apply the layout HTML to the dom */
             $(elRoot).html(__constants.TEMPLATES[htmlLayout]);
@@ -21020,9 +21014,9 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             __initRivets();
 
             /* ---------------------- SETUP EVENTHANDLER STARTS----------------------------*/
-            //On CLICK of Radio buttons    
+            //On CLICK of Check boxes    
             $(document).on('click', '.editor label.checkbox', __handleCheckboxButtonClick);
-            // $(document).on('change', '.editor label.radio', __handleRadioButtonClick);
+            //On CLICK of Radio buttons    
             $(document).on('click', '.editor label.radio', __handleRadioButtonClick);
             //Drag of list items (re-ordering)
             __bindSortable();
@@ -21105,43 +21099,9 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             __editedJsonContent.content.interactions = newArray;
         }
 
-        /***
-         * Function to modify question JSON for easy iteration in template
-         * 
-         * Original JSON Object
-         * ---------------------
-         * 
-         * "MCQSR": [
-              {
-                "choiceA": "She has the flu." 
-              },
-              {
-                "choiceB": "She has the measles."
-              }  
-            ]
-            Modified JSON Object
-            ----------------------
-            "MCQSR": [
-              {
-                  " " : {
-                        "key" : "choiceA",
-                        "value" : "She has the flu.",
-                        "isEdited" : false,
-                        "index" : 0
-                        "isCorrect" : false
-                  } 
-              },
-               {
-                  "customAttribs" : {
-                        "key" : "choiceB",
-                        "value" : "She has the measles.",
-                        "isEdited" : false,
-                        "index" : 1
-                        "isCorrect" : true
-                  } 
-              }  
-            ]
-         */
+        /*
+        This function creates content for the editor from the base JSON data recieved
+        */
         function __parseAndUpdateJSONForRivets() {
             __editedJsonContent.MCQMR = false;
             __editedJsonContent.MCQSR = false;
@@ -21191,12 +21151,9 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
                             processedObj.customAttribs.isCorrect = false;
                         }
                     }
-
-
                     processedArray.push(processedObj);
                 });
                 __editedJsonContent.content.interactions[i]['answeroptions'] = processedArray;
-
             }
             __parseQuestionTextJSONForRivets();
             __parseInstructionTextJSONForRivets();
@@ -21250,15 +21207,12 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
                 return array;
             };
 
-
             // Rivets formatter function to set placeholder text
             rivets.formatters.placeholderText = function (obj) {
                 var text = "Enter inline feedback for option ";
                 text = text.concat(obj);
                 return text;
             };
-
-
 
             // Rivets formatter function to dynamically generate Modal Window ids based on the option.
             rivets.formatters.modalId = function (obj) {
@@ -21287,7 +21241,6 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
                 return types[key];
             };
 
-
             rivets.binders['content-editable'] = {
                 bind: function (el) {
                     var that = this;
@@ -21313,31 +21266,21 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             /* 
               * Bind data to template using rivets
               */
-            viewbinder = rivets.bind($('#mcq-editor'), {
-                meta: __editedJsonContent.meta,
-                content: __editedJsonContent.content,
-                toggleQuestionTextEditing: __toggleQuestionTextEditing,
-                quesEdited: __quesEdited,
+            rivets.bind($('#mcq-editor'), {
+                editorContent: __editedJsonContent,
                 removeItem: __removeItem,
                 addItem: __addItem,
-                removeEditing: __removeEditing,
                 interactionIds: __interactionIds,
                 feedback: __editedJsonContent.feedback,
-                setInlineFeedback: __setInlineFeedback,
-                addInlineFeedback: __addInlineFeedback,
-                editOptionText: __editOptionText,
-                mcqmr: __editedJsonContent.MCQMR,
-                mcqsr: __editedJsonContent.MCQSR,
                 removeInstruction: __removeInstruction,
                 addInstruction: __addInstruction,
                 handleItemChanged: __handleItemChangedInEditor,
                 isInstructionEmpty: __editedJsonContent.isInstructionEmpty,
-                isFeedbackGlobal: __editedJsonContent.feedback['global'] !== undefined ? true : false,
-                isFeedbackInteraction: __editedJsonContent.feedback['global'] === undefined ? false : true,
                 changeQuestionType: __changeQuestionType
             });
         }
 
+        /* Handles the Question type drop down change event */
         function __changeQuestionType(event, selectedType, interaction) {
             if (selectedType === interaction.type) {
                 return;
@@ -21362,20 +21305,27 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
                     }
                 })
             }
-            viewbinder.update({ mcqmr: __editedJsonContent['MCQMR'] });
-            viewbinder.update({ mcqsr: __editedJsonContent['MCQSR'] });
             $('#answer-choice .dropdown .dropdown-toggle').dropdown('toggle');
+            __bindSortable();
             activityAdaptor.autoResizeActivityIframe();
             __handleItemChangedInEditor();
         }
-        /* Toggle between editing and read-only mode for question text */
-        function __toggleQuestionTextEditing(event, element) {
-            element.isEditing = !element.isEditing;
-            $(event[0].currentTarget).siblings('.question-text-editor').focus();
+
+        /* Handles the Add new option button click */
+        function __addItem(event, interaction) {
+            var newObj = {};
+            newObj.customAttribs = {};
+            newObj.customAttribs.key = __guid();
+            newObj.customAttribs.value = "";
+            newObj.customAttribs.isEdited = true;
+            newObj.customAttribs.index = __editedJsonContent.content.interactions[interaction]["answeroptions"].length;
+            __editedJsonContent.content.interactions[interaction]["answeroptions"].push(newObj);
+            __state.hasUnsavedChanges = true;
             activityAdaptor.autoResizeActivityIframe();
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
-        /* Remove option item */
+        /* Handles the option remove event from the editor */
         function __removeItem(event, element, interaction) {
             var interactionid = element.customAttribs.id;
             var type = __editedJsonContent.content.interactions[interaction].type;
@@ -21399,8 +21349,21 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             }
         }
 
+        /** Handles the add Instruction button click from the editor */
+        function __addInstruction() {
+            __editedJsonContent.content.instructions.push({
+                "tag": "text",
+                "text": 'Placeholder Instruction text. Update "Me" with a valid Instruction text for this question',
+                "customAttribs": {
+                    "isEdited": false
+                }
+            });
+            __editedJsonContent.isInstructionEmpty = false;
+            $('#instructionLabel').show();
+            activityAdaptor.autoResizeActivityIframe();
+        }
 
-        /* Remove option item */
+        /* Handles the remove Instruction item text from the editor */
         function __removeInstruction(event, instruction, index) {
             __editedJsonContent.content.instructions.splice(index, 1);
 
@@ -21418,54 +21381,6 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
-        /* Sets the edit mode on the option text. Allows the Author to edit the text  */
-        function __editOptionText(event, element) {
-            element.customAttribs.isEdited = !element.customAttribs.isEdited;
-            $(event[0].currentTarget).parent().find('.option-value')[0].focus();
-            event[0].preventDefault();
-            activityAdaptor.autoResizeActivityIframe();
-        }
-
-
-        /* Remove edit mode on blur*/
-        function __removeEditing(event, element) {
-            if (element.customAttribs) {
-                element.customAttribs.isEdited = false;
-            } else {
-                element.isEditing = false;
-            }
-            __state.hasUnsavedChanges = true;
-            activityAdaptor.autoResizeActivityIframe();
-            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
-        }
-
-
-        /* Add new option for the question */
-        function __addItem(event, content, interaction) {
-            var newObj = {};
-            newObj.customAttribs = {};
-            newObj.customAttribs.key = __guid();
-            newObj.customAttribs.value = "";
-            newObj.customAttribs.isEdited = true;
-            newObj.customAttribs.index = content.interactions[interaction]["answeroptions"].length;
-            content.interactions[interaction]["answeroptions"].push(newObj);
-            __state.hasUnsavedChanges = true;
-            activityAdaptor.autoResizeActivityIframe();
-            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
-        }
-
-        function __addInstruction() {
-            __editedJsonContent.content.instructions.push({
-                "tag": "text",
-                "text": 'Placeholder Instruction text. Update "Me" with a valid Instruction text for this question',
-                "customAttribs": {
-                    "isEdited": false
-                }
-            });
-            __editedJsonContent.isInstructionEmpty = false;
-            $('#instructionLabel').show();
-            activityAdaptor.autoResizeActivityIframe();
-        }
         /*------------------------RIVETS END-------------------------------*/
 
         /* ---------------------- JQUERY BINDINGS ---------------------------------*/
@@ -21550,7 +21465,9 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
-
+        /** 
+        * handles the click event of the radio button and sets the isCorrect for the appropriate option
+        */
         function __handleRadioButtonClick(event) {
             var currentTarget = event.currentTarget;
             var quesIndex = 0;
@@ -21570,13 +21487,9 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
-
-
         function __handleItemChangedInEditor() {
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
-
-
 
         /* Transform the processedJSON to originally received form so that the platform
          * can use it to repaint the updated json.
@@ -21614,12 +21527,8 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
                     __finalJSONContent.content.instructions[idx]['tag'] = 'text';
                 }
             })
-
-            //console.log("transform content: ", __finalJSONContent);
             return __finalJSONContent;
         }
-
-
 
         /* ---------------------- JQUERY BINDINGS END ----------------------------*/
 
@@ -21632,41 +21541,6 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             }
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
                 s4() + '-' + s4() + s4() + s4();
-        }
-
-        /** Opens the window for the inline feedback */
-        function __addInlineFeedback(option) {
-            var event = option[0];
-            var attribs = option[1].element.customAttribs;
-            var option = attribs["key"];
-            var optionValue = attribs["value"];
-            option = option.replace(/[\. ,:-]+/g, '');
-            var btn = "#btn" + option;
-            var modal = "#modal" + option;
-            $(modal).modal('show');
-            // prevents the default action when the row is clicked.
-            event.preventDefault();
-            activityAdaptor.autoResizeActivityIframe();
-        }
-
-        /** Updated the entered inline feedback in the JSON  */
-        function __setInlineFeedback(option) {
-            var interactionid = option[1]['element']['customAttribs'].id;
-            var choice = option[1]['element']['customAttribs'].key;
-            var feedbacktxt = option[1]['element']['customAttribs'].feedback;
-
-            var feedbackObj = {};
-            feedbackObj[choice] = feedbacktxt;
-            var interactionfeedback = __editedJsonContent.feedback[interactionid];
-            // update feedback JSON
-            if (typeof interactionfeedback == 'undefined') {
-                __editedJsonContent.feedback[interactionid] = {};
-                __editedJsonContent.feedback[interactionid] = feedbackObj;
-            }
-            else {
-                __editedJsonContent.feedback[interactionid][choice] = feedbacktxt;
-            }
-            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
         $(document).on('click', "a.drag-icon", function () {
@@ -21698,7 +21572,6 @@ define('mcq-editor',['text!../html/mcq-editor.html', //Layout of the Editor
             "saveItemInEditor": saveItemInEditor
         };
     };
-
 });
 
 (function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})

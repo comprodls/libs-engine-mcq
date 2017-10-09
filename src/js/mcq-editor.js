@@ -94,7 +94,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             correct: false,
             incorrect: false
         }
-
+        var sendItemChangeNotification = false;
         /********************************************************/
         /*                  ENGINE-SHELL INIT FUNCTION
             
@@ -383,8 +383,10 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     return el.innerText;
                 },
                 routine: function (el, value) {
-                    activityAdaptor.autoResizeActivityIframe();
-                    __handleItemChangedInEditor();
+                    if (sendItemChangeNotification) {
+                        activityAdaptor.autoResizeActivityIframe();
+                        __handleItemChangedInEditor();
+                    }
                     el.innerHTML = value;
                 }
             };
@@ -686,7 +688,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             $(window).on('resize', function () {
                 activityAdaptor.autoResizeActivityIframe();
             });
-
+            sendItemChangeNotification = true;
         });
 
         /** End popover html section  */

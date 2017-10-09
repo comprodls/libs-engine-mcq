@@ -89,15 +89,12 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         var __interactionTags = [];
         var __finalJSONContent = {};
         var uniqueId;
-        var __quesEdited = {};
-        __quesEdited.isEditing = false;
         var __feedbackEditing = {};
         __feedbackEditing = {
             correct: false,
             incorrect: false
         }
-        var viewbinder;
-
+        var sendItemChangeNotification = false;
         /********************************************************/
         /*                  ENGINE-SHELL INIT FUNCTION
             
@@ -130,14 +127,11 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             }
 
             // Process JSON to remove interaction tags and initiate __interactionIds and __interactionTags Arrays
-            //__parseAndUpdateJSONForInteractions();
             __parseAndUpdateJSONForInteractions();
+
             //Process JSON for easy iteration in template
-            //__parseAndUpdateJSONForRivets();
             __parseAndUpdateJSONForRivets();
             /* ------ VALIDATION BLOCK END -------- */
-
-            //console.log(JSON.stringify(__editedJsonContent, null, 4));
 
             /* Apply the layout HTML to the dom */
             $(elRoot).html(__constants.TEMPLATES[htmlLayout]);
@@ -146,9 +140,9 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             __initRivets();
 
             /* ---------------------- SETUP EVENTHANDLER STARTS----------------------------*/
-            //On CLICK of Radio buttons    
+            //On CLICK of Check boxes    
             $(document).on('click', '.editor label.checkbox', __handleCheckboxButtonClick);
-            // $(document).on('change', '.editor label.radio', __handleRadioButtonClick);
+            //On CLICK of Radio buttons    
             $(document).on('click', '.editor label.radio', __handleRadioButtonClick);
             //Drag of list items (re-ordering)
             __bindSortable();
@@ -231,43 +225,9 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             __editedJsonContent.content.interactions = newArray;
         }
 
-        /***
-         * Function to modify question JSON for easy iteration in template
-         * 
-         * Original JSON Object
-         * ---------------------
-         * 
-         * "MCQSR": [
-              {
-                "choiceA": "She has the flu." 
-              },
-              {
-                "choiceB": "She has the measles."
-              }  
-            ]
-            Modified JSON Object
-            ----------------------
-            "MCQSR": [
-              {
-                  " " : {
-                        "key" : "choiceA",
-                        "value" : "She has the flu.",
-                        "isEdited" : false,
-                        "index" : 0
-                        "isCorrect" : false
-                  } 
-              },
-               {
-                  "customAttribs" : {
-                        "key" : "choiceB",
-                        "value" : "She has the measles.",
-                        "isEdited" : false,
-                        "index" : 1
-                        "isCorrect" : true
-                  } 
-              }  
-            ]
-         */
+        /*
+        This function creates content for the editor from the base JSON data recieved
+        */
         function __parseAndUpdateJSONForRivets() {
             __editedJsonContent.MCQMR = false;
             __editedJsonContent.MCQSR = false;
@@ -317,12 +277,9 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                             processedObj.customAttribs.isCorrect = false;
                         }
                     }
-
-
                     processedArray.push(processedObj);
                 });
                 __editedJsonContent.content.interactions[i]['answeroptions'] = processedArray;
-
             }
             __parseQuestionTextJSONForRivets();
             __parseInstructionTextJSONForRivets();
@@ -376,15 +333,12 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 return array;
             };
 
-
             // Rivets formatter function to set placeholder text
             rivets.formatters.placeholderText = function (obj) {
                 var text = "Enter inline feedback for option ";
                 text = text.concat(obj);
                 return text;
             };
-
-
 
             // Rivets formatter function to dynamically generate Modal Window ids based on the option.
             rivets.formatters.modalId = function (obj) {
@@ -413,7 +367,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 return types[key];
             };
 
-
             rivets.binders['content-editable'] = {
                 bind: function (el) {
                     var that = this;
@@ -430,8 +383,10 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     return el.innerText;
                 },
                 routine: function (el, value) {
-                    activityAdaptor.autoResizeActivityIframe();
-                    __handleItemChangedInEditor();
+                    if (sendItemChangeNotification) {
+                        activityAdaptor.autoResizeActivityIframe();
+                        __handleItemChangedInEditor();
+                    }
                     el.innerHTML = value;
                 }
             };
@@ -439,31 +394,21 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             /* 
               * Bind data to template using rivets
               */
-            viewbinder = rivets.bind($('#mcq-editor'), {
-                meta: __editedJsonContent.meta,
-                content: __editedJsonContent.content,
-                toggleQuestionTextEditing: __toggleQuestionTextEditing,
-                quesEdited: __quesEdited,
+            rivets.bind($('#mcq-editor'), {
+                editorContent: __editedJsonContent,
                 removeItem: __removeItem,
                 addItem: __addItem,
-                removeEditing: __removeEditing,
                 interactionIds: __interactionIds,
                 feedback: __editedJsonContent.feedback,
-                setInlineFeedback: __setInlineFeedback,
-                addInlineFeedback: __addInlineFeedback,
-                editOptionText: __editOptionText,
-                mcqmr: __editedJsonContent.MCQMR,
-                mcqsr: __editedJsonContent.MCQSR,
                 removeInstruction: __removeInstruction,
                 addInstruction: __addInstruction,
                 handleItemChanged: __handleItemChangedInEditor,
                 isInstructionEmpty: __editedJsonContent.isInstructionEmpty,
-                isFeedbackGlobal: __editedJsonContent.feedback['global'] !== undefined ? true : false,
-                isFeedbackInteraction: __editedJsonContent.feedback['global'] === undefined ? false : true,
                 changeQuestionType: __changeQuestionType
             });
         }
 
+        /* Handles the Question type drop down change event */
         function __changeQuestionType(event, selectedType, interaction) {
             if (selectedType === interaction.type) {
                 return;
@@ -488,20 +433,27 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     }
                 })
             }
-            viewbinder.update({ mcqmr: __editedJsonContent['MCQMR'] });
-            viewbinder.update({ mcqsr: __editedJsonContent['MCQSR'] });
             $('#answer-choice .dropdown .dropdown-toggle').dropdown('toggle');
+            __bindSortable();
             activityAdaptor.autoResizeActivityIframe();
             __handleItemChangedInEditor();
         }
-        /* Toggle between editing and read-only mode for question text */
-        function __toggleQuestionTextEditing(event, element) {
-            element.isEditing = !element.isEditing;
-            $(event[0].currentTarget).siblings('.question-text-editor').focus();
+
+        /* Handles the Add new option button click */
+        function __addItem(event, interaction) {
+            var newObj = {};
+            newObj.customAttribs = {};
+            newObj.customAttribs.key = __guid();
+            newObj.customAttribs.value = "";
+            newObj.customAttribs.isEdited = true;
+            newObj.customAttribs.index = __editedJsonContent.content.interactions[interaction]["answeroptions"].length;
+            __editedJsonContent.content.interactions[interaction]["answeroptions"].push(newObj);
+            __state.hasUnsavedChanges = true;
             activityAdaptor.autoResizeActivityIframe();
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
-        /* Remove option item */
+        /* Handles the option remove event from the editor */
         function __removeItem(event, element, interaction) {
             var interactionid = element.customAttribs.id;
             var type = __editedJsonContent.content.interactions[interaction].type;
@@ -525,8 +477,21 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             }
         }
 
+        /** Handles the add Instruction button click from the editor */
+        function __addInstruction() {
+            __editedJsonContent.content.instructions.push({
+                "tag": "text",
+                "text": 'Placeholder Instruction text. Update "Me" with a valid Instruction text for this question',
+                "customAttribs": {
+                    "isEdited": false
+                }
+            });
+            __editedJsonContent.isInstructionEmpty = false;
+            $('#instructionLabel').show();
+            activityAdaptor.autoResizeActivityIframe();
+        }
 
-        /* Remove option item */
+        /* Handles the remove Instruction item text from the editor */
         function __removeInstruction(event, instruction, index) {
             __editedJsonContent.content.instructions.splice(index, 1);
 
@@ -544,54 +509,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
-        /* Sets the edit mode on the option text. Allows the Author to edit the text  */
-        function __editOptionText(event, element) {
-            element.customAttribs.isEdited = !element.customAttribs.isEdited;
-            $(event[0].currentTarget).parent().find('.option-value')[0].focus();
-            event[0].preventDefault();
-            activityAdaptor.autoResizeActivityIframe();
-        }
-
-
-        /* Remove edit mode on blur*/
-        function __removeEditing(event, element) {
-            if (element.customAttribs) {
-                element.customAttribs.isEdited = false;
-            } else {
-                element.isEditing = false;
-            }
-            __state.hasUnsavedChanges = true;
-            activityAdaptor.autoResizeActivityIframe();
-            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
-        }
-
-
-        /* Add new option for the question */
-        function __addItem(event, content, interaction) {
-            var newObj = {};
-            newObj.customAttribs = {};
-            newObj.customAttribs.key = __guid();
-            newObj.customAttribs.value = "";
-            newObj.customAttribs.isEdited = true;
-            newObj.customAttribs.index = content.interactions[interaction]["answeroptions"].length;
-            content.interactions[interaction]["answeroptions"].push(newObj);
-            __state.hasUnsavedChanges = true;
-            activityAdaptor.autoResizeActivityIframe();
-            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
-        }
-
-        function __addInstruction() {
-            __editedJsonContent.content.instructions.push({
-                "tag": "text",
-                "text": 'Placeholder Instruction text. Update "Me" with a valid Instruction text for this question',
-                "customAttribs": {
-                    "isEdited": false
-                }
-            });
-            __editedJsonContent.isInstructionEmpty = false;
-            $('#instructionLabel').show();
-            activityAdaptor.autoResizeActivityIframe();
-        }
         /*------------------------RIVETS END-------------------------------*/
 
         /* ---------------------- JQUERY BINDINGS ---------------------------------*/
@@ -676,7 +593,9 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
-
+        /** 
+        * handles the click event of the radio button and sets the isCorrect for the appropriate option
+        */
         function __handleRadioButtonClick(event) {
             var currentTarget = event.currentTarget;
             var quesIndex = 0;
@@ -696,13 +615,9 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
-
-
         function __handleItemChangedInEditor() {
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
-
-
 
         /* Transform the processedJSON to originally received form so that the platform
          * can use it to repaint the updated json.
@@ -740,12 +655,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     __finalJSONContent.content.instructions[idx]['tag'] = 'text';
                 }
             })
-
-            //console.log("transform content: ", __finalJSONContent);
             return __finalJSONContent;
         }
-
-
 
         /* ---------------------- JQUERY BINDINGS END ----------------------------*/
 
@@ -758,41 +669,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             }
             return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
                 s4() + '-' + s4() + s4() + s4();
-        }
-
-        /** Opens the window for the inline feedback */
-        function __addInlineFeedback(option) {
-            var event = option[0];
-            var attribs = option[1].element.customAttribs;
-            var option = attribs["key"];
-            var optionValue = attribs["value"];
-            option = option.replace(/[\. ,:-]+/g, '');
-            var btn = "#btn" + option;
-            var modal = "#modal" + option;
-            $(modal).modal('show');
-            // prevents the default action when the row is clicked.
-            event.preventDefault();
-            activityAdaptor.autoResizeActivityIframe();
-        }
-
-        /** Updated the entered inline feedback in the JSON  */
-        function __setInlineFeedback(option) {
-            var interactionid = option[1]['element']['customAttribs'].id;
-            var choice = option[1]['element']['customAttribs'].key;
-            var feedbacktxt = option[1]['element']['customAttribs'].feedback;
-
-            var feedbackObj = {};
-            feedbackObj[choice] = feedbacktxt;
-            var interactionfeedback = __editedJsonContent.feedback[interactionid];
-            // update feedback JSON
-            if (typeof interactionfeedback == 'undefined') {
-                __editedJsonContent.feedback[interactionid] = {};
-                __editedJsonContent.feedback[interactionid] = feedbackObj;
-            }
-            else {
-                __editedJsonContent.feedback[interactionid][choice] = feedbacktxt;
-            }
-            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
         $(document).on('click', "a.drag-icon", function () {
@@ -812,7 +688,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             $(window).on('resize', function () {
                 activityAdaptor.autoResizeActivityIframe();
             });
-
+            sendItemChangeNotification = true;
         });
 
         /** End popover html section  */
@@ -824,5 +700,4 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             "saveItemInEditor": saveItemInEditor
         };
     };
-
 });

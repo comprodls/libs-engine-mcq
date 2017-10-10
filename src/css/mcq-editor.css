@@ -109,6 +109,9 @@
 .pl-md {
     padding-left: 25px;
 }
+.pl-sm {
+    padding-left: 15px;
+}
 .pr-3pc {
     padding-right: 3%;
 }
@@ -326,3 +329,64 @@ i.choices:hover {
     }
 }
 
+.fa-thumbs-o-up:before {
+    content: "\f087";
+}
+
+
+
+i.thumbs-o-down {
+    height: 2.35em;
+    width: 2.35em;
+    position: absolute;
+    top: -30px;
+    left: 0;
+    display: block;
+    outline: 0;
+    border: 1px solid red;
+    background: #FAE9E9;
+    padding: 10px;
+}
+
+i.thumbs-o-down:after {    
+    opacity: 0.7;
+    background-color: #FAE9E9;
+    color: red;    
+    content: "\f088";
+    font-family: fontawesome;
+    font-size: 1.3em;
+    position: relative;
+    left: 0px;
+    top: -6px;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+
+i.thumbs-o-up {
+    height: 2.35em;
+    width: 2.35em;
+    position: absolute;
+    top: -30px;
+    left: 0;
+    display: block;
+    outline: 0;
+    border: 1px solid green;
+    background: #E0FFE0;
+    padding: 10px;
+}
+
+i.thumbs-o-up:after {    
+    opacity: 0.7;
+    background-color: #E0FFE0;
+    color: green;
+    content: "\f087";
+    font-family: fontawesome;
+    font-size: 1.3em;
+    position: relative;
+    left: 0px;
+    top: -6px;
+    font-weight: 400;
+    font-style: normal;
+}

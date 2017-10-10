@@ -294,7 +294,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             __parseQuestionTextJSONForRivets();
             __parseInstructionTextJSONForRivets();
             __parseGlobalFeedbackJSONForRivets();
-            console.log(JSON.stringify(__editedJsonContent, null, 4));
         }
 
         function __parseGlobalFeedbackJSONForRivets() {
@@ -320,7 +319,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 __editedJsonContent.feedback.global = tempArr;
                 __editedJsonContent.enableFeedBack = true;
             }
-            console.log(JSON.stringify(__editedJsonContent, null, 4));
         }
 
         function __parseQuestionTextJSONForRivets() {
@@ -430,15 +428,12 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             };
 
             rivets.binders.addclass = function (el, value) {
-                console.log(value);
-                console.log("class value");
                 if (el.addedClass) {
                     $(el).removeClass(el.addedClass)
                     delete el.addedClass
                 }
 
                 if (value) {
-                    console.log(value);
                     $(el).addClass(value)
                     el.addedClass = value
                 }
@@ -739,7 +734,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         }
 
         function __showFeedBack(event) {
-            console.log(JSON.stringify(__editedJsonContent, null, 4));
             __editedJsonContent.feedback.global = [];
             __editedJsonContent.feedback.global.push(
                 {
@@ -759,12 +753,10 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     }
                 });
             __editedJsonContent.enableFeedBack = true;
-            console.log("test");
         }
 
 
         function __removeFeedback(event, index) {
-            console.log("index: ", index);
             __editedJsonContent.feedback.global.splice(index, 1);
             if (__editedJsonContent.feedback.global.length == 0) {
                 __editedJsonContent.enableFeedBack = false;

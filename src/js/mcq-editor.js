@@ -58,6 +58,11 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             /* If both config RESIZE_HEIGHT and TOC RESIZE_HEIGHT are not defined then RESIZE_MODE is set to "auto"*/
         };
 
+        var __icon = {
+            correct: "thumbs-o-up",
+            incorrect: "thumbs-o-down"
+        };
+
         /*
          * Internal Engine State.
          */
@@ -232,6 +237,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             __editedJsonContent.MCQMR = false;
             __editedJsonContent.MCQSR = false;
             __editedJsonContent.isInstructionEmpty = true;
+            __editedJsonContent.enableFeedBack = false;
 
             for (var i = 0; i < __interactionIds.length; i++) {
                 var processedArray = [];
@@ -280,9 +286,39 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     processedArray.push(processedObj);
                 });
                 __editedJsonContent.content.interactions[i]['answeroptions'] = processedArray;
+                __editedJsonContent.content.interactions[i].editlink = {
+                    "enabled": processedArray.length >= 2,
+                    "disabled": processedArray.length < 2
+                };
             }
             __parseQuestionTextJSONForRivets();
             __parseInstructionTextJSONForRivets();
+            __parseGlobalFeedbackJSONForRivets();
+        }
+
+        function __parseGlobalFeedbackJSONForRivets() {
+            if (__editedJsonContent.feedback.global == undefined) {
+                __editedJsonContent.feedback.global = [];
+                return;
+            }
+            var tempObj = __editedJsonContent.feedback.global;
+            var tempArr = [];
+            if (tempObj && Object.keys(tempObj).length > 0) {
+                Object.keys(tempObj).forEach(function (key, index) {
+                    var processedObj = {};
+                    processedObj.customAttribs = {};
+                    processedObj.customAttribs.key = key;
+                    processedObj.customAttribs.value = tempObj[key];
+                    processedObj.customAttribs.index = index;
+                    if (key !== 'correct' || key !== 'incorrect') {
+                        processedObj.customAttribs.icon = 'generic-feedback';
+                    }
+                    processedObj.customAttribs.icon = __icon[key];
+                    tempArr.push(processedObj);
+                });
+                __editedJsonContent.feedback.global = tempArr;
+                __editedJsonContent.enableFeedBack = true;
+            }
         }
 
         function __parseQuestionTextJSONForRivets() {
@@ -391,6 +427,18 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 }
             };
 
+            rivets.binders.addclass = function (el, value) {
+                if (el.addedClass) {
+                    $(el).removeClass(el.addedClass)
+                    delete el.addedClass
+                }
+
+                if (value) {
+                    $(el).addClass(value)
+                    el.addedClass = value
+                }
+            }
+
             /* 
               * Bind data to template using rivets
               */
@@ -404,9 +452,12 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 addInstruction: __addInstruction,
                 handleItemChanged: __handleItemChangedInEditor,
                 isInstructionEmpty: __editedJsonContent.isInstructionEmpty,
-                changeQuestionType: __changeQuestionType
+                changeQuestionType: __changeQuestionType,
+                showFeedBack: __showFeedBack,
+                removeFeedback: __removeFeedback
             });
         }
+
 
         /* Handles the Question type drop down change event */
         function __changeQuestionType(event, selectedType, interaction) {
@@ -414,7 +465,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 return;
             } else {
                 var key = interaction.key;
-
                 __editedJsonContent[interaction.type] = false;
                 __editedJsonContent[selectedType] = true;
 
@@ -448,6 +498,13 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             newObj.customAttribs.isEdited = true;
             newObj.customAttribs.index = __editedJsonContent.content.interactions[interaction]["answeroptions"].length;
             __editedJsonContent.content.interactions[interaction]["answeroptions"].push(newObj);
+
+            // This updates the editor model data to enable option delete and drag when
+            // the options length is greater than 1
+            if (__editedJsonContent.content.interactions[interaction]["answeroptions"].length > 1) {
+                __editedJsonContent.content.interactions[interaction].editlink.enabled = true;
+                __editedJsonContent.content.interactions[interaction].editlink.disabled = false;
+            }
             __state.hasUnsavedChanges = true;
             activityAdaptor.autoResizeActivityIframe();
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
@@ -474,6 +531,12 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 __state.hasUnsavedChanges = true;
                 activityAdaptor.autoResizeActivityIframe();
                 activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
+            }
+            // This updates the editor data model to disable options delete and drag
+            // when the answeroptions length is less than 2
+            if (__editedJsonContent.content.interactions[interaction]["answeroptions"].length <= 1) {
+                __editedJsonContent.content.interactions[interaction].editlink.enabled = false;
+                __editedJsonContent.content.interactions[interaction].editlink.disabled = true;
             }
         }
 
@@ -646,6 +709,18 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 __finalJSONContent.content.interactions[interactionid][type] = optionsArr;
             })
 
+            /** Added for global feedback transformation */
+            var globalFeedback = __finalJSONContent.feedback.global;
+            if (globalFeedback && globalFeedback.length > 0) {
+                var tempObj = {};
+                globalFeedback.forEach(function (obj) {
+                    if (obj.customAttribs.value && obj.customAttribs.value != '') {
+                        tempObj[obj.customAttribs.key] = obj.customAttribs.value;
+                    }
+                })
+                __finalJSONContent.feedback.global = tempObj;
+            }
+
             for (var i = 0; i < __finalJSONContent.content.canvas.data.questiondata.length; i++) {
                 __finalJSONContent.content.canvas.data.questiondata[i].text += __interactionTags[i];
             }
@@ -656,6 +731,40 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 }
             })
             return __finalJSONContent;
+        }
+
+        function __showFeedBack(event) {
+            __editedJsonContent.feedback.global = [];
+            __editedJsonContent.feedback.global.push(
+                {
+                    "customAttribs": {
+                        "key": "correct",
+                        "value": "",
+                        "index": 0,
+                        "icon": __icon["correct"]
+                    }
+                },
+                {
+                    "customAttribs": {
+                        "key": "incorrect",
+                        "value": "",
+                        "index": 1,
+                        "icon": __icon["incorrect"]
+                    }
+                });
+            __editedJsonContent.enableFeedBack = true;
+        }
+
+
+        function __removeFeedback(event, index) {
+            __editedJsonContent.feedback.global.splice(index, 1);
+            if (__editedJsonContent.feedback.global.length == 0) {
+                __editedJsonContent.enableFeedBack = false;
+            }
+
+            __state.hasUnsavedChanges = true;
+            activityAdaptor.autoResizeActivityIframe();
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
         /* ---------------------- JQUERY BINDINGS END ----------------------------*/

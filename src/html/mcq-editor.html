@@ -98,8 +98,8 @@
                   <div rv-content-editable="element.customAttribs.value" data-text="Placeholder answer option text. Please update with valid answer option text"
                     class="option-div adjusted-width pr-7pc pl-md border-bottom-dashed" role="button"></div>
                   <span class="pull-right  icon-box vertical-align-self">
-                    <a class="color-lightgray drag-icon fa fa-times outline-none mr-1em" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>                                      
-                    <a class="color-lightgray drag-icon fa fa-bars outline-none " data-toggle="tooltip" title="Click & drag move this option"></a>                      
+                    <a rv-class-linkenabled="interact.editlink.enabled" rv-class-linkdisabled="interact.editlink.disabled" class="color-lightgray drag-icon fa fa-times outline-none mr-1em" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>                                      
+                    <a rv-class-linkenabled="interact.editlink.enabled" rv-class-linkdisabled="interact.editlink.disabled" class="color-lightgray drag-icon fa fa-bars outline-none " data-toggle="tooltip" title="Click & drag move this option"></a>                      
                   </span>
                 </div>
               </li>
@@ -120,8 +120,8 @@
                   <div rv-content-editable="element.customAttribs.value" data-text="Placeholder answer option text. Please update with valid answer option text"
                     class="option-div adjusted-width pr-7pc pl-md border-bottom-dashed" role="button"></div>
                   <span class="pull-right  icon-box vertical-align-self">
-                      <a class="color-lightgray drag-icon fa fa-times outline-none mr-1em" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>                                      
-                      <a class="color-lightgray drag-icon fa fa-bars outline-none " data-toggle="tooltip" title="Click & drag move this option"></a>                      
+                      <a rv-class-linkenabled="interact.editlink.enabled" rv-class-linkdisabled="interact.editlink.disabled" class="drag-icon fa fa-times outline-none mr-1em" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>                                      
+                      <a rv-class-linkenabled="interact.editlink.enabled" rv-class-linkdisabled="interact.editlink.disabled" class="drag-icon fa fa-bars outline-none " data-toggle="tooltip" title="Click & drag move this option"></a>                      
                     </span>
                 </div>
               </li>
@@ -135,40 +135,40 @@
       </div>
     </section>
     <section id="feedback" class="section feedback  border-bottom-shadow">
-        <div class="section-box">
-            <div class="row mt-sm mb-sm">
-              <div class="col-sm-12" rv-hide="editorContent.enableFeedBack">
-                <a class="enable-feedback" >
+      <div class="section-box">
+        <div class="row mt-sm mb-sm">
+          <div class="col-sm-12" rv-hide="editorContent.enableFeedBack">
+            <a class="enable-feedback">
                   <button type="button" class="btn btn-default active-btn" rv-on-click="showFeedBack"><h4 class="font-semibold color-gray">Enable Feedback</h4></button>
                 </a>
-              </div>
-              <div class="col-sm-12" rv-show="editorContent.enableFeedBack">
-                <div>
-                      <header>
-                        <h4 class="headerlabel font-semibold color-gray">Feedback</h4>
-                      </header>
+          </div>
+          <div class="col-sm-12" rv-show="editorContent.enableFeedBack">
+            <div>
+              <header>
+                <h4 class="headerlabel font-semibold color-gray">Feedback</h4>
+              </header>
+            </div>
+            <ul class="list-unstyled nested-list">
+              <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="editorContent.feedback.global">
+                <div class="pl-sm">
+                  <div class="radio"><i class="round-icon feedback" rv-addclass='element.customAttribs.icon'></i></div>
                 </div>
-                <ul class="list-unstyled nested-list">      
-                    <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="editorContent.feedback.global"> 
-                            <div class="pl-sm">
-                              <div class="radio"><i class="round-icon feedback" rv-addclass='element.customAttribs.icon'></i></div>
-                            </div>     
-                            <div class="vertical-bottom-align" style="width: 100%">   
-                            <span class="ml-xl pull-left mt-xs option-icon-pencil"><i class="fa fa-pencil"></i></span>
-                            <div rv-content-editable="element.customAttribs.value" style="width: 100%;" data-text='Placeholder Feedback text. Update "Me" with a valid Feedback text for this question.'
-                              class="pr-3pc pl-md border-bottom-dashed" role="button"></div>
-                            <span class="pull-right icon-horizontal-align">
+                <div class="vertical-bottom-align" style="width: 100%">
+                  <span class="ml-xl pull-left mt-xs option-icon-pencil"><i class="fa fa-pencil"></i></span>
+                  <div rv-content-editable="element.customAttribs.value" style="width: 100%;" data-text='Placeholder Feedback text. Update "Me" with a valid Feedback text for this question.'
+                    class="pr-3pc pl-md border-bottom-dashed" role="button"></div>
+                  <span class="pull-right icon-horizontal-align">
                                     <a class="color-lightgray fa fa-times outline-none" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeFeedback | args %element%"></a>            
                             </span>
-                        </div>
-                    </li>
-                </ul>
-                <a class="add-item ml-xxl" rv-on-click="">
+                </div>
+              </li>
+            </ul>
+            <a class="add-item ml-xxl" rv-on-click="">
                   <button type="button" class="btn btn-default btn-sm mt-sm mb-sm"></span>+ Add</button>
                 </a>
-              </div>
-            </div>
           </div>
+        </div>
+      </div>
     </section>
     <section id="media" class="section border-bottom-shadow">
       <div class="section-box">

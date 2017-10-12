@@ -60,8 +60,10 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
         var __icon = {
             correct: "thumbs-o-up",
-            incorrect: "thumbs-o-down"
+            incorrect: "thumbs-o-down",
+            generic: "hand-o-right"
         };
+
 
         /*
          * Internal Engine State.
@@ -99,6 +101,15 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             correct: false,
             incorrect: false
         }
+
+        var __enableFeedback = {hide : false};
+
+        /** */
+        var __feedbackPresets = [{key:"correct", value:"Show when Correct", showDropdown : true, order: 1 },
+                                 {key:"incorrect", value:"Show when Incorrect", showDropdown : true, order: 2},
+                                 {key:"generic", value:"Show Always", showDropdown : true, order : 100}];
+                           
+
         var sendItemChangeNotification = false;
         /********************************************************/
         /*                  ENGINE-SHELL INIT FUNCTION
@@ -311,11 +322,21 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     processedObj.customAttribs.value = tempObj[key];
                     processedObj.customAttribs.index = index;
                     if (key !== 'correct' || key !== 'incorrect') {
-                        processedObj.customAttribs.icon = 'generic-feedback';
+                        processedObj.customAttribs.order = 100;
+                        processedObj.customAttribs.icon = __icon['generic'];
+                    }
+                    if(key == 'correct'){
+                        processedObj.customAttribs.order = 1;
+                        __feedbackPresets[0].showDropdown = false;
+                    }
+                    if(key == 'incorrect'){
+                        processedObj.customAttribs.order = 2;
+                        __feedbackPresets[1].showDropdown = false;
                     }
                     processedObj.customAttribs.icon = __icon[key];
-                    tempArr.push(processedObj);
+                    tempArr.push(processedObj);                
                 });
+                   tempArr.sort(function(a, b){ return a.customAttribs.order - b.customAttribs.order});
                 __editedJsonContent.feedback.global = tempArr;
                 __editedJsonContent.enableFeedBack = true;
             }
@@ -454,7 +475,10 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 isInstructionEmpty: __editedJsonContent.isInstructionEmpty,
                 changeQuestionType: __changeQuestionType,
                 showFeedBack: __showFeedBack,
-                removeFeedback: __removeFeedback
+                removeFeedback: __removeFeedback,
+                addFeedback: __addFeedback,
+                feedbackPresets: __feedbackPresets,
+                enableFeedback: __enableFeedback
             });
         }
 
@@ -741,7 +765,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                         "key": "correct",
                         "value": "",
                         "index": 0,
-                        "icon": __icon["correct"]
+                        "icon": __icon["correct"],
+                        "order" : 1
                     }
                 },
                 {
@@ -749,22 +774,58 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                         "key": "incorrect",
                         "value": "",
                         "index": 1,
-                        "icon": __icon["incorrect"]
+                        "icon": __icon["incorrect"],
+                        "order": 2
                     }
                 });
             __editedJsonContent.enableFeedBack = true;
+            __feedbackPresets[0].showDropdown = false;
+            __feedbackPresets[1].showDropdown = false;
+            __feedbackPresets[2].showDropdown = true;
         }
 
 
         function __removeFeedback(event, index) {
+            
+            if(__editedJsonContent.feedback.global[index].customAttribs.key == 'correct'){
+                __feedbackPresets[0].showDropdown = true;
+            } else if(__editedJsonContent.feedback.global[index].customAttribs.key == 'incorrect'){
+                __feedbackPresets[1].showDropdown = true;
+            } else {
+                __feedbackPresets[2].showDropdown = true;
+            }
             __editedJsonContent.feedback.global.splice(index, 1);
+
+            __editedJsonContent.feedback.global.sort(function(a, b){a.customAttribs.order - b.customAttribs.order});
             if (__editedJsonContent.feedback.global.length == 0) {
                 __editedJsonContent.enableFeedBack = false;
             }
-
+            __enableFeedback.hide = false;
             __state.hasUnsavedChanges = true;
             activityAdaptor.autoResizeActivityIframe();
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
+        }
+
+        function __addFeedback(event, element, index){
+            //delete from preset
+          
+            __editedJsonContent.feedback.global.push({
+                                                        "customAttribs":{ 
+                                                            "key": element.key== 'generic'? __guid() : element.key ,
+                                                            "value": "",
+                                                            "index": element.order,
+                                                            "icon": __icon[element.key],
+                                                            "order" : element.order
+                                                    }
+                                                });
+            __editedJsonContent.feedback.global.sort(function(a, b){a.customAttribs.order - b.customAttribs.order});
+                    
+            __feedbackPresets[index].showDropdown = false;
+           __enableFeedback.hide = !__feedbackPresets.some(function(element){
+                return element.showDropdown;                    
+           })
+          activityAdaptor.autoResizeActivityIframe();
+          activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
         /* ---------------------- JQUERY BINDINGS END ----------------------------*/
@@ -786,12 +847,16 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
         $(document).ready(function () {
             //Handles menu drop down
-            $('.dropdown-menu').click(function (e) {
+            $('#instructionmenu .dropdown-menu').click(function (e) {
                 e.stopPropagation();
             });
 
-            $("a.dropdown-toggle").click(function () {
+            $("#instructionmenu a.dropdown-toggle").click(function () {
                 $("#menu1").dropdown("toggle");
+            });
+
+            $("a.dropdown-toggle").click(function () {
+                $("#menu2").dropdown("toggle");
             });
 
             $(window).on('resize', function () {

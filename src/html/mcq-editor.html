@@ -50,7 +50,7 @@
           <div class="col-sm-12 dropdown">
             <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">+ Add
                 </button>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="left: 15px;">
+            <ul class="dropdown-menu" role="menu" id="instructionmenu" aria-labelledby="menu1" style="left: 15px;">
               <li class="border-bottom-dashed" role="presentation"><a class='dropdown-toggle disabled' role="menuitem" href="#" rv-on-click="addInstruction">Instruction Text</a></li>
               <li class="border-bottom-dashed" role="presentation"><a class='dropdown-toggle disabled' role="menuitem" href="#">Description Text</a></li>
             </ul>
@@ -64,7 +64,7 @@
           <header>
             <h4 class="headerlabel font-semibold color-gray">Answer Options
               <span class="dropdown font-medium ml-md">
-                          <a href="#" class="dropdown-toggle color-lightgray text-underline font-normal" 
+                          <a class="dropdown-toggle color-lightgray text-underline font-normal" 
                              data-toggle="dropdown"  aria-expanded="false">
                               <span rv-text="interact.type | interactTypeVal"></span>
               <b class="caret">
@@ -72,10 +72,10 @@
               </a>
               <ul class="dropdown-menu">
                 <li rv-class-active='mcqsr'>
-                  <a href="#" id="MCQSR" rv-text="'MCQSR' | interactTypeVal" rv-on-click="changeQuestionType |  args 'MCQSR' interact"></a>
+                  <a id="MCQSR" rv-text="'MCQSR' | interactTypeVal" rv-on-click="changeQuestionType |  args 'MCQSR' interact"></a>
                 </li>
                 <li rv-class-active='mcqmr'>
-                  <a href="#" id="MCQMR" rv-text="'MCQMR' | interactTypeVal" rv-on-click="changeQuestionType |  args 'MCQMR' interact"></a>
+                  <a  id="MCQMR" rv-text="'MCQMR' | interactTypeVal" rv-on-click="changeQuestionType |  args 'MCQMR' interact"></a>
                 </li>
               </ul>
               </span>
@@ -126,10 +126,9 @@
                 </div>
               </li>
             </ul>
-
           </div>
           <a class="add-item ml-xxl" rv-on-click="addItem | args %interact%">
-                <button type="button" class="btn btn-default btn-sm mt-sm mb-sm"></span>+ Add</button>
+                <button type="button" class="btn btn-default btn-sm mb-sm"></span>+ Add</button>
             </a>
         </div>
       </div>
@@ -158,28 +157,39 @@
                   <div rv-content-editable="element.customAttribs.value" style="width: 100%;" data-text='Placeholder Feedback text. Update "Me" with a valid Feedback text for this question.'
                     class="pr-3pc pl-md border-bottom-dashed" role="button"></div>
                   <span class="pull-right icon-horizontal-align">
-                                    <a class="color-lightgray fa fa-times outline-none" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeFeedback | args %element%"></a>            
-                            </span>
+                      <a class="color-lightgray fa fa-times outline-none" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeFeedback | args %element%"></a>            
+                  </span>
+                
                 </div>
               </li>
             </ul>
-            <a class="add-item ml-xxl" rv-on-click="">
+            <div class="col-sm-12 dropdown">
+              <button class="btn btn-default btn-sm dropdown-toggle ml-xxl" rv-class-disabled="enableFeedback.hide" type="button" id="menu2" data-toggle="dropdown">+ Add
+                  </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="left: 75px;">
+                <li class="" rv-show="feedback.showDropdown" role="presentation" rv-each-feedback="feedbackPresets" >
+                  <a class='dropdown-toggle disabled' role="menuitem" rv-on-click="addFeedback | args feedback %feedback% " rv-text="feedback.value"></a>
+                </li>                
+              </ul>
+            </div>
+          </div>
+            <!-- a class="add-item ml-xxl" rv-on-click="">
                   <button type="button" class="btn btn-default btn-sm mt-sm mb-sm"></span>+ Add</button>
-                </a>
+            </a -->
           </div>
         </div>
-      </div>
+
     </section>
     <section id="media" class="section border-bottom-shadow">
       <div class="section-box">
         <div class="row mt-sm mb-sm">
           <div class="col-sm-12">
             <a class="enable-media">
-              <button type="button" class="btn btn-default active-btn border-dashed"><h4 class="color-gray font-semibold">Enable Media</h4></button>
+              <button type="button" class="btn btn-default active-btn border-dashed"><h4 class="color-gray font-semibold">Enable Media & Assets</h4></button>
            </a>
           </div>
         </div>
       </div>
     </section>
-  </main>
+  </main>  
 </div>

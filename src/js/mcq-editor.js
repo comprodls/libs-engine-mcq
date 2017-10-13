@@ -847,9 +847,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
         $(document).ready(function () {
             //Handles menu drop down
-            $('#instructionmenu .dropdown-menu').click(function (e) {
-                e.stopPropagation();
-            });
 
             $("#instructionmenu a.dropdown-toggle").click(function () {
                 $("#menu1").dropdown("toggle");

@@ -64,7 +64,7 @@
           <header>
             <h4 class="headerlabel font-semibold color-gray">Answer Options
               <span class="dropdown font-medium ml-md">
-                          <a href="#" class="dropdown-toggle color-lightgray text-underline font-normal" 
+                          <a class="dropdown-toggle color-lightgray text-underline font-normal" 
                              data-toggle="dropdown"  aria-expanded="false">
                               <span rv-text="interact.type | interactTypeVal"></span>
               <b class="caret">
@@ -72,10 +72,10 @@
               </a>
               <ul class="dropdown-menu">
                 <li rv-class-active='mcqsr'>
-                  <a href="#" id="MCQSR" rv-text="'MCQSR' | interactTypeVal" rv-on-click="changeQuestionType |  args 'MCQSR' interact"></a>
+                  <a id="MCQSR" rv-text="'MCQSR' | interactTypeVal" rv-on-click="changeQuestionType |  args 'MCQSR' interact"></a>
                 </li>
                 <li rv-class-active='mcqmr'>
-                  <a href="#" id="MCQMR" rv-text="'MCQMR' | interactTypeVal" rv-on-click="changeQuestionType |  args 'MCQMR' interact"></a>
+                  <a  id="MCQMR" rv-text="'MCQMR' | interactTypeVal" rv-on-click="changeQuestionType |  args 'MCQMR' interact"></a>
                 </li>
               </ul>
               </span>

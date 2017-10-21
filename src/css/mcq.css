@@ -19,27 +19,19 @@
 
 main {
     margin: 20px 20px 20px 20px;
-    font-size: 1em;
-    font-family: "Open Sans";
+    font-size: 1.3em;
 }
 
 .instructions {
-    font-size: 1.25em;
+    color: #5a5a5a;    
+    font-style: italic;
 }
 
 .color-lightgray {
     color: #5a5a5a;
  }
 
-.instruction {
-    color: #5a5a5a;
-    font-size: 18px;
-    font-style: italic;
-}
 
-.interactions {
-    font-size: 1.15em;
-}
 .mt-md {
     margin-top: 20px;
 }
@@ -51,7 +43,6 @@ ul {
 
 
 .option-content {    
-    font-size: 18px;
     color: #494848;
     font-weight: 500;
     margin: 0 0 0 10px;
@@ -59,7 +50,6 @@ ul {
 
 .question-text {
     color: #414040;
-    font-size: 20px;
     padding-bottom: 10px;
     font-weight: 700;
 }
@@ -172,12 +162,14 @@ li:hover {
     content: "\f00d";
     color: #F00;
     font-family: fontawesome;
-    font-size: 25px;
-    position: relative;
-    left: 0px;
-    top: -8px;
+    font-size: 1.5em;
+    position: absolute;
+    left: 0.46em;
+    top: 0.10em;
     font-weight: 400;
     font-style: normal;
+    height: 1em;
+    width: 1em;
 }
 
 
@@ -188,16 +180,18 @@ li:hover {
 
 #mcq-sr li.correct i:after {
     opacity: 0.7;
-    background-color: #FFF;
     content: "\f00c";
     color: green;
+    background-color: #FFF;
     font-family: fontawesome;
-    font-size: 25px;
-    position: relative;
-    left: -2px;
-    top: -8px;
+    font-size: 1.4em;
+    position: absolute;
+    left: 0.41em;
+    top: 0.20em;
     font-weight: 400;
     font-style: normal;
+    height: 1.2em;
+    width: 1.2em;
 }
 
 
@@ -279,11 +273,13 @@ li:hover {
     color: red;
     font-family: fontawesome;
     font-size: 1.8em;
-    position: relative;
-    left: 9px;
-    top: 2px;
+    position: absolute;
+    left: 0.31em;
+    top: 0.11em;
     font-weight: 400;
     font-style: normal;
+    height: 1em;
+    width: 1em;
 }
 
 #mcq-mr li.correct i {
@@ -297,11 +293,13 @@ li:hover {
     color: green;
     font-family: fontawesome;
     font-size: 1.8em;
-    position: relative;
-    left: 6px;
-    top: 2px;
+    position: absolute;
+    left: 0.21em;
+    top: 0.11em;
     font-weight: 400;
     font-style: normal;
+    height: 1em;
+    width: 1em;
 }
 
 #mcq-mr li .checkbox {

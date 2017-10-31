@@ -38,12 +38,14 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
     'jquery-ui', //Jquery Sortable for reordering
     'css!../../bower_components/jquery-ui/themes/base/jquery-ui.css', //CSS for sortable
     'rivets',   // Rivets for two way data binding
-    'sightglass' // Required by Rivets
-], function (mcqTemplateRef) {
-
+    'sightglass', // Required by Rivets   
+    'fine-uploader'
+], function (mcqTemplateRef,A,B,C,D,E,qq) {
+   
+    //console.log(new qq.s3.FineUploader());
+    //console.log("Test what to rtest");
     mcqEditor = function () {
         "use strict";
-
         /*
          * Reference to platform's activity adaptor (initialized during init() ).
          */
@@ -63,6 +65,18 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             incorrect: "thumbs-o-down",
             generic: "hand-o-right"
         };
+        /**
+         * Internal Media values. 
+         */
+        var __media = {
+           "url":  "comprodlscontentprocessor.s3.amazonaws.com",
+           "bucket":"",
+           "accessKey": "AKIAJ7M7GQKI4M3BL35Q",
+           "folder":"testdata/mcq/",
+           "key":"",
+           "signature-endpoint":"http://sachin:3000/s3/signtureHandler"
+        };
+
 
 
         /*
@@ -141,7 +155,30 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 //TODO - In future more advanced schema validations could be done here    
                 return; /* -- EXITING --*/
             }
-
+            console.log("params.mediaManager");
+            console.log(JSON.stringify(params.mediaManager, null, 4));
+           /*
+            console.log("params.mediaManager");
+            params.mediaManager = {'getUploadsFolder' : function(){
+                                                        return __media;
+                                                      }
+                                  };                    
+           
+            */
+            if(params.mediaManager) {
+                 for (var key in params.mediaManager){
+                    if(params.mediaManager.hasOwnProperty(key) 
+                       && key === 'getUploadsFolder' 
+                       && typeof params.mediaManager[key] == 'function'){
+                        console.log("setting media dynamically"); 
+                      //  console.log("key: ", key," ", typeof params.mediaManager[key]);  
+                     //   console.log("key: ", params.mediaManager.key); 
+                        __media = params.mediaManager[key]();
+                        console.log("starts: ", JSON.stringify(__media, null, 4) , " ends");
+                        console.log("setting media dynamically ends");
+                    }
+                }
+            }
             // Process JSON to remove interaction tags and initiate __interactionIds and __interactionTags Arrays
             __parseAndUpdateJSONForInteractions();
 
@@ -847,6 +884,26 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
         $(document).ready(function () {
             //Handles menu drop down
+            console.log("Test media object");
+            console.log(JSON.stringify(__media, null, 4));
+            var uploader = new qq.s3.FineUploader({
+                element: document.getElementById("uploader"),
+                request: {
+                       endpoint: __media.url,
+                       accessKey: __media.accessKey
+                },
+                signature: {
+                      endpoint: __media["signature-endpoint"]
+                },
+                objectProperties: {
+                    key: function (fileId) { 
+                        var filename = this.getName(fileId);
+                        var uuid = this.getUuid(fileId);
+                        var ext = filename.substr(filename.lastIndexOf('.') + 1);                                 
+                       return  __media.folder + uuid + '.' + ext;
+                    },
+                }
+            });
 
             $("#instructionmenu a.dropdown-toggle").click(function () {
                 $("#menu1").dropdown("toggle");

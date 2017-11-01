@@ -182,14 +182,16 @@
     <section id="media" class="section border-bottom-shadow">
       <div class="section-box">
         <div class="row mt-sm mb-sm">
-          <div class="col-sm-12">
+          <div class="col-sm-12" rv-hide="editorContent.enableMedia">
             <a class="enable-media">
-              <button id="uploader" type="button" class="btn btn-default active-btn border-dashed"><h4 class="color-gray font-semibold">Enable Media & Assets</h4></button>
+              <button type="button" class="btn btn-default active-btn border-dashed"><h4 class="color-gray font-semibold">Enable Media & Assets</h4></button>
            </a>
           </div>
+          <div id="uploader" rv-hide="editorContent.enableMedia"></div>
         </div>
       </div>
     </section>
+    
     <script type="text/template" id="qq-template">
       <div class="qq-uploader-selector qq-uploader qq-gallery" qq-drop-area-text="Drop files here">
           <div class="progress qq-total-progress-bar-container-selector qq-total-progress-bar-container">
@@ -198,7 +200,7 @@
           <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
               <span class="qq-upload-drop-area-text-selector"></span>
           </div>
-          <div class="qq-upload-button-selector qq-upload-button">
+          <div class="qq-upload-button-selector qq-upload-button border-dashed btn btn-default" style="min-width:150px;">
               <div>Upload a file</div>
           </div>
           <span class="qq-drop-processing-selector qq-drop-processing">
@@ -220,7 +222,6 @@
                       <span class="qq-btn qq-retry-icon" aria-label="Retry"></span>
                       Retry
                   </button>
-
                   <div class="qq-file-info">
                       <div class="qq-file-name">
                           <span class="qq-upload-file-selector qq-upload-file"></span>
@@ -240,14 +241,12 @@
                   </div>
               </li>
           </ul>
-
           <dialog class="qq-alert-dialog-selector">
               <div class="qq-dialog-message-selector"></div>
               <div class="qq-dialog-buttons">
                   <button type="button" class="qq-cancel-button-selector">Close</button>
               </div>
           </dialog>
-
           <dialog class="qq-confirm-dialog-selector">
               <div class="qq-dialog-message-selector"></div>
               <div class="qq-dialog-buttons">
@@ -255,7 +254,6 @@
                   <button type="button" class="qq-ok-button-selector">Yes</button>
               </div>
           </dialog>
-
           <dialog class="qq-prompt-dialog-selector">
               <div class="qq-dialog-message-selector"></div>
               <input type="text">

@@ -75,7 +75,8 @@ module.exports = function (grunt) {
                         'rivets': bower_components + 'rivets/dist/rivets',
                         'sightglass': bower_components + 'sightglass/index',
                         'jquery-ui': bower_components + 'jquery-ui/jquery-ui',
-                        'fine-uploader': bower_components + 'fine-uploader/dist/s3.fine-uploader'
+                        'fine-uploader': bower_components + 'fine-uploader/dist/s3.fine-uploader',						
+                        'css-fine-uploader': bower_components + 'fine-uploader/dist/fine-uploader-gallery.min.css'
                     },
                     optimize: 'uglify2',
                     uglify2: {

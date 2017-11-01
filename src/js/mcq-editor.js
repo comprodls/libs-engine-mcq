@@ -53,6 +53,10 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
          */
         var activityAdaptor;
 
+        /** 
+         * media manager
+        */
+        var mediaManager;
         /*
          * Internal Engine Config.
          */
@@ -162,6 +166,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             console.log(JSON.stringify(params, null, 4));
             console.log("params.mediaManager");
             console.log(JSON.stringify(params.mediaManager, null, 4));
+            mediaManager = params.mediaManager;
            /*
             console.log("params.mediaManager");
             params.mediaManager = {'getUploadsFolder' : function(){
@@ -170,20 +175,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                                   };                    
            
             */
-            if(params.mediaManager) {
-                 for (var key in params.mediaManager){
-                    if(params.mediaManager.hasOwnProperty(key) 
-                       && key === 'getUploadsFolder' 
-                       && typeof params.mediaManager[key] == 'function'){
-                        console.log("setting media dynamically"); 
-                      //  console.log("key: ", key," ", typeof params.mediaManager[key]);  
-                     //   console.log("key: ", params.mediaManager.key); 
-                        __media = params.mediaManager[key]();
-                        console.log("starts: ", JSON.stringify(__media, null, 4) , " ends");
-                        console.log("setting media dynamically ends");
-                    }
-                }
-            }
+            
             // Process JSON to remove interaction tags and initiate __interactionIds and __interactionTags Arrays
             __parseAndUpdateJSONForInteractions();
 
@@ -894,11 +886,9 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         $(document).on('click', "a.drag-icon", function () {
             event.preventDefault();
         });
-
-        $(document).ready(function () {
-            //Handles menu drop down
-            console.log("Test media object");
-            console.log(JSON.stringify(__media, null, 4));
+           
+        function intializeUpload(){
+            console.log("upload function called");
             var uploader = new qq.s3.FineUploader({
                 element: document.getElementById("uploader"),
                 request: {
@@ -934,7 +924,31 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     }
                 }
             });
+        }
 
+        $(document).ready(function () {
+            //Handles menu drop down
+            if(mediaManager.getUploadsFolder) {
+                for (var key in params.mediaManager){
+                   if(params.mediaManager.hasOwnProperty(key) 
+                      && key === 'getUploadsFolder' 
+                      && typeof params.mediaManager[key] == 'function'){
+                       console.log("setting media dynamically"); 
+                     //  console.log("key: ", key," ", typeof params.mediaManager[key]);  
+                    //   console.log("key: ", params.mediaManager.key); 
+                       __media = params.mediaManager[key]().then(function(data) {
+                           __media = data;
+                           intializeUpload();
+                       });
+                       console.log("starts: ", JSON.stringify(__media, null, 4) , " ends");
+                       console.log("setting media dynamically ends");
+                   }
+               }
+           } else {
+               intializeUpload();
+           }
+            console.log("Test media object");
+            console.log(JSON.stringify(__media, null, 4));
             $("#instructionmenu a.dropdown-toggle").click(function () {
                 $("#menu1").dropdown("toggle");
             });

@@ -158,6 +158,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 //TODO - In future more advanced schema validations could be done here    
                 return; /* -- EXITING --*/
             }
+            console.log("params");
+            console.log(JSON.stringify(params, null, 4));
             console.log("params.mediaManager");
             console.log(JSON.stringify(params.mediaManager, null, 4));
            /*

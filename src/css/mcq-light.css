@@ -17,18 +17,18 @@
  *
  *******************************************************/
 
-main {
+main-light {
     margin: 20px 20px 20px 20px;
     font-size: 1.3em;
 }
 
-.instructions {
-    color: #5a5a5a;
-    font-style: italic;
+.mcq-body-light {
+    background-color: #f9f9f9;
 }
 
-.color-lightgray {
-    color: #5a5a5a;
+.instructions-light {
+    color: #949393;
+    font-style: italic;
 }
 
 .mt-md {
@@ -40,16 +40,16 @@ ul {
     /* margin-left: 30px;*/
 }
 
-.option-content {
-    color: #494848;
-    font-weight: 500;
+.option-content-light {
+    color: #666464c4;
+    font-weight: 400;
     margin: 0 0 0 10px;
 }
 
-.question-text {
+.question-text-light {
     color: #414040;
     padding-bottom: 10px;
-    font-weight: 700;
+    font-weight: 300;
 }
 
 li:hover {
@@ -59,30 +59,30 @@ li:hover {
 
 /* Specific to the MCQ - SR type only*/
 
-#mcq-sr {
+#mcq-sr-light {
     position: relative;
 }
 
-#mcq-sr li {
-    background-color: #F7fbff;
+#mcq-sr-light li {
+    background-color: #FFF;
     padding-left: 10px;
     position: static;
     border: 1px solid #DDDDDD;
     margin-top: 15px;
 }
 
-#mcq-sr li:hover {
-    background: #fdf9e6;
+#mcq-sr-light li:hover {
+    background: rgb(228, 228, 231);
     cursor: pointer;
 }
 
-#mcq-sr li.highlight {
-    background-color: #F7fbff;
+#mcq-sr-light li.highlight {
+    background-color: rgba(219, 219, 221, 0.842);
     border-radius: 6px;
-    border-bottom: 1px solid #DDDDDD;
+    border-bottom: 1px solid rgb(209, 205, 205);
 }
 
-#mcq-sr li i {
+#mcq-sr-light li i {
     height: 2.6em;
     width: 2.6em;
     border-radius: 50%;
@@ -94,8 +94,8 @@ li:hover {
     position: relative;
 }
 
-#mcq-sr li i:after {
-    background-color: #3276B1;
+#mcq-sr-light li i:after {
+    background-color: rgb(150, 144, 144);
     content: '';
     border-radius: 50%;
     height: 1.7em;
@@ -106,53 +106,53 @@ li:hover {
     opacity: 0;
 }
 
-#mcq-sr li.highlight i {
-    border-color: #3276B1;
+#mcq-sr-light li.highlight i {
+    border-color: rgb(198, 202, 206);
 }
 
-#mcq-sr li.highlight i:after {
+#mcq-sr-light li.highlight i:after {
     opacity: 1;
 }
 
-#mcq-sr li .radio {
+#mcq-sr-light li .radio {
     font-size: 1em;
-    color: #3D3D3D;
+    color: rgba(61, 61, 61, 0.726);
     cursor: pointer;
     text-align: left;
     display: flex;
     align-items: center;
 }
 
-#mcq-sr li .radio input {
+#mcq-sr-light li .radio input {
     position: absolute;
     left: -9999px;
 }
 
-#mcq-sr li .radio .option-value {
+#mcq-sr-light li .radio .option-value {
     position: static!important;
 }
 
-#mcq-sr li .radio .option-value .input-option {
+#mcq-sr-light li .radio .option-value .input-option {
     width: 80%;
 }
 
-#mcq-sr li .radio div.option-value {
+#mcq-sr-light li .radio div.option-value {
     display: inline-block;
 }
 
-#mcq-sr li .radio .correct-answer {
+#mcq-sr-light li .radio .correct-answer {
     font-weight: 700;
 }
 
-#mcq-sr ul li .optionlabel {
+#mcq-sr-light ul li .optionlabel {
     width: 100%;
 }
 
-#mcq-sr li.wrong i {
+#mcq-sr-light li.wrong i {
     border-color: red;
 }
 
-#mcq-sr li.wrong i:after {
+#mcq-sr-light li.wrong i:after {
     opacity: 0.7;
     background-color: #FFF;
     content: "\f00d";
@@ -168,11 +168,11 @@ li:hover {
     width: 1em;
 }
 
-#mcq-sr li.correct i {
+#mcq-sr-light li.correct i {
     border-color: green;
 }
 
-#mcq-sr li.correct i:after {
+#mcq-sr-light li.correct i:after {
     opacity: 0.7;
     content: "\f00c";
     color: green;
@@ -191,13 +191,13 @@ li:hover {
 
 /* Specific to MCQ MR type*/
 
-#mcq-mr {
+#mcq-mr-light {
     padding-bottom: 10px;
     position: relative;
     padding-left: 0px;
 }
 
-#mcq-mr li {
+#mcq-mr-light li {
     min-height: 2.8em;
     background-color: #F7fbff;
     padding-left: 10px;
@@ -206,18 +206,18 @@ li:hover {
     margin-top: 15px;
 }
 
-#mcq-mr li:hover {
+#mcq-mr-light li:hover {
     background: #fdf9e6;
     cursor: pointer;
 }
 
-#mcq-mr li.highlight {
+#mcq-mr-light li.highlight {
     background-color: #F7fbff;
     border-radius: 6px;
     border-bottom: 1px solid #DDDDDD;
 }
 
-#mcq-mr li i {
+#mcq-mr-light li i {
     height: 2.6em;
     width: 2.6em;
     border-radius: 0;
@@ -230,7 +230,7 @@ li:hover {
     background: #FFF;
 }
 
-#mcq-mr li i:after {
+#mcq-mr-light li i:after {
     background-color: #3276B1;
     content: '';
     border-radius: 0;
@@ -242,19 +242,19 @@ li:hover {
     opacity: 0;
 }
 
-#mcq-mr li.highlight i {
+#mcq-mr-light li.highlight i {
     border-color: #3276B1;
 }
 
-#mcq-mr li.highlight i:after {
+#mcq-mr-light li.highlight i:after {
     opacity: 1;
 }
 
-#mcq-mr li.wrong i {
+#mcq-mr-light li.wrong i {
     border-color: red;
 }
 
-#mcq-mr li.wrong i:after {
+#mcq-mr-light li.wrong i:after {
     opacity: 0.7;
     background-color: #FFF;
     content: "\f00d";
@@ -270,11 +270,11 @@ li:hover {
     width: 1em;
 }
 
-#mcq-mr li.correct i {
+#mcq-mr-light li.correct i {
     border-color: green;
 }
 
-#mcq-mr li.correct i:after {
+#mcq-mr-light li.correct i:after {
     opacity: 0.7;
     background-color: #FFF;
     content: "\f00c";
@@ -290,14 +290,14 @@ li:hover {
     width: 1em;
 }
 
-#mcq-mr li .checkbox {
+#mcq-mr-light li .checkbox {
     font-size: 1em;
     line-height: 2em;
     color: #3D3D3D;
     cursor: pointer;
 }
 
-#mcq-mr li .checkbox input {
+#mcq-mr-light li .checkbox input {
     position: absolute;
     left: -999px;
 }

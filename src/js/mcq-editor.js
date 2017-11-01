@@ -34,13 +34,15 @@
  */
 
 define(['text!../html/mcq-editor.html', //Layout of the Editor
+    'css!../../bower_components/fine-uploader/dist/fine-uploader-gallery.min.css',
     'css!../css/mcq-editor.css', //Custom CSS of the Editor
     'jquery-ui', //Jquery Sortable for reordering
     'css!../../bower_components/jquery-ui/themes/base/jquery-ui.css', //CSS for sortable
     'rivets',   // Rivets for two way data binding
     'sightglass', // Required by Rivets   
-    'fine-uploader'
-], function (mcqTemplateRef,A,B,C,D,E,qq) {
+    'fine-uploader',
+   
+], function (mcqTemplateRef,A,qqcss,C,D,E,F,qq) {
    
     //console.log(new qq.s3.FineUploader());
     //console.log("Test what to rtest");
@@ -76,6 +78,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
            "key":"",
            "signature-endpoint":"http://sachin:3000/s3/signtureHandler"
         };
+        var __finalizeMediaObj = [];
 
 
 
@@ -342,6 +345,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             __parseQuestionTextJSONForRivets();
             __parseInstructionTextJSONForRivets();
             __parseGlobalFeedbackJSONForRivets();
+            __parseMediaJSONForRivets();
         }
 
         function __parseGlobalFeedbackJSONForRivets() {
@@ -405,6 +409,13 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             }
         }
 
+        function __parseMediaJSONForRivets() {
+            if(__editedJsonContent.content.stimulus.length === 0) {
+                __editedJsonContent.enableMedia = true; 
+            } else {
+                __editedJsonContent.enableMedia = false; 
+            }
+        }
 
 
         /*------------------------RIVET INITIALIZATION & BINDINGS -------------------------------*/
@@ -902,6 +913,23 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                         var ext = filename.substr(filename.lastIndexOf('.') + 1);                                 
                        return  __media.folder + uuid + '.' + ext;
                     },
+                },
+                callbacks: {
+                    onComplete: function(id, name, response) {                        
+                        console.log(id);
+                        console.log(name);
+                        var serverPathToFile = response.filePath,
+                            fileItem = this.getItemByFileId(id);
+                            console.log(fileItem);
+                            console.log(JSON.stringify(response, null, 4));
+                        /*if (response.success) {
+                            var viewBtn = qq(fileItem).getByClass("view-btn")[0];
+            
+                            viewBtn.setAttribute("href", serverPathToFile);
+                            qq(viewBtn).removeClass("hide");
+                        }
+                        */
+                    }
                 }
             });
 

@@ -929,14 +929,14 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         $(document).ready(function () {
             //Handles menu drop down
             if(mediaManager.getUploadsFolder) {
-                for (var key in params.mediaManager){
-                   if(params.mediaManager.hasOwnProperty(key) 
+                for (var key in mediaManager){
+                   if(mediaManager.hasOwnProperty(key) 
                       && key === 'getUploadsFolder' 
-                      && typeof params.mediaManager[key] == 'function'){
+                      && typeof mediaManager[key] == 'function'){
                        console.log("setting media dynamically"); 
                      //  console.log("key: ", key," ", typeof params.mediaManager[key]);  
                     //   console.log("key: ", params.mediaManager.key); 
-                       __media = params.mediaManager[key]().then(function(data) {
+                       __media = mediaManager[key]().then(function(data) {
                            __media = data;
                            intializeUpload();
                        });

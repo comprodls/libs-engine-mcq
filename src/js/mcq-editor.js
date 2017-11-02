@@ -950,14 +950,14 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             }
             console.log("Test media object");
             console.log(JSON.stringify(__media, null, 4));
-            /*  $("#instructionmenu a.dropdown-toggle").click(function () {
-                  $("#menu1").dropdown("toggle");
-              });
-            
-            $("a.dropdown-toggle").click(function () {
+            $("#instructionmenu a.dropdown-toggle").click(function () {
+                $("#menu1").dropdown("toggle");
+            });
+
+            $("#feedbackmenu a.dropdown-toggle").click(function () {
                 $("#menu2").dropdown("toggle");
             });
-            */
+
             $(window).on('resize', function () {
                 activityAdaptor.autoResizeActivityIframe();
             });

@@ -939,28 +939,28 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                         //   console.log("key: ", params.mediaManager.key); 
                         __media = mediaManager[key]().then(function (data) {
                             __media = data;
-                            intializeUpload();
+                            //intializeUpload();
                         });
                         console.log("starts: ", JSON.stringify(__media, null, 4), " ends");
                         console.log("setting media dynamically ends");
                     }
                 }
             } else {
-                intializeUpload();
+                // intializeUpload();
             }
             console.log("Test media object");
             console.log(JSON.stringify(__media, null, 4));
-            $("#instructionmenu a.dropdown-toggle").click(function () {
-                $("#menu1").dropdown("toggle");
-            });
-
-            $("a.dropdown-toggle").click(function () {
-                $("#menu2").dropdown("toggle");
-            });
-
-            $(window).on('resize', function () {
-                activityAdaptor.autoResizeActivityIframe();
-            });
+            /*  $("#instructionmenu a.dropdown-toggle").click(function () {
+                  $("#menu1").dropdown("toggle");
+              });
+  
+              $("a.dropdown-toggle").click(function () {
+                  $("#menu2").dropdown("toggle");
+              });
+  
+              $(window).on('resize', function () {
+                  activityAdaptor.autoResizeActivityIframe();
+              });*/
             sendItemChangeNotification = true;
         });
 

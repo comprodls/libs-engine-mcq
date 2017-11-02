@@ -957,10 +957,10 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             $("a.dropdown-toggle").click(function () {
                 $("#menu2").dropdown("toggle");
             });
-
+        */
             $(window).on('resize', function () {
                 activityAdaptor.autoResizeActivityIframe();
-            });*/
+            });
             sendItemChangeNotification = true;
         });
 

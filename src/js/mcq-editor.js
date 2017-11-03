@@ -34,21 +34,27 @@
  */
 
 define(['text!../html/mcq-editor.html', //Layout of the Editor
+    'css!../../bower_components/fine-uploader/dist/fine-uploader-gallery.min.css',
     'css!../css/mcq-editor.css', //Custom CSS of the Editor
     'jquery-ui', //Jquery Sortable for reordering
     'css!../../bower_components/jquery-ui/themes/base/jquery-ui.css', //CSS for sortable
     'rivets',   // Rivets for two way data binding
-    'sightglass' // Required by Rivets
-], function (mcqTemplateRef) {
+    'sightglass', // Required by Rivets   
+    'fine-uploader',
+
+], function (mcqTemplateRef, A, qqcss, C, D, E, F, qq) {
 
     mcqEditor = function () {
         "use strict";
-
         /*
          * Reference to platform's activity adaptor (initialized during init() ).
          */
         var activityAdaptor;
 
+        /** 
+         * media manager
+        */
+        var mediaManager;
         /*
          * Internal Engine Config.
          */
@@ -63,6 +69,19 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             incorrect: "thumbs-o-down",
             generic: "hand-o-right"
         };
+        /**
+         * Internal Media values. 
+         */
+        var __media = {
+            "url": "comprodlscontentprocessor.s3.amazonaws.com",
+            "bucket": "",
+            "accessKey": "AKIAJ7M7GQKI4M3BL35Q",
+            "folder": "testdata/mcq/",
+            "key": "",
+            "signature-endpoint": "http://sachin:3000/s3/signtureHandler"
+        };
+        var __finalizeMediaObj = [];
+
 
 
         /*
@@ -102,13 +121,13 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             incorrect: false
         }
 
-        var __enableFeedback = {hide : false};
+        var __enableFeedback = { hide: false };
 
         /** */
-        var __feedbackPresets = [{key:"correct", value:"Show when Correct", showDropdown : true, order: 1 },
-                                 {key:"incorrect", value:"Show when Incorrect", showDropdown : true, order: 2},
-                                 {key:"generic", value:"Show Always", showDropdown : true, order : 100}];
-                           
+        var __feedbackPresets = [{ key: "correct", value: "Show when Correct", showDropdown: true, order: 1 },
+        { key: "incorrect", value: "Show when Incorrect", showDropdown: true, order: 2 },
+        { key: "generic", value: "Show Always", showDropdown: true, order: 100 }];
+
 
         var sendItemChangeNotification = false;
         /********************************************************/
@@ -141,6 +160,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 //TODO - In future more advanced schema validations could be done here    
                 return; /* -- EXITING --*/
             }
+            mediaManager = params.mediaManager;
 
             // Process JSON to remove interaction tags and initiate __interactionIds and __interactionTags Arrays
             __parseAndUpdateJSONForInteractions();
@@ -305,6 +325,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             __parseQuestionTextJSONForRivets();
             __parseInstructionTextJSONForRivets();
             __parseGlobalFeedbackJSONForRivets();
+            __parseMediaJSONForRivets();
         }
 
         function __parseGlobalFeedbackJSONForRivets() {
@@ -325,18 +346,18 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                         processedObj.customAttribs.order = 100;
                         processedObj.customAttribs.icon = __icon['generic'];
                     }
-                    if(key == 'correct'){
+                    if (key == 'correct') {
                         processedObj.customAttribs.order = 1;
                         __feedbackPresets[0].showDropdown = false;
                     }
-                    if(key == 'incorrect'){
+                    if (key == 'incorrect') {
                         processedObj.customAttribs.order = 2;
                         __feedbackPresets[1].showDropdown = false;
                     }
                     processedObj.customAttribs.icon = __icon[key];
-                    tempArr.push(processedObj);                
+                    tempArr.push(processedObj);
                 });
-                   tempArr.sort(function(a, b){ return a.customAttribs.order - b.customAttribs.order});
+                tempArr.sort(function (a, b) { return a.customAttribs.order - b.customAttribs.order });
                 __editedJsonContent.feedback.global = tempArr;
                 __editedJsonContent.enableFeedBack = true;
             }
@@ -368,6 +389,13 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             }
         }
 
+        function __parseMediaJSONForRivets() {
+            if (__editedJsonContent.content.stimulus.length === 0) {
+                __editedJsonContent.enableMedia = true;
+            } else {
+                __editedJsonContent.enableMedia = false;
+            }
+        }
 
 
         /*------------------------RIVET INITIALIZATION & BINDINGS -------------------------------*/
@@ -766,7 +794,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                         "value": "",
                         "index": 0,
                         "icon": __icon["correct"],
-                        "order" : 1
+                        "order": 1
                     }
                 },
                 {
@@ -786,17 +814,17 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
 
         function __removeFeedback(event, index) {
-            
-            if(__editedJsonContent.feedback.global[index].customAttribs.key == 'correct'){
+
+            if (__editedJsonContent.feedback.global[index].customAttribs.key == 'correct') {
                 __feedbackPresets[0].showDropdown = true;
-            } else if(__editedJsonContent.feedback.global[index].customAttribs.key == 'incorrect'){
+            } else if (__editedJsonContent.feedback.global[index].customAttribs.key == 'incorrect') {
                 __feedbackPresets[1].showDropdown = true;
             } else {
                 __feedbackPresets[2].showDropdown = true;
             }
             __editedJsonContent.feedback.global.splice(index, 1);
 
-            __editedJsonContent.feedback.global.sort(function(a, b){a.customAttribs.order - b.customAttribs.order});
+            __editedJsonContent.feedback.global.sort(function (a, b) { a.customAttribs.order - b.customAttribs.order });
             if (__editedJsonContent.feedback.global.length == 0) {
                 __editedJsonContent.enableFeedBack = false;
             }
@@ -806,26 +834,26 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
-        function __addFeedback(event, element, index){
+        function __addFeedback(event, element, index) {
             //delete from preset
-          
+
             __editedJsonContent.feedback.global.push({
-                                                        "customAttribs":{ 
-                                                            "key": element.key== 'generic'? __guid() : element.key ,
-                                                            "value": "",
-                                                            "index": element.order,
-                                                            "icon": __icon[element.key],
-                                                            "order" : element.order
-                                                    }
-                                                });
-            __editedJsonContent.feedback.global.sort(function(a, b){a.customAttribs.order - b.customAttribs.order});
-                    
+                "customAttribs": {
+                    "key": element.key == 'generic' ? __guid() : element.key,
+                    "value": "",
+                    "index": element.order,
+                    "icon": __icon[element.key],
+                    "order": element.order
+                }
+            });
+            __editedJsonContent.feedback.global.sort(function (a, b) { a.customAttribs.order - b.customAttribs.order });
+
             __feedbackPresets[index].showDropdown = false;
-           __enableFeedback.hide = !__feedbackPresets.some(function(element){
-                return element.showDropdown;                    
-           })
-          activityAdaptor.autoResizeActivityIframe();
-          activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
+            __enableFeedback.hide = !__feedbackPresets.some(function (element) {
+                return element.showDropdown;
+            })
+            activityAdaptor.autoResizeActivityIframe();
+            activityAdaptor.itemChangedInEditor(__transformJSONtoOriginialForm(), uniqueId);
         }
 
         /* ---------------------- JQUERY BINDINGS END ----------------------------*/
@@ -842,23 +870,71 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         }
 
         $(document).on('click', "a.drag-icon", function () {
-            event.preventDefault();
+            // event.preventDefault();
         });
+
+        function intializeUpload() {
+            var uploader = new qq.s3.FineUploader({
+                element: document.getElementById("uploader"),
+                request: {
+                    endpoint: __media.url,
+                    accessKey: __media.accessKey
+                },
+                signature: {
+                    endpoint: __media["signature-endpoint"]
+                },
+                objectProperties: {
+                    key: function (fileId) {
+                        var filename = this.getName(fileId);
+                        var uuid = this.getUuid(fileId);
+                        var ext = filename.substr(filename.lastIndexOf('.') + 1);
+                        return __media.folder + uuid + '.' + ext;
+                    },
+                },
+                callbacks: {
+                    onComplete: function (id, name, response) {
+                        var serverPathToFile = response.filePath,
+                            fileItem = this.getItemByFileId(id);
+                        /*if (response.success) {
+                            var viewBtn = qq(fileItem).getByClass("view-btn")[0];
+            
+                            viewBtn.setAttribute("href", serverPathToFile);
+                            qq(viewBtn).removeClass("hide");
+                        }
+                        */
+                    }
+                }
+            });
+        }
 
         $(document).ready(function () {
             //Handles menu drop down
+            if (mediaManager.getUploadsFolder) {
+                for (var key in mediaManager) {
+                    if (mediaManager.hasOwnProperty(key)
+                        && key === 'getUploadsFolder'
+                        && typeof mediaManager[key] == 'function') {
+                        __media = mediaManager[key]().then(function (data) {
+                            __media = data;
+                            intializeUpload();
+                        });
+                    }
+                }
+            } else {
+                intializeUpload();
+            }
 
             $("#instructionmenu a.dropdown-toggle").click(function () {
                 $("#menu1").dropdown("toggle");
             });
 
-            $("a.dropdown-toggle").click(function () {
+            $("#feedbackmenu a.dropdown-toggle").click(function () {
                 $("#menu2").dropdown("toggle");
             });
-
+            /*
             $(window).on('resize', function () {
                 activityAdaptor.autoResizeActivityIframe();
-            });
+            });*/
             sendItemChangeNotification = true;
         });
 

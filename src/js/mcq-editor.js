@@ -175,21 +175,35 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             /* Initialize RIVET. */
             __initRivets();
 
-            /* ---------------------- SETUP EVENTHANDLER STARTS----------------------------*/
-            //On CLICK of Check boxes    
-            $(document).on('click', '.editor label.checkbox', __handleCheckboxButtonClick);
-            //On CLICK of Radio buttons    
-            $(document).on('click', '.editor label.radio', __handleRadioButtonClick);
-            //Drag of list items (re-ordering)
-            __bindSortable();
-            /* ---------------------- SETUP EVENTHANDLER ENDS------------------------------*/
-
             /* Inform the shell that init is complete */
             if (callback) {
+
                 callback();
             }
 
         } /* init() Ends. */
+
+        /* ---------------------- SETUP EVENTHANDLER STARTS----------------------------*/
+        //On CLICK of Check boxes    
+        $(document).on('click', '.editor label.checkbox', __handleCheckboxButtonClick);
+        //On CLICK of Radio buttons    
+        $(document).on('click', '.editor label.radio', __handleRadioButtonClick);
+
+        $("#instructionmenu a.dropdown-toggle").click(function () {
+            $("#menu1").dropdown("toggle");
+        });
+
+        $("#feedbackmenu a.dropdown-toggle").click(function () {
+            $("#menu2").dropdown("toggle");
+        });
+
+        $(window).on('resize', function () {
+            activityAdaptor.autoResizeActivityIframe();
+        });
+
+        //Drag of list items (re-ordering)
+        __bindSortable();
+        /* ---------------------- SETUP EVENTHANDLER ENDS------------------------------*/
 
         /* ---------------------- ENGINE-SHELL Interface ---------------------------------*/
         /**
@@ -923,18 +937,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             } else {
                 intializeUpload();
             }
-
-            $("#instructionmenu a.dropdown-toggle").click(function () {
-                $("#menu1").dropdown("toggle");
-            });
-
-            $("#feedbackmenu a.dropdown-toggle").click(function () {
-                $("#menu2").dropdown("toggle");
-            });
-            /*
-            $(window).on('resize', function () {
-                activityAdaptor.autoResizeActivityIframe();
-            });*/
             sendItemChangeNotification = true;
         });
 

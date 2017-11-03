@@ -927,7 +927,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         }
 
         $(document).ready(function () {
-            //activityAdaptor.autoResizeActivityIframe();
             //Handles menu drop down
             if (mediaManager.getUploadsFolder) {
                 for (var key in mediaManager) {
@@ -941,15 +940,15 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                             __media = data;
                             intializeUpload();
                         });
-                        console.log("starts: ", JSON.stringify(__media, null, 4), " ends");
-                        console.log("setting media dynamically ends");
+                        //console.log("starts: ", JSON.stringify(__media, null, 4), " ends");
+                        //console.log("setting media dynamically ends");
                     }
                 }
             } else {
                 intializeUpload();
             }
-            console.log("Test media object");
-            console.log(JSON.stringify(__media, null, 4));
+            //console.log("Test media object");
+            //console.log(JSON.stringify(__media, null, 4));
             /*
             $("#instructionmenu a.dropdown-toggle").click(function () {
                 $("#menu1").dropdown("toggle");
@@ -958,10 +957,10 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             $("#feedbackmenu a.dropdown-toggle").click(function () {
                 $("#menu2").dropdown("toggle");
             });
-            
+            */
             $(window).on('resize', function () {
                 activityAdaptor.autoResizeActivityIframe();
-            });*/
+            });
             sendItemChangeNotification = true;
         });
 

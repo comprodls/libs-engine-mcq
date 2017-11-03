@@ -961,6 +961,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             $(window).on('resize', function () {
                 activityAdaptor.autoResizeActivityIframe();
             });*/
+
+            activityAdaptor.autoResizeActivityIframe();
             sendItemChangeNotification = true;
         });
 

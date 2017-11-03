@@ -927,7 +927,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         }
 
         $(document).ready(function () {
-            activityAdaptor.autoResizeActivityIframe();
+            //activityAdaptor.autoResizeActivityIframe();
             //Handles menu drop down
             if (mediaManager.getUploadsFolder) {
                 for (var key in mediaManager) {

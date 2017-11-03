@@ -197,10 +197,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             $("#menu2").dropdown("toggle");
         });
 
-        $(window).on('resize', function () {
-            activityAdaptor.autoResizeActivityIframe();
-        });
-
         //Drag of list items (re-ordering)
         __bindSortable();
         /* ---------------------- SETUP EVENTHANDLER ENDS------------------------------*/

@@ -44,8 +44,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
 
 ], function (mcqTemplateRef, A, qqcss, C, D, E, F, qq) {
 
-    //console.log(new qq.s3.FineUploader());
-    //console.log("Test what to rtest");
     mcqEditor = function () {
         "use strict";
         /*
@@ -162,19 +160,7 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 //TODO - In future more advanced schema validations could be done here    
                 return; /* -- EXITING --*/
             }
-            console.log("params");
-            console.log(JSON.stringify(params, null, 4));
-            console.log("params.mediaManager");
-            console.log(JSON.stringify(params.mediaManager, null, 4));
             mediaManager = params.mediaManager;
-            /*
-             console.log("params.mediaManager");
-             params.mediaManager = {'getUploadsFolder' : function(){
-                                                         return __media;
-                                                       }
-                                   };                    
-            
-             */
 
             // Process JSON to remove interaction tags and initiate __interactionIds and __interactionTags Arrays
             __parseAndUpdateJSONForInteractions();
@@ -888,7 +874,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
         });
 
         function intializeUpload() {
-            console.log("upload function called");
             var uploader = new qq.s3.FineUploader({
                 element: document.getElementById("uploader"),
                 request: {
@@ -908,12 +893,8 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                 },
                 callbacks: {
                     onComplete: function (id, name, response) {
-                        console.log(id);
-                        console.log(name);
                         var serverPathToFile = response.filePath,
                             fileItem = this.getItemByFileId(id);
-                        console.log(fileItem);
-                        console.log(JSON.stringify(response, null, 4));
                         /*if (response.success) {
                             var viewBtn = qq(fileItem).getByClass("view-btn")[0];
             
@@ -933,22 +914,15 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                     if (mediaManager.hasOwnProperty(key)
                         && key === 'getUploadsFolder'
                         && typeof mediaManager[key] == 'function') {
-                        console.log("setting media dynamically");
-                        //  console.log("key: ", key," ", typeof params.mediaManager[key]);  
-                        //   console.log("key: ", params.mediaManager.key); 
                         __media = mediaManager[key]().then(function (data) {
                             __media = data;
                             intializeUpload();
                         });
-                        //console.log("starts: ", JSON.stringify(__media, null, 4), " ends");
-                        //console.log("setting media dynamically ends");
                     }
                 }
             } else {
                 intializeUpload();
             }
-            //console.log("Test media object");
-            //console.log(JSON.stringify(__media, null, 4));
 
             $("#instructionmenu a.dropdown-toggle").click(function () {
                 $("#menu1").dropdown("toggle");
@@ -961,7 +935,6 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
             $(window).on('resize', function () {
                 activityAdaptor.autoResizeActivityIframe();
             });*/
-            activityAdaptor.autoResizeActivityIframe();
             sendItemChangeNotification = true;
         });
 

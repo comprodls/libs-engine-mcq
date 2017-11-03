@@ -5,7 +5,6 @@
       <!-- Loop over all instructions text -->
       <div class="section-box">
         <div class="row">
-          <div id="uploader" rv-hide="editorContent.enableMedia"></div>
           <div class="col-sm-12">
             <header>
               <h4 class="headerlabel font-semibold color-gray">Question Text</h4>
@@ -210,7 +209,7 @@
     <section id="media" class="section border-bottom-shadow">
       <div class="section-box">
         <div class="row mt-sm mb-sm">
-          <div class="col-sm-12" rv-hide="editorContent.enableMedia">
+          <div class="col-sm-12">
             <a class="enable-media">
               <button type="button" class="btn btn-default active-btn border-dashed">
                 <h4 class="color-gray font-semibold">Enable Media & Assets</h4>
@@ -220,6 +219,7 @@
         </div>
       </div>
     </section>
+    <div id="uploader"></div>
 
     <script type="text/template" id="qq-template">
       <div class="qq-uploader-selector qq-uploader qq-gallery" qq-drop-area-text="Drop files here">

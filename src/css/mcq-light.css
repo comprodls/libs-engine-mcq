@@ -23,11 +23,11 @@ main-light {
 }
 
 .mcq-body-light {
-    background-color: #f9f9f9;
+    background-color: #f6f6f6;
 }
 
 .instructions-light {
-    color: #949393;
+    color: #535353;
     font-style: italic;
 }
 
@@ -41,18 +41,18 @@ ul {
 }
 
 .option-content-light {
-    color: #666464c4;
+    color: #3b3b3b;
     font-weight: 400;
     margin: 0 0 0 10px;
 }
 
 .question-text-light {
-    color: #414040;
+    color: #535353;
     padding-bottom: 10px;
     font-weight: 300;
 }
 
-li:hover {
+.main-light li:hover {
     background: #fdf9e6;
 }
 
@@ -64,10 +64,10 @@ li:hover {
 }
 
 #mcq-sr-light li {
-    background-color: #FFF;
+    background-color: #FFFFFF;
     padding-left: 10px;
     position: static;
-    border: 1px solid #DDDDDD;
+    border: 1px solid #DBDBDB;
     margin-top: 15px;
 }
 
@@ -77,9 +77,9 @@ li:hover {
 }
 
 #mcq-sr-light li.highlight {
-    background-color: rgba(219, 219, 221, 0.842);
+    background-color: #F2FEF4;
     border-radius: 6px;
-    border-bottom: 1px solid rgb(209, 205, 205);
+    border-bottom: 1px solid #DBDBDB;
 }
 
 #mcq-sr-light li i {
@@ -88,14 +88,14 @@ li:hover {
     border-radius: 50%;
     display: block;
     outline: 0;
-    border: 1px solid #BDBDBD;
-    background: #FFF;
+    border: 1px solid #DBDBDB;
+    background: #FFFFFF;
     padding: 10px;
     position: relative;
 }
 
 #mcq-sr-light li i:after {
-    background-color: rgb(150, 144, 144);
+    background-color: #44BAFE;
     content: '';
     border-radius: 50%;
     height: 1.7em;
@@ -107,7 +107,7 @@ li:hover {
 }
 
 #mcq-sr-light li.highlight i {
-    border-color: rgb(198, 202, 206);
+    border-color: #2E9940;
 }
 
 #mcq-sr-light li.highlight i:after {
@@ -116,7 +116,7 @@ li:hover {
 
 #mcq-sr-light li .radio {
     font-size: 1em;
-    color: rgba(61, 61, 61, 0.726);
+    color: #FFFFFF;
     cursor: pointer;
     text-align: left;
     display: flex;
@@ -149,14 +149,14 @@ li:hover {
 }
 
 #mcq-sr-light li.wrong i {
-    border-color: red;
+    border-color: #e30e0e;
 }
 
 #mcq-sr-light li.wrong i:after {
     opacity: 0.7;
     background-color: #FFF;
     content: "\f00d";
-    color: #F00;
+    color: #e30e0e;
     font-family: fontawesome;
     font-size: 1.5em;
     position: absolute;
@@ -169,13 +169,13 @@ li:hover {
 }
 
 #mcq-sr-light li.correct i {
-    border-color: green;
+    border-color: #188d2c;
 }
 
 #mcq-sr-light li.correct i:after {
     opacity: 0.7;
     content: "\f00c";
-    color: green;
+    color: #188d2c;
     background-color: #FFF;
     font-family: fontawesome;
     font-size: 1.4em;
@@ -199,10 +199,10 @@ li:hover {
 
 #mcq-mr-light li {
     min-height: 2.8em;
-    background-color: #F7fbff;
+    background-color: #FFFFFF;
     padding-left: 10px;
     position: static;
-    border: 1px solid #DDDDDD;
+    border: 1px solid #DBDBDB;
     margin-top: 15px;
 }
 
@@ -212,9 +212,9 @@ li:hover {
 }
 
 #mcq-mr-light li.highlight {
-    background-color: #F7fbff;
+    background-color: #F2FEF4;
     border-radius: 6px;
-    border-bottom: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DBDBDB;
 }
 
 #mcq-mr-light li i {
@@ -226,12 +226,12 @@ li:hover {
     left: 0;
     display: block;
     outline: 0;
-    border: 1px solid #BDBDBD;
+    border: 1px solid #DBDBDB;
     background: #FFF;
 }
 
 #mcq-mr-light li i:after {
-    background-color: #3276B1;
+    background-color: #44bfae;
     content: '';
     border-radius: 0;
     height: 1.6em;
@@ -243,7 +243,7 @@ li:hover {
 }
 
 #mcq-mr-light li.highlight i {
-    border-color: #3276B1;
+    border-color: #2E9940;
 }
 
 #mcq-mr-light li.highlight i:after {
@@ -251,14 +251,14 @@ li:hover {
 }
 
 #mcq-mr-light li.wrong i {
-    border-color: red;
+    border-color: #E30E01;
 }
 
 #mcq-mr-light li.wrong i:after {
     opacity: 0.7;
     background-color: #FFF;
     content: "\f00d";
-    color: red;
+    color: #E30E01;
     font-family: fontawesome;
     font-size: 1.8em;
     position: absolute;
@@ -271,14 +271,14 @@ li:hover {
 }
 
 #mcq-mr-light li.correct i {
-    border-color: green;
+    border-color: #188D2C;
 }
 
 #mcq-mr-light li.correct i:after {
     opacity: 0.7;
     background-color: #FFF;
     content: "\f00c";
-    color: green;
+    color: #188D2C;
     font-family: fontawesome;
     font-size: 1.8em;
     position: absolute;
@@ -293,7 +293,7 @@ li:hover {
 #mcq-mr-light li .checkbox {
     font-size: 1em;
     line-height: 2em;
-    color: #3D3D3D;
+    color: #3B3B3B;
     cursor: pointer;
 }
 
@@ -302,12 +302,17 @@ li:hover {
     left: -999px;
 }
 
-.feedback .alert-sucess {
+.main-light .feedback .alert-success {
     background-color: #f2fdee;
+    border: 1px solid #DBDBDB;
+    color: #188D2C;
+     
 }
 
-.feedback .alert-danger {
-    background-color: #fdeeee;
+.main-light .feedback .alert-danger {
+    background-color: #FDEEEE;
+    border: 1px solid #FFE0E0;
+    color: #E41515;
 }
 
 .align-2-item {
@@ -319,8 +324,8 @@ li:hover {
     cursor: default;
 }
 
-.disable-li-hover:hover {
-    background-color: #F7fbff !important;
+.main-light .disable-li-hover:hover {
+    background-color: #FFFFFF !important;
     cursor: default !important;
 }
 

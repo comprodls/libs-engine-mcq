@@ -68,9 +68,9 @@ export let __constants = {
 
 /**
  * Prepare feedback response.
- * @param {*} id 
- * @param {*} status 
- * @param {*} content 
+ * @param {*} id
+ * @param {*} status
+ * @param {*} content
  */
 export function __buildFeedbackResponse(id, status, content) {
     var feedback = {};
@@ -459,7 +459,7 @@ export function __savePartial(interactionid) {
                 __state.activityPariallySubmitted = true;
             } else {
                 // There was an error during platform communication, do nothing for partial saves
-                // 
+                //
             }
         });
     });

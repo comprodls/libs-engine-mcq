@@ -2,12 +2,10 @@
 $color_log_cabin_approx: #222222;
 $white: #ffffff;
 $color_gray_nurse_approx: #eae9e9;
-$color_cararra_approx: #eeede9;
+$color_rangoon_green_approx: #1d1d1d;
 $color_tuatara_approx: #363636;
 $color_gravel_approx: #494949;
-$color_steel_blue_approx: #437bb3;
 $black: black;
-$color_rangoon_green_approx: #1d1d1d;
 $color_chicago_approx: #5c5c5c;
 $color_picton_blue_approx: #44bafe;
 $color_coral_red_approx: #ff3b3b;
@@ -63,10 +61,10 @@ ul {
         }
     }
     li:hover {
-        background: $color_cararra_approx;
+        background: $color_rangoon_green_approx;
     }
     #mcq-sr-dark li:hover {
-        background: $color_steel_blue_approx;
+        background: $color_rangoon_green_approx;
         cursor: pointer;
     }
     .disable-li-hover:hover {
@@ -196,7 +194,7 @@ ul {
         border-radius: 10px;
         margin-top: 15px;
         &:hover {
-            background: $color_steel_blue_approx;
+            background: $color_rangoon_green_approx;
             cursor: pointer;
         }
         &.highlight {

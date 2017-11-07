@@ -1,0 +1,291 @@
+//colors
+$color_black_haze_approx: #f6f6f6;
+$color_fuscous_gray_approx: #535353;
+$color_masala_approx: #3b3b3b;
+$color_snow_drift_approx: #f2fef4;
+$white: #ffffff;
+$alto: #dbdbdb;
+$color_picton_blue_approx: #44bafe;
+$color_sea_green_approx: #2e9940;
+$color_monza_approx: #e30e0e;
+$color_forest_green_approx: #188d2c;
+$color_puerto_rico_approx: #44bfae;
+$color_red_approx: #e30e01;
+$color_feta_approx: #f2fdee;
+$color_bridesmaid_approx: #fdeeee;
+$color_pippin_approx: #ffe0e0;
+//fonts
+$font_0: fontawesome;
+main-light {
+    margin: 20px;
+    font-size: 1.3em;
+}
+
+.mcq-body-light {
+    background-color: $color_black_haze_approx;
+}
+
+.instructions-light {
+    color: $color_fuscous_gray_approx;
+    font-style: italic;
+}
+
+.mt-md {
+    margin-top: 20px;
+}
+
+ul {
+    list-style: none;
+}
+
+.option-content-light {
+    color: $color_masala_approx;
+    font-weight: 400;
+    margin: 0 0 0 10px;
+}
+
+.question-text-light {
+    color: $color_fuscous_gray_approx;
+    padding-bottom: 10px;
+    font-weight: 300;
+}
+
+.main-light {
+    .feedback {
+        .alert-success {
+            background-color: $color_feta_approx;
+            border: 1px solid $alto;
+            color: $color_forest_green_approx;
+        }
+        .alert-danger {
+            background-color: $color_bridesmaid_approx;
+            border: 1px solid $color_pippin_approx;
+            color: $color_monza_approx;
+        }
+    }
+    li:hover {
+        background: $color_snow_drift_approx;
+    }
+    .disable-li-hover:hover {
+        background-color: $alto !important;
+        cursor: default !important;
+    }
+}
+
+#mcq-sr-light {
+    position: relative;
+    li {
+        background-color: $white;
+        padding-left: 10px;
+        position: static;
+        border: 1px solid $alto;
+        margin-top: 15px;
+        &:hover {
+            background: $color_snow_drift_approx;
+            cursor: pointer;
+        }
+        &.highlight {
+            background-color: $color_snow_drift_approx; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 6px;
+            border-bottom: 1px solid $alto;
+            i {
+                border-color: $color_sea_green_approx;
+                &:after {
+                    opacity: 1;
+                }
+            }
+        }
+        i {
+            height: 2.6em;
+            width: 2.6em; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 50%;
+            display: block;
+            outline: 0;
+            border: 1px solid $alto;
+            background: $white;
+            padding: 10px;
+            position: relative;
+            &:after {
+                background-color: $color_picton_blue_approx;
+                content: ''; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+                border-radius: 50%;
+                height: 1.7em;
+                width: 1.7em;
+                top: .41em;
+                left: .40em;
+                position: absolute;
+                opacity: 0;
+            }
+        }
+        .radio {
+            font-size: 1em;
+            color: $white;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            input {
+                position: absolute;
+                left: -9999px;
+            }
+            .option-value {
+                position: static!important;
+                .input-option {
+                    width: 80%;
+                }
+            }
+            .correct-answer {
+                font-weight: 700;
+            }
+            div.option-value {
+                display: inline-block;
+            }
+        }
+        &.wrong i {
+            border-color: $color_monza_approx;
+            &:after {
+                opacity: 0.7;
+                background-color: $white;
+                content: "\f00d";
+                color: $color_monza_approx;
+                font-family: $font_0;
+                font-size: 1.5em;
+                position: absolute;
+                left: 0.46em;
+                top: 0.10em;
+                font-weight: 400;
+                font-style: normal;
+                height: 1em;
+                width: 1em;
+            }
+        }
+        &.correct i {
+            border-color: $color_forest_green_approx;
+            &:after {
+                opacity: 0.7;
+                content: "\f00c";
+                color: $color_forest_green_approx;
+                background-color: $white;
+                font-family: $font_0;
+                font-size: 1.4em;
+                position: absolute;
+                left: 0.41em;
+                top: 0.20em;
+                font-weight: 400;
+                font-style: normal;
+                height: 1.2em;
+                width: 1.2em;
+            }
+        }
+    }
+    ul li .optionlabel {
+        width: 100%;
+    }
+}
+
+#mcq-mr-light {
+    padding-bottom: 10px;
+    position: relative;
+    padding-left: 0;
+    li {
+        min-height: 2.8em;
+        background-color: $white;
+        padding-left: 10px;
+        position: static;
+        border: 1px solid $alto;
+        margin-top: 15px;
+        &:hover {
+            background: $color_snow_drift_approx;
+            cursor: pointer;
+        }
+        &.highlight {
+            background-color: $color_snow_drift_approx; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 6px;
+            border-bottom: 1px solid $alto;
+            i {
+                border-color: $color_sea_green_approx;
+                &:after {
+                    opacity: 1;
+                }
+            }
+        }
+        i {
+            height: 2.6em;
+            width: 2.6em; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 0;
+            position: relative;
+            top: 0;
+            left: 0;
+            display: block;
+            outline: 0;
+            border: 1px solid $alto;
+            background: $white;
+            &:after {
+                background-color: $color_puerto_rico_approx;
+                content: ''; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+                border-radius: 0;
+                height: 1.6em;
+                width: 1.6em;
+                top: .45em;
+                left: .45em;
+                position: absolute;
+                opacity: 0;
+            }
+        }
+        .checkbox {
+            font-size: 1em;
+            line-height: 2em;
+            color: $color_masala_approx;
+            cursor: pointer;
+            input {
+                position: absolute;
+                left: -999px;
+            }
+        }
+        &.wrong i {
+            border-color: $color_red_approx;
+            &:after {
+                opacity: 0.7;
+                background-color: $white;
+                content: "\f00d";
+                color: $color_red_approx;
+                font-family: $font_0;
+                font-size: 1.8em;
+                position: absolute;
+                left: 0.31em;
+                top: 0.11em;
+                font-weight: 400;
+                font-style: normal;
+                height: 1em;
+                width: 1em;
+            }
+        }
+        &.correct i {
+            border-color: $color_forest_green_approx;
+            &:after {
+                opacity: 0.7;
+                background-color: $white;
+                content: "\f00c";
+                color: $color_forest_green_approx;
+                font-family: $font_0;
+                font-size: 1.8em;
+                position: absolute;
+                left: 0.21em;
+                top: 0.11em;
+                font-weight: 400;
+                font-style: normal;
+                height: 1em;
+                width: 1em;
+            }
+        }
+    }
+}
+
+.align-2-item {
+    display: flex;
+    align-items: center;
+}
+
+.disable-li-hover {
+    cursor: default;
+}

@@ -18,27 +18,26 @@ class mcq {
      *                   (a) State (Initial launch / Resume / Gradebook mode ).
      *                   (b) TOC parameters (contentFile, layout, etc.).
      *   @param {Object} adaptor - An adaptor interface for communication with platform (__saveResults, closeActivity, savePartialResults, getLastResults, etc.).
-     *   @param {String} htmlLayout - Activity HTML layout (as defined in the TOC LINK paramter). 
+     *   @param {String} htmlLayout - Activity HTML layout (as defined in the TOC LINK paramter).
      *   @param {Object} jsonContent - Activity JSON content (as defined in the TOC LINK paramter).
      *   @param {Function} callback - To inform the shell that init is complete.
      */
 
     constructor(elRoot, params, adaptor, htmlLayout, jsonContentObj, callback) {
-        console.log('==>Layout ', htmlLayout);
-        /** 
+        /**
           * @member {Object}
           * Clone the JSON so that original is preserved.
           */
         this.jsonContent = jQuery.extend(true, {}, jsonContentObj);
 
-        /** 
+        /**
           * Validation block.
           */
         if (this.jsonContent.content === undefined) {
             if (callback) {
                 callback();
             }
-            //TODO - In future more advanced schema validations could be done here.        
+            //TODO - In future more advanced schema validations could be done here.
             return;
         }
 
@@ -47,7 +46,7 @@ class mcq {
           */
         utils.setAdaptor(adaptor);
 
-        /** 
+        /**
           * @member {String}
           * Apply the content JSON to the htmllayout.
           */
@@ -55,12 +54,12 @@ class mcq {
 
         $(elRoot).html(utils.__constants.TEMPLATES[htmlLayout]);
 
-        /** 
+        /**
           * Update the DOM and render the processed HTML - main body of the activity.
           */
         utils.initializeRivets();
 
-        /** 
+        /**
           * Register the click events
           */
         utils.initializeHandlers();
@@ -70,7 +69,6 @@ class mcq {
             callback();
         }
     }
-
     /**
      * ENGINE-SHELL Interface
      * @return {String} - Configuration
@@ -97,6 +95,14 @@ class mcq {
 
     showFeedback() {
         return utils.showfeedback();
+    }
+
+    resetAnswers() {
+        console.log('reset called');
+    }
+
+    clearGrades() {
+        console.log('clear grades called');
     }
 }
 

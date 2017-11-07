@@ -325,9 +325,8 @@ ul {
 }
 
 .main-light .disable-li-hover:hover {
-    background-color: #DBDBDB !important;
+    background-color: #FFFFFF !important;
     cursor: default !important;
 }
-
 
 /*  --- Ends ---  */

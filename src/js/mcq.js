@@ -119,6 +119,12 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 //Store the adaptor  
                 activityAdaptor = adaptor;
 
+                __feedbackState = {
+                    'correct': false,
+                    'incorrect': false,
+                    'empty': false
+                };
+
                 //Clone the JSON so that original is preserved.
                 var jsonContent = jQuery.extend(true, {}, jsonContentObj);
                 /* ------ VALIDATION BLOCK START -------- */

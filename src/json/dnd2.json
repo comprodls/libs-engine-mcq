@@ -1,0 +1,57 @@
+{
+  "content": {
+    "instructions": [
+      {
+        "tag": "Directions for dnd2"
+      } 
+    ],
+    "stimulus": [
+      {
+        "tag": "options"
+      }
+    ],
+    "canvas": {
+      "layout": "DND2",
+      "data": {
+        "questiondata": [
+          {
+            "text": "Hello ES6 and Webpack <a href='http://www.comprodls.com/m1.0/interaction/dnd2'>i1</a> "
+          }
+        ]
+      },
+      "raw": ""
+    },     
+    "interactions": {
+      "i1": {
+        "type": "DND2",
+        "DND2": [
+          {
+            "choiceA": "Choice A" 
+          },
+          {
+            "choiceB": "Choice B"
+          },
+          {
+            "choiceC": "Choice C"
+          },
+          {
+            "choiceD": "Choice D"
+          }          
+        ]
+      }
+    },
+    "hint": {}
+  },
+  "feedback": {
+    "global": {
+      "correct": "You have answered it correctly",
+      "incorrect": "Your answer is incorrect",
+      "empty": "You did not answer anything"
+    }
+  },
+  "responses": {
+    "i1": {
+      "correct": "choiceC"
+    }
+  }
+}

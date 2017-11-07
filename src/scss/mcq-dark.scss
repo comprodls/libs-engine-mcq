@@ -1,0 +1,290 @@
+//colors
+$color_log_cabin_approx: #222222;
+$white: #ffffff;
+$color_gray_nurse_approx: #eae9e9;
+$color_cararra_approx: #eeede9;
+$color_tuatara_approx: #363636;
+$color_gravel_approx: #494949;
+$color_steel_blue_approx: #437bb3;
+$black: black;
+$color_rangoon_green_approx: #1d1d1d;
+$color_chicago_approx: #5c5c5c;
+$color_picton_blue_approx: #44bafe;
+$color_coral_red_approx: #ff3b3b;
+$color_harlequin_approx: #40fd21;
+$color_dove_gray_approx: #6e6c6c;
+//fonts
+$font_0: fontawesome;
+main-dark {
+    margin: 20px;
+    font-size: 1.3em;
+}
+
+.mcq-body-dark {
+    background-color: $color_log_cabin_approx;
+}
+
+.instructionsDark {
+    color: $white;
+    font-style: italic;
+}
+
+.mt-md {
+    margin-top: 20px;
+}
+
+ul {
+    list-style: none;
+}
+
+.option-content-dark {
+    color: $color_gray_nurse_approx;
+    font-weight: 100;
+    margin: 0 0 0 10px;
+}
+
+.question-text-dark {
+    color: $white;
+    padding-bottom: 10px;
+    font-weight: 500;
+}
+
+.main-dark {
+    .feedback {
+        .alert-success {
+            background-color: $color_tuatara_approx;
+            color: $color_harlequin_approx;
+            border: 1px solid $color_gravel_approx;
+        }
+        .alert-danger {
+            background-color: $color_tuatara_approx;
+            color: $color_coral_red_approx;
+            border: 1px solid $color_gravel_approx;
+        }
+    }
+    li:hover {
+        background: $color_cararra_approx;
+    }
+    #mcq-sr-dark li:hover {
+        background: $color_steel_blue_approx;
+        cursor: pointer;
+    }
+    .disable-li-hover:hover {
+        background-color: $color_tuatara_approx !important;
+        cursor: default !important;
+    }
+}
+
+#mcq-sr-dark {
+    position: relative;
+    li {
+        background-color: $color_tuatara_approx;
+        padding-left: 10px;
+        position: static;
+        border: 1px solid $color_gravel_approx;
+        margin-top: 15px;
+        &.highlight {
+            background-color: $black; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 6px;
+            border-bottom: 1px solid $color_gravel_approx;
+            color: $color_rangoon_green_approx;
+            i {
+                border: 1px solid $color_picton_blue_approx;
+                &:after {
+                    opacity: 1;
+                }
+            }
+            &:after span {
+                color: $color_gray_nurse_approx;
+            }
+        }
+        i {
+            height: 2.6em;
+            width: 2.6em; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 50%;
+            display: block;
+            outline: 0;
+            border: 1px solid $color_chicago_approx;
+            background: $color_tuatara_approx;
+            padding: 10px;
+            position: relative;
+            &:after {
+                background-color: $color_picton_blue_approx;
+                content: ''; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+                border-radius: 50%;
+                height: 1.7em;
+                width: 1.7em;
+                top: .41em;
+                left: .40em;
+                position: absolute;
+                opacity: 0;
+                border: 1px solid $color_picton_blue_approx;
+            }
+        }
+        .radio {
+            font-size: 1em;
+            color: $color_gray_nurse_approx;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            input {
+                position: absolute;
+                left: -9999px;
+            }
+            .option-value {
+                position: static!important;
+                .input-option {
+                    width: 80%;
+                }
+            }
+            .correct-answer {
+                font-weight: 700;
+            }
+            div.option-value {
+                display: inline-block;
+            }
+        }
+        &.wrong i:after {
+            opacity: 0.7;
+            content: "\f00d";
+            color: $color_coral_red_approx;
+            font-family: $font_0;
+            font-size: 1.5em;
+            position: absolute;
+            left: 0.46em;
+            top: 0.10em;
+            font-weight: 400;
+            font-style: normal;
+            height: 1em;
+            width: 1em;
+            border: none;
+            background: $color_tuatara_approx;
+        }
+        &.correct i:after {
+            opacity: 0.7;
+            content: "\f00c";
+            color: $color_harlequin_approx;
+            font-family: $font_0;
+            font-size: 1.4em;
+            position: absolute;
+            left: 0.41em;
+            top: 0.20em;
+            font-weight: 400;
+            font-style: normal;
+            height: 1.2em;
+            width: 1.2em;
+            border: none;
+            background: $color_tuatara_approx;
+        }
+    }
+    ul li .optionlabel {
+        width: 100%;
+    }
+}
+
+#mcq-mr-dark {
+    padding-bottom: 10px;
+    position: relative;
+    padding-left: 0;
+    li {
+        min-height: 2.8em;
+        background-color: $color_tuatara_approx;
+        padding-left: 10px;
+        position: static;
+        border: 1px solid $color_chicago_approx; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+        border-radius: 10px;
+        margin-top: 15px;
+        &:hover {
+            background: $color_steel_blue_approx;
+            cursor: pointer;
+        }
+        &.highlight {
+            background-color: $black; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 6px;
+            border-bottom: 1px solid $color_gravel_approx;
+            color: $color_rangoon_green_approx;
+            i {
+                border: 1px solid $color_picton_blue_approx;
+                &:after {
+                    opacity: 1;
+                }
+            }
+        }
+        i {
+            height: 2.6em;
+            width: 2.6em; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 0;
+            position: relative;
+            top: 0;
+            left: 0;
+            display: block;
+            outline: 0;
+            border: 1px solid $color_chicago_approx;
+            background: $color_tuatara_approx;
+            &:after {
+                background-color: $color_picton_blue_approx;
+                content: ''; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+                border-radius: 0;
+                height: 1.6em;
+                width: 1.6em;
+                top: .45em;
+                left: .45em;
+                position: absolute;
+                opacity: 0;
+                border: 1px solid $color_picton_blue_approx;
+            }
+        }
+        .checkbox {
+            font-size: 1em;
+            line-height: 2em;
+            color: $color_dove_gray_approx;
+            cursor: pointer;
+            input {
+                position: absolute;
+                left: -999px;
+            }
+        }
+        &.wrong i:after {
+            opacity: 0.7;
+            content: "\f00d";
+            background: $color_tuatara_approx;
+            color: $color_coral_red_approx;
+            font-family: $font_0;
+            font-size: 1.8em;
+            position: absolute;
+            left: 0.31em;
+            top: 0.11em;
+            font-weight: 400;
+            font-style: normal;
+            height: 1em;
+            width: 1em;
+            border: none;
+        }
+        &.correct i:after {
+            opacity: 0.7;
+            background: $color_tuatara_approx;
+            content: "\f00c";
+            color: $color_harlequin_approx;
+            font-family: $font_0;
+            font-size: 1.8em;
+            position: absolute;
+            left: 0.21em;
+            top: 0.11em;
+            font-weight: 400;
+            font-style: normal;
+            height: 1em;
+            width: 1em;
+            border: none;
+        }
+    }
+}
+
+.align-2-item {
+    display: flex;
+    align-items: center;
+}
+
+.disable-li-hover {
+    cursor: default;
+}

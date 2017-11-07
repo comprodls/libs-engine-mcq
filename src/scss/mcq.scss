@@ -1,0 +1,285 @@
+//colors
+$color_chicago_approx: #5a5a5a;
+$color_gravel_approx: #494848;
+$color_cape_cod_approx: #414040;
+$color_early_dawn_approx: #fdf9e6;
+$color_zircon_approx: #f7fbff;
+$color_alto_approx: #dddddd;
+$color_silver_approx: #bdbdbd;
+$white: #fff;
+$color_astral_approx: #3276b1;
+$color_masala_approx: #3d3d3d;
+$red: red;
+$color_japanese_laurel_approx: green;
+$color_feta_approx: #f2fdee;
+$color_bridesmaid_approx: #fdeeee;
+//fonts
+$font_0: fontawesome;
+main {
+    margin: 20px;
+    font-size: 1.3em;
+}
+
+.instructions {
+    color: $color_chicago_approx;
+    font-style: italic;
+}
+
+.color-lightgray {
+    color: $color_chicago_approx;
+}
+
+.mt-md {
+    margin-top: 20px;
+}
+
+ul {
+    list-style: none;
+}
+
+.option-content {
+    color: $color_gravel_approx;
+    font-weight: 500;
+    margin: 0 0 0 10px;
+}
+
+.question-text {
+    color: $color_cape_cod_approx;
+    padding-bottom: 10px;
+    font-weight: 700;
+}
+
+#mcq-sr {
+    position: relative;
+    li {
+        background-color: $color_zircon_approx;
+        padding-left: 10px;
+        position: static;
+        border: 1px solid $color_alto_approx;
+        margin-top: 15px;
+        &:hover {
+            background: $color_early_dawn_approx;
+            cursor: pointer;
+        }
+        &.highlight {
+            background-color: $color_zircon_approx; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 6px;
+            border-bottom: 1px solid $color_alto_approx;
+            i {
+                border-color: $color_astral_approx;
+                &:after {
+                    opacity: 1;
+                }
+            }
+        }
+        i {
+            height: 2.6em;
+            width: 2.6em; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 50%;
+            display: block;
+            outline: 0;
+            border: 1px solid $color_silver_approx;
+            background: $white;
+            padding: 10px;
+            position: relative;
+            &:after {
+                background-color: $color_astral_approx;
+                content: ''; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+                border-radius: 50%;
+                height: 1.7em;
+                width: 1.7em;
+                top: .41em;
+                left: .40em;
+                position: absolute;
+                opacity: 0;
+            }
+        }
+        .radio {
+            font-size: 1em;
+            color: $color_masala_approx;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            input {
+                position: absolute;
+                left: -9999px;
+            }
+            .option-value {
+                position: static!important;
+                .input-option {
+                    width: 80%;
+                }
+            }
+            .correct-answer {
+                font-weight: 700;
+            }
+            div.option-value {
+                display: inline-block;
+            }
+        }
+        &.wrong i {
+            border-color: $red;
+            &:after {
+                opacity: 0.7;
+                background-color: $white;
+                content: "\f00d";
+                color: $red;
+                font-family: $font_0;
+                font-size: 1.5em;
+                position: absolute;
+                left: 0.46em;
+                top: 0.10em;
+                font-weight: 400;
+                font-style: normal;
+                height: 1em;
+                width: 1em;
+            }
+        }
+        &.correct i {
+            border-color: $color_japanese_laurel_approx;
+            &:after {
+                opacity: 0.7;
+                content: "\f00c";
+                color: $color_japanese_laurel_approx;
+                background-color: $white;
+                font-family: $font_0;
+                font-size: 1.4em;
+                position: absolute;
+                left: 0.41em;
+                top: 0.20em;
+                font-weight: 400;
+                font-style: normal;
+                height: 1.2em;
+                width: 1.2em;
+            }
+        }
+    }
+    ul li .optionlabel {
+        width: 100%;
+    }
+}
+
+#mcq-mr {
+    padding-bottom: 10px;
+    position: relative;
+    padding-left: 0;
+    li {
+        min-height: 2.8em;
+        background-color: $color_zircon_approx;
+        padding-left: 10px;
+        position: static;
+        border: 1px solid $color_alto_approx;
+        margin-top: 15px;
+        &:hover {
+            background: $color_early_dawn_approx;
+            cursor: pointer;
+        }
+        &.highlight {
+            background-color: $color_zircon_approx; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 6px;
+            border-bottom: 1px solid $color_alto_approx;
+            i {
+                border-color: $color_astral_approx;
+                &:after {
+                    opacity: 1;
+                }
+            }
+        }
+        i {
+            height: 2.6em;
+            width: 2.6em; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 0;
+            position: relative;
+            top: 0;
+            left: 0;
+            display: block;
+            outline: 0;
+            border: 1px solid $color_silver_approx;
+            background: $white;
+            &:after {
+                background-color: $color_astral_approx;
+                content: ''; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+                border-radius: 0;
+                height: 1.6em;
+                width: 1.6em;
+                top: .45em;
+                left: .45em;
+                position: absolute;
+                opacity: 0;
+            }
+        }
+        .checkbox {
+            font-size: 1em;
+            line-height: 2em;
+            color: $color_masala_approx;
+            cursor: pointer;
+            input {
+                position: absolute;
+                left: -999px;
+            }
+        }
+        &.wrong i {
+            border-color: $red;
+            &:after {
+                opacity: 0.7;
+                background-color: $white;
+                content: "\f00d";
+                color: $red;
+                font-family: $font_0;
+                font-size: 1.8em;
+                position: absolute;
+                left: 0.31em;
+                top: 0.11em;
+                font-weight: 400;
+                font-style: normal;
+                height: 1em;
+                width: 1em;
+            }
+        }
+        &.correct i {
+            border-color: $color_japanese_laurel_approx;
+            &:after {
+                opacity: 0.7;
+                background-color: $white;
+                content: "\f00c";
+                color: $color_japanese_laurel_approx;
+                font-family: $font_0;
+                font-size: 1.8em;
+                position: absolute;
+                left: 0.21em;
+                top: 0.11em;
+                font-weight: 400;
+                font-style: normal;
+                height: 1em;
+                width: 1em;
+            }
+        }
+    }
+}
+
+.feedback {
+    .alert-sucess {
+        background-color: $color_feta_approx;
+    }
+    .alert-danger {
+        background-color: $color_bridesmaid_approx;
+    }
+}
+
+.align-2-item {
+    display: flex;
+    align-items: center;
+}
+
+.disable-li-hover {
+    cursor: default;
+    &:hover {
+        background-color: $color_zircon_approx !important;
+        cursor: default !important;
+    }
+}
+
+li:hover {
+    background: $color_early_dawn_approx;
+}

@@ -53,7 +53,7 @@ ul {
 }
 
 .main-light li:hover {
-    background: #fdf9e6;
+    background: #f2fef4;
 }
 
 
@@ -72,7 +72,7 @@ ul {
 }
 
 #mcq-sr-light li:hover {
-    background: rgb(228, 228, 231);
+    background: #f2fef4;
     cursor: pointer;
 }
 
@@ -207,7 +207,7 @@ ul {
 }
 
 #mcq-mr-light li:hover {
-    background: #fdf9e6;
+    background: #f2fef4;
     cursor: pointer;
 }
 
@@ -325,7 +325,7 @@ ul {
 }
 
 .main-light .disable-li-hover:hover {
-    background-color: #FFFFFF !important;
+    background-color: #DBDBDB !important;
     cursor: default !important;
 }
 

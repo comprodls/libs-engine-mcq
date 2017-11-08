@@ -926,12 +926,12 @@ define(['text!../html/mcq-editor.html', //Layout of the Editor
                         && typeof mediaManager[key] == 'function') {
                         __media = mediaManager[key]().then(function (data) {
                             __media = data;
-                            intializeUpload();
+                           // intializeUpload();
                         });
                     }
                 }
             } else {
-                intializeUpload();
+              //  intializeUpload();
             }
             sendItemChangeNotification = true;
         });

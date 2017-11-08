@@ -30,11 +30,14 @@
  */
 
 define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) representing the rendering UX
+    'text!../html/mcq-light.html',
+    'text!../html/mcq-dark.html',
     'css!../css/mcq.css',  //Custom styles of the engine (applied over bootstrap & front-end-core)
+    'css!../css/mcq-light.css',  //Custom styles of the engine (applied over bootstrap & front-end-core)
+    'css!../css/mcq-dark.css',  //Custom styles of the engine (applied over bootstrap & front-end-core)
     'rivets',  // Rivets for data binding
     'sightglass'], //Required by Rivets
-    function (mcqTemplateRef) {
-
+    function (mcqTemplateRef, mcqTemplateLightRef, mcqTemplateDarkRef) {
         mcq = function () {
 
             "use strict";
@@ -90,7 +93,9 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 STATUS_NOERROR: "NO_ERROR",
                 TEMPLATES: {
                     /* Regular MCQ Layout */
-                    MCQ: mcqTemplateRef
+                    MCQ: mcqTemplateRef,
+                    MCQ_LIGHT: mcqTemplateLightRef,
+                    MCQ_DARK: mcqTemplateDarkRef
                 }
             };
             // Array of all interaction tags in question
@@ -109,9 +114,16 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
             */
             /********************************************************/
             function init(elRoot, params, adaptor, htmlLayout, jsonContentObj, callback) {
+                console.log("==> ", htmlLayout);
                 /* ---------------------- BEGIN OF INIT ---------------------------------*/
                 //Store the adaptor  
                 activityAdaptor = adaptor;
+
+                __feedbackState = {
+                    'correct': false,
+                    'incorrect': false,
+                    'empty': false
+                };
 
                 //Clone the JSON so that original is preserved.
                 var jsonContent = jQuery.extend(true, {}, jsonContentObj);
@@ -175,11 +187,11 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 __saveResults(true);
                 $('input[id^=option]').attr("disabled", true);
                 $('input[class^=mcqsroption]').attr("disabled", true);
-               
-                $('li[class^=line-item]').hover(function(){
-                 $(this).addClass('disable-li-hover');
+
+                $('li[class^=line-item]').hover(function () {
+                    $(this).addClass('disable-li-hover');
                 });
-                $('label[class^=line-item-label]').hover(function(){
+                $('label[class^=line-item-label]').hover(function () {
                     $(this).addClass('disable-li-hover');
                 })
             }
@@ -270,8 +282,18 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                         }
                     })
                 }
-                activityAdaptor.autoResizeActivityIframe();               
+                activityAdaptor.autoResizeActivityIframe();
             }
+
+
+            function resetAnswers() {
+                console.log("reset called");
+            }
+
+            function clearGrades() {
+                console.log("clear grades called");
+            }
+
             /* ---------------------- PUBLIC FUNCTIONS END ----------------------------*/
 
 
@@ -669,7 +691,10 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 "handleSubmit": handleSubmit,
                 "showGrades": showGrades,
                 "updateLastSavedResults": updateLastSavedResults,
-                "showFeedback": showfeedback
+                "showFeedback": showfeedback,
+                "clearGrades": clearGrades,
+                "resetAnswers": resetAnswers
+
             };
         }
     });

@@ -83,8 +83,7 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 'incorrect': false,
                 'empty': false
             };
-            var INTERACTION_REFERENCE_STR = "http://www.comprodls.com/m1.0/interaction/mcq";
-
+            var INTERACTION_REFERENCE_STR = "http://www.comprodls.com/m1.0/interaction/mcq";           
             /*
              * Constants.
              */
@@ -96,6 +95,13 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                     MCQ: mcqTemplateRef,
                     MCQ_LIGHT: mcqTemplateLightRef,
                     MCQ_DARK: mcqTemplateDarkRef
+                },
+                LAYOUT_COLOR : {
+                    'BG': {
+                        'MCQ': '#FFFFFF',
+                        'MCQ_LIGHT': '#f6f6f6',
+                        'MCQ_DARK': '#222222'
+                    }
                 }
             };
             // Array of all interaction tags in question
@@ -140,7 +146,7 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
                 __buildModelandViewContent(jsonContent, params);
                 /* Apply the layout HTML to the dom */
                 $(elRoot).html(__constants.TEMPLATES[htmlLayout]);
-
+                var callBackobject = {'backgroundColor': __constants.LAYOUT_COLOR.BG[htmlLayout] };
                 /* Initialize RIVET. */
                 __initRivets();
                 /* ---------------------- SETUP EVENTHANDLER STARTS----------------------------*/
@@ -156,7 +162,7 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
 
                 /* Inform the shell that init is complete */
                 if (callback) {
-                    callback();
+                    callback(callBackobject);
                 }
 
                 /* ---------------------- END OF INIT ---------------------------------*/
@@ -170,6 +176,7 @@ define(['text!../html/mcq.html', //HTML layout(s) template (handlebars/rivets) r
              */
             function getConfig() {
             }
+
 
             /**
              * ENGINE-SHELL Interface

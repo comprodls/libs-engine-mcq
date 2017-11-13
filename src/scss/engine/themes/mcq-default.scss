@@ -1,33 +1,16 @@
-//colors
-$color_black_haze_approx: #f6f6f6;
-$color_fuscous_gray_approx: #535353;
-$color_masala_approx: #3b3b3b;
-$color_snow_drift_approx: #f2fef4;
-$white: #ffffff;
-$alto: #dbdbdb;
-$color_picton_blue_approx: #44bafe;
-$color_sea_green_approx: #2e9940;
-$color_monza_approx: #e30e0e;
-$color_forest_green_approx: #188d2c;
-$color_puerto_rico_approx: #44bfae;
-$color_red_approx: #e30e01;
-$color_feta_approx: #f2fdee;
-$color_bridesmaid_approx: #fdeeee;
-$color_pippin_approx: #ffe0e0;
-//fonts
-$font_0: fontawesome;
-main-light {
+@import "../../generic/index";
+main {
     margin: 20px;
     font-size: 1.3em;
 }
 
-.mcq-body-light {
-    background-color: $color_black_haze_approx;
+.instructions {
+    color: $color_chicago_approx;
+    font-style: italic;
 }
 
-.instructions-light {
-    color: $color_fuscous_gray_approx;
-    font-style: italic;
+.color-lightgray {
+    color: $color_chicago_approx;
 }
 
 .mt-md {
@@ -38,58 +21,40 @@ ul {
     list-style: none;
 }
 
-.option-content-light {
-    color: $color_masala_approx;
-    font-weight: 400;
+.option-content {
+    color: $color_gravel_approx;
+    font-weight: 500;
     margin: 0 0 0 10px;
 }
 
-.question-text-light {
-    color: $color_fuscous_gray_approx;
+.question-text {
+    color: $color_cape_cod_approx;
     padding-bottom: 10px;
-    font-weight: 300;
+    font-weight: 700;
 }
 
-.main-light {
-    .feedback {
-        .alert-success {
-            background-color: $color_feta_approx;
-            border: 1px solid $alto;
-            color: $color_forest_green_approx;
-        }
-        .alert-danger {
-            background-color: $color_bridesmaid_approx;
-            border: 1px solid $color_pippin_approx;
-            color: $color_monza_approx;
-        }
-    }
-    li:hover {
-        background: $color_snow_drift_approx;
-    }
-    .disable-li-hover:hover {
-        background-color: $alto !important;
-        cursor: default !important;
-    }
+.mcq-option {
+    position: absolute;
+    left: -999px;
 }
-
-#mcq-sr-light {
+#mcq-sr {
     position: relative;
     li {
-        background-color: $white;
+        background-color: $color_zircon_approx;
         padding-left: 10px;
         position: static;
-        border: 1px solid $alto;
+        border: 1px solid $color_alto_approx;
         margin-top: 15px;
         &:hover {
-            background: $color_snow_drift_approx;
+            background: $color_early_dawn_approx;
             cursor: pointer;
         }
         &.highlight {
-            background-color: $color_snow_drift_approx; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            background-color: $color_zircon_approx; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
             border-radius: 6px;
-            border-bottom: 1px solid $alto;
+            border-bottom: 1px solid $color_alto_approx;
             i {
-                border-color: $color_sea_green_approx;
+                border-color: $color_astral_approx;
                 &:after {
                     opacity: 1;
                 }
@@ -101,12 +66,12 @@ ul {
             border-radius: 50%;
             display: block;
             outline: 0;
-            border: 1px solid $alto;
+            border: 1px solid $color_silver_approx;
             background: $white;
             padding: 10px;
             position: relative;
             &:after {
-                background-color: $color_picton_blue_approx;
+                background-color: $color_astral_approx;
                 content: ''; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
                 border-radius: 50%;
                 height: 1.7em;
@@ -119,7 +84,7 @@ ul {
         }
         .radio {
             font-size: 1em;
-            color: $white;
+            color: $color_masala_approx;
             cursor: pointer;
             text-align: left;
             display: flex;
@@ -142,12 +107,12 @@ ul {
             }
         }
         &.wrong i {
-            border-color: $color_monza_approx;
+            border-color: $red;
             &:after {
                 opacity: 0.7;
                 background-color: $white;
                 content: "\f00d";
-                color: $color_monza_approx;
+                color: $red;
                 font-family: $font_0;
                 font-size: 1.5em;
                 position: absolute;
@@ -160,11 +125,11 @@ ul {
             }
         }
         &.correct i {
-            border-color: $color_forest_green_approx;
+            border-color: $color_japanese_laurel_approx;
             &:after {
                 opacity: 0.7;
                 content: "\f00c";
-                color: $color_forest_green_approx;
+                color: $color_japanese_laurel_approx;
                 background-color: $white;
                 font-family: $font_0;
                 font-size: 1.4em;
@@ -183,27 +148,25 @@ ul {
     }
 }
 
-#mcq-mr-light {
-    padding-bottom: 10px;
+#mcq-mr {
     position: relative;
-    padding-left: 0;
     li {
         min-height: 2.8em;
-        background-color: $white;
+        background-color: $color_zircon_approx;
         padding-left: 10px;
         position: static;
-        border: 1px solid $alto;
+        border: 1px solid $color_alto_approx;
         margin-top: 15px;
         &:hover {
-            background: $color_snow_drift_approx;
+            background: $color_early_dawn_approx;
             cursor: pointer;
         }
         &.highlight {
-            background-color: $color_snow_drift_approx; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            background-color: $color_zircon_approx; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
             border-radius: 6px;
-            border-bottom: 1px solid $alto;
+            border-bottom: 1px solid $color_alto_approx;
             i {
-                border-color: $color_sea_green_approx;
+                border-color: $color_astral_approx;
                 &:after {
                     opacity: 1;
                 }
@@ -218,10 +181,10 @@ ul {
             left: 0;
             display: block;
             outline: 0;
-            border: 1px solid $alto;
+            border: 1px solid $color_silver_approx;
             background: $white;
             &:after {
-                background-color: $color_puerto_rico_approx;
+                background-color: $color_astral_approx;
                 content: ''; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
                 border-radius: 0;
                 height: 1.6em;
@@ -243,12 +206,12 @@ ul {
             }
         }
         &.wrong i {
-            border-color: $color_red_approx;
+            border-color: $red;
             &:after {
                 opacity: 0.7;
                 background-color: $white;
                 content: "\f00d";
-                color: $color_red_approx;
+                color: $red;
                 font-family: $font_0;
                 font-size: 1.8em;
                 position: absolute;
@@ -261,12 +224,12 @@ ul {
             }
         }
         &.correct i {
-            border-color: $color_forest_green_approx;
+            border-color: $color_japanese_laurel_approx;
             &:after {
                 opacity: 0.7;
                 background-color: $white;
                 content: "\f00c";
-                color: $color_forest_green_approx;
+                color: $color_japanese_laurel_approx;
                 font-family: $font_0;
                 font-size: 1.8em;
                 position: absolute;
@@ -281,6 +244,15 @@ ul {
     }
 }
 
+.feedback {
+    .alert-sucess {
+        background-color: $color_feta_approx;
+    }
+    .alert-danger {
+        background-color: $color_bridesmaid_approx;
+    }
+}
+
 .align-2-item {
     display: flex;
     align-items: center;
@@ -288,4 +260,12 @@ ul {
 
 .disable-li-hover {
     cursor: default;
+    &:hover {
+        background-color: $color_zircon_approx !important;
+        cursor: default !important;
+    }
+}
+
+li:hover {
+    background: $color_early_dawn_approx;
 }

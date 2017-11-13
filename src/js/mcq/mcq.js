@@ -50,10 +50,9 @@ class mcq {
           * @member {String}
           * Apply the content JSON to the htmllayout.
           */
-        utils.buildModelandViewContent(jsonContentObj, params);
+        utils.buildModelandViewContent(jsonContentObj, params, htmlLayout);
 
-        $(elRoot).html(utils.__constants.TEMPLATES[htmlLayout]);
-
+        $(elRoot).html(utils.__constants.TEMPLATES['MCQ']);
         /**
           * Update the DOM and render the processed HTML - main body of the activity.
           */

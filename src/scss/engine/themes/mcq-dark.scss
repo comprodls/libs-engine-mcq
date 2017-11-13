@@ -1,0 +1,123 @@
+@import "../../generic/index";
+
+.main-dark {
+    background-color: $color_log_cabin_approx;
+    .instructions {
+        color: $white;
+    }
+    .question-text {
+        color: $white;
+    }
+    .option-content {
+        color: $color_gray_nurse_approx;
+    }
+    .feedback {
+        .alert-success {
+            background-color: $color_tuatara_approx;
+            color: $color_harlequin_approx;
+            border: 1px solid $color_gravel_approx;
+        }
+        .alert-danger {
+            background-color: $color_tuatara_approx;
+            color: $color_coral_red_approx;
+            border: 1px solid $color_gravel_approx;
+        }
+    }
+   
+    #mcq-sr {
+        li {
+            background-color: $color_tuatara_approx;
+            border: 1px solid $color_gravel_approx;
+            &:hover {
+                background: $color_rangoon_green_approx;
+                cursor: pointer;
+            }
+            &.highlight {
+                background-color: $black; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+                border-bottom: 1px solid $color_gravel_approx;
+                color: $color_rangoon_green_approx;
+                i {
+                    border: 1px solid $color_picton_blue_approx;
+                }
+                &:after span {
+                    color: $color_gray_nurse_approx;
+                }
+            }
+            i {
+                border: 1px solid $color_chicago_approx;
+                background: $color_tuatara_approx;
+                &:after {
+                    background-color: $color_picton_blue_approx;
+                    border: 1px solid $color_picton_blue_approx;
+                }
+            }
+            .radio {
+                color: $color_gray_nurse_approx;
+            }
+            &.wrong i:after {
+                color: $color_coral_red_approx;
+                background: $color_tuatara_approx;
+                border : none;
+            }
+            &.correct i:after {
+                color: $color_harlequin_approx;
+                background: $color_tuatara_approx;
+                border : none;
+            }
+        }
+    }
+
+    #mcq-mr {
+        li {
+            background-color: $color_tuatara_approx;
+            border: 1px solid $color_chicago_approx; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            &:hover {
+                background: $color_rangoon_green_approx;
+            }
+            &.highlight {
+                background-color: $black; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+                border-bottom: 1px solid $color_gravel_approx;
+                color: $color_rangoon_green_approx;
+                i {
+                    border: 1px solid $color_picton_blue_approx;
+                }
+            }
+            i {
+                border: 1px solid $color_chicago_approx;
+                background: $color_tuatara_approx;
+                &:after {
+                    background-color: $color_picton_blue_approx;
+                    border: 1px solid $color_picton_blue_approx;
+                }
+            }
+            .checkbox {
+                color: $color_dove_gray_approx;
+            }
+            &.wrong i:after {
+                background: $color_tuatara_approx;
+                color: $color_coral_red_approx;
+                border: none;
+            }
+            &.correct i:after {
+                background: $color_tuatara_approx;
+                color: $color_harlequin_approx;
+                border: none;
+            }
+        }
+    }
+    li:hover {
+        background: $color_rangoon_green_approx;
+    }
+    .disable-li-hover:hover {
+        background-color: $color_tuatara_approx !important;
+    }
+}
+
+.align-2-item {
+    display: flex;
+    align-items: center;
+}
+
+.disable-li-hover {
+    cursor: default;
+}

@@ -16,11 +16,7 @@ export let __content = {
 
 let mcqTemplateRef = require('../../html/mcq.html');
 
-let mcqLightTemplateRef = require('../../html/mcq-light.html');
-
-let mcqDarkTemplateRef = require('../../html/mcq-dark.html');
-
-require('../../scss/index.scss');
+require('../../scss/mcq.scss');
 /*
  * Internal Engine Config.
  */
@@ -44,10 +40,9 @@ export let __interactionIds = [];
 export let __correctAnswers = {};
 export let __scoring = {};
 export let __feedback = {};
-export let __feedbackState = {
-    'correct': false,
-    'incorrect': false,
-    'empty': false
+export let __feedbackState = {'correct': false,
+'incorrect': false,
+'empty': false
 };
 
 export let INTERACTION_REFERENCE_STR = 'http://www.comprodls.com/m1.0/interaction/mcq';
@@ -60,9 +55,12 @@ export let __constants = {
     STATUS_NOERROR: 'NO_ERROR',
     TEMPLATES: {
         /* Regular MCQ Layout */
-        MCQ: mcqTemplateRef,
-        MCQ_LIGHT: mcqLightTemplateRef,
-        MCQ_DARK: mcqDarkTemplateRef
+        MCQ: mcqTemplateRef
+    },
+    THEMES: {
+      MCQ: 'main',
+      MCQ_LIGHT: 'main-light',
+      MCQ_DARK: 'main-dark'
     }
 };
 
@@ -72,7 +70,7 @@ export let __constants = {
  * @param {*} status
  * @param {*} content
  */
-export function __buildFeedbackResponse(id, status, content) {
+function __buildFeedbackResponse(id, status, content) {
     var feedback = {};
 
     feedback.id = id;
@@ -80,6 +78,13 @@ export function __buildFeedbackResponse(id, status, content) {
     feedback.content = content;
     return feedback;
 }
+
+export function feedbackFlags() {
+    __feedbackState = {'correct': false,
+                  'incorrect': false,
+                  'empty': false
+    };
+};
 
 function __getAnswersJSONMCQMR() {
     var resultArray = [];
@@ -264,8 +269,9 @@ function __saveResults(bSubmit) {
  */
 export function handleSubmit() {
     __saveResults(true);
-    $('input[id^=option]').attr('disabled', true);
-    $('input[class^=mcqsroption]').attr('disabled', true);
+$('#mcq-sr li').removeClass('enabled').addClass('diabled');
+//$('#mcq-sr input[id^=option]').attr('disabled', true);
+//$('input[class^=mcqsroption]').attr('disabled', true);
 
     $('li[class^=line-item]').hover(function () {
         $(this).addClass('disable-li-hover');
@@ -439,6 +445,17 @@ export function initializeRivets() {
         return idvalue + index;
     };
 
+    rivets.binders.addclass = function (el, value) {
+        if (el.addedClass) {
+            $(el).removeClass(el.addedClass);
+            delete el.addedClass;
+        }
+        if (value) {
+            $(el).addClass(value);
+            el.addedClass = value;
+        }
+    };
+
     let data = {
         content: __content,
         feedback: __feedback,
@@ -447,7 +464,7 @@ export function initializeRivets() {
 
     /*Bind the data to template using rivets*/
     rivets.bind($('#mcq-engine'), data);
-}
+};
 
 export function __savePartial(interactionid) {
     var uniqueId = activityAdaptor.getId();
@@ -478,7 +495,7 @@ function remove(arr, value) {
 */
 function __handleCheckboxClick(event) {
     var currentTarget = event.currentTarget;
-    var currentInteractionId = currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement.getAttribute('id');
+    var currentInteractionId = currentTarget.parentElement.parentElement.parentElement.getAttribute('id');
     var currentChoice = currentTarget.getAttribute('name');
 
     if (currentTarget.checked) {
@@ -497,24 +514,27 @@ function __handleCheckboxClick(event) {
 
 /** Function to handle radio button click.*/
 function __handleRadioButtonClick(event) {
+    var currentTarget = event.currentTarget;
+
+    var currentInteractionId = currentTarget.parentElement.parentElement.getAttribute('id');
+
     /*
      * Soft save here
      */
-    var currentTarget = event.currentTarget;
-    var currentInteractionId = currentTarget.parentElement.parentElement.parentElement.parentElement.parentElement.getAttribute('id');
+    $('#mcq-sr li').removeClass('highlight');
+    $(currentTarget).addClass('highlight');
 
-    $('label.radio').closest('li').removeClass('highlight');
-    $(currentTarget).closest('li').addClass('highlight');
-
-    currentTarget = currentTarget.value.replace(/^\s+|\s+$/g, '');
+   // currentTarget = currentTarget.value.replace(/^\s+|\s+$/g, '');
     /* Save new Answer in memory. */
-    __content.userAnswers[currentInteractionId] = $(event.currentTarget).attr('id');
+    __content.userAnswers[currentInteractionId] = $(event.currentTarget).children('input').attr('id');
+//not in use
     __state.radioButtonClicked = true;
     __content.feedbackJSON = __feedback;
     __savePartial(currentInteractionId);
 }
 
-export function buildModelandViewContent(jsonContent, params) {
+export function buildModelandViewContent(jsonContent, params, theme) {
+    __content['theme'] = __constants.THEMES[theme];
     __content.instructions = jsonContent.content.instructions.map(function (element) {
         var tagtype = element['tag'];
 
@@ -571,7 +591,8 @@ export function initializeHandlers() {
     $('input[id^=option]').change(__handleCheckboxClick);
 
     // Registering the radio click handler for MCQSR
-    $('input[class^=mcqsroption]').change(__handleRadioButtonClick);
+   // $('.options label.radio').change(__handleRadioButtonClick);
+    $(document).on('click', '.options li.enabled', __handleRadioButtonClick);
 }
 
 export function setAdaptor(_adaptor) {

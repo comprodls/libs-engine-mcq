@@ -1,0 +1,126 @@
+@import "../../generic/index";
+.main-light {
+    background-color: $color_black_haze_approx;
+    .instructions {
+        color: $color_fuscous_gray_approx;
+    }
+    .question-text {
+        color: $color_fuscous_gray_approx;
+    }
+    .option-content {
+        color: $color_masala_approx;
+    }
+    .feedback {
+        .alert-success {
+            background-color: $color_feta_approx;
+            border: 1px solid $alto;
+            color: $color_forest_green_approx;
+        }
+        .alert-danger {
+            background-color: $color_bridesmaid_approx;
+            border: 1px solid $color_pippin_approx;
+            color: $color_monza_approx;
+        }
+    }
+#mcq-sr {
+    li {
+        background-color: $white;
+        border: 1px solid $alto;
+        &:hover {
+            background: $color_snow_drift_approx;
+            cursor: pointer;
+        }
+        &.highlight {
+            background-color: $color_snow_drift_approx; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 6px;
+            border-bottom: 1px solid $alto;
+            i {
+                border-color: $color_sea_green_approx;
+            }
+          }
+        i {
+            border: 1px solid $alto;
+            background: $white;
+            &:after {
+                background-color: $color_picton_blue_approx;
+            }
+        }
+        .radio {
+            color: $white;
+            }
+        }
+        &.wrong i {
+            border-color: $color_monza_approx;
+            &:after {
+                background-color: $white;
+                color: $color_monza_approx;
+            }
+        }
+        &.correct i {
+            border-color: $color_forest_green_approx;
+            &:after {
+                color: $color_forest_green_approx;
+                background-color: $white;
+            }
+        }
+    }
+
+#mcq-mr {
+    li {
+        background-color: $white;
+        border: 1px solid $alto;
+        &:hover {
+            background: $color_snow_drift_approx;
+        }
+        &.highlight {
+            background-color: $color_snow_drift_approx; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 6px;
+            border-bottom: 1px solid $alto;
+            i {
+                border-color: $color_sea_green_approx;
+            }
+        }
+        i {
+            border: 1px solid $alto;
+            background: $white;
+            &:after {
+                background-color: $color_puerto_rico_approx;
+            }
+        }
+        .checkbox {
+            color: $color_masala_approx;
+        }
+        &.wrong i {
+            border-color: $color_red_approx;
+            &:after {
+                background-color: $white;
+                color: $color_red_approx;
+                border: none;
+            }
+        }
+        &.correct i {
+            border-color: $color_forest_green_approx;
+            &:after {
+                background-color: $white;
+                color: $color_forest_green_approx;
+                border: none;
+            }
+        }
+    }
+}
+    li:hover {
+        background: $color_snow_drift_approx;
+    }
+    .disable-li-hover:hover {
+        background-color: $alto !important;
+        cursor: default !important;
+    }
+}
+.align-2-item {
+    display: flex;
+    align-items: center;
+}
+
+.disable-li-hover {
+    cursor: default;
+}

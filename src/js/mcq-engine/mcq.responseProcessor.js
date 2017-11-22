@@ -59,32 +59,32 @@ class McqUserResponse {
     var mcqmrans = null;
     var mcqsrans = null;
 
-                    if (typeof interactionid === undefined) {
+        if (typeof interactionid === undefined) {
 
-                        filteredInteraction = this.mcqObj.mcqModel.interactions.filter(function (interaction) {
-                            return interaction.id === interactionid;
-                        });
+            filteredInteraction = this.mcqObj.mcqModel.interactions.filter(function (interaction) {
+                return interaction.id === interactionid;
+            });
 
-                        // Match the interaction id to set partial results and save
-                    if (filteredInteraction) {
-                             interactiontype = filteredInteraction[0].type;
+            // Match the interaction id to set partial results and save
+        if (filteredInteraction) {
+                    interactiontype = filteredInteraction[0].type;
 
-                            if (interactiontype === 'MCQMR') {
-                                mcqmrans = this.__getAnswersJSONMCQMR();
-                                response.push(mcqmrans);
-                            }
-                            if (interactiontype === 'MCQSR') {
-                                mcqsrans = this.__getAnswersJSONMCQSR(false);
-                                response.push(mcqsrans);
-                            }
-                        }
-                    } else {
-                         mcqmrans = this.__getAnswersJSONMCQMR();
-                        response.push(mcqmrans);
-                         mcqsrans = this.__getAnswersJSONMCQSR();
-                        response.push(mcqsrans);
-                    }
-                    return response;
+                if (interactiontype === 'MCQMR') {
+                    mcqmrans = this.__getAnswersJSONMCQMR();
+                    response.push(mcqmrans);
+                }
+                if (interactiontype === 'MCQSR') {
+                    mcqsrans = this.__getAnswersJSONMCQSR(false);
+                    response.push(mcqsrans);
+                }
+            }
+        } else {
+                mcqmrans = this.__getAnswersJSONMCQMR();
+            response.push(mcqmrans);
+                mcqsrans = this.__getAnswersJSONMCQSR();
+            response.push(mcqsrans);
+        }
+        return response;
     }
 
     __getAnswersJSONMCQMR() {
@@ -285,8 +285,10 @@ class McqUserResponse {
 
     feedbackProcessor() {
         var type = this.mcqObj.mcqModel.interactions[0]['type'];
+        var isCorrect = null;
 
-        function isCorrect(answerjson, useranswerjson) {
+        console.log(this);
+        isCorrect = (answerjson, useranswerjson) => {
             let isCorrect = false;
             let countCorrectInteractionAttempt = 0;
 
@@ -300,10 +302,10 @@ class McqUserResponse {
                 return isCorrect;
             }
 
-            for (let key in this.mcqObj.userAnswers) {
-                if (this.mcqObj.userAnswers.hasOwnProperty(key)) {
-                    if (this.mcqObj.userAnswers[key].length === __correctAnswers[key]['correct'].length) {
-                        if (this.mcqObj.userAnswers[key].sort().join('') === __correctAnswers[key]['correct'].sort().join('')) {
+            for (let key in useranswerjson) {
+                if (useranswerjson.hasOwnProperty(key)) {
+                    if (useranswerjson[key].length === __correctAnswers[key]['correct'].length) {
+                        if (useranswerjson[key].sort().join('') === __correctAnswers[key]['correct'].sort().join('')) {
                             countCorrectInteractionAttempt++;
                         }
                     }
@@ -320,13 +322,15 @@ class McqUserResponse {
             }
             this.mcqObj.adaptor.autoResizeActivityIframe();
             return isCorrect;
-        }
-
+        };
+        console.log(this.mcqObj);
         if (type === 'MCQMR') {
             for (let prop in this.mcqObj.mcqModel.feedback) {
                 this.mcqObj.mcqModel.feedbackState[prop] = false;
             }
-            if (this.mcqObj.userAnswers.length <= 0) {
+            let keys = Object.keys(this.mcqObj.userAnswers);
+
+            if (this.mcqObj.userAnswers[keys[0]].length <= 0) {
                 this.mcqObj.mcqModel.feedbackState.empty = true;
             } else if (isCorrect(__correctAnswers, this.mcqObj.userAnswers)) {
                 this.mcqObj.mcqModel.feedbackState.correct = true;

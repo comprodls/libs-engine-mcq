@@ -1,0 +1,299 @@
+<!-- Engine Editor Template -->
+<div class="mcq-body main-container" id="mcq-editor">
+    <main class="main global">
+        <section id="question" class="section question">
+            <!-- Loop over all instructions text -->
+            <div class="section-box">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <header>
+                            <h4 class="headerlabel font-semibold color-gray">Question Text</h4>
+                        </header>
+                    </div>
+                    <!-- Loop over all question data text -->
+                    <div class="col-sm-12 mt-sm">
+                        <div class="text-box vertical-bottom-align" rv-each-qdata="editorContent.content.canvas.data.questiondata">
+                            <span class="pull-left icon-pencil bottom">
+                                <i class="fa fa-pencil"></i>
+                            </span>
+                            <div rv-content-editable="qdata.text" style="width: 100%;" data-text="Please Enter Question Test here." class="pl-md border-bottom-dashed"
+                                role="button">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="instruction" class="section instruction border-bottom-shadow">
+            <div class="section-box mt-sm">
+                <div class="row">
+                    <div class="col-sm-12" id="instructionLabel" rv-hide="isInstructionEmpty">
+                        <header>
+                            <h4 class="headerlabel font-semibold color-gray">Instruction Text</h4>
+                        </header>
+                    </div>
+                    <div class="col-sm-12">
+                        <ul class="list-unstyled nested-list">
+                            <li class="text-box colborder mt-sm mb-add-offset" rv-each-instruction="editorContent.content.instructions" rv-instructionIndex="%instruction%">
+                                <div class="vertical-bottom-align">
+                                    <span class="pull-left icon-pencil">
+                                        <i class="fa fa-pencil"></i>
+                                    </span>
+                                    <div rv-content-editable="instruction.text" style="width: 100%;" data-text='Placeholder Instruction text. Update "Me" with a valid Instruction text for this question.'
+                                        class="pr-3pc pl-md border-bottom-dashed" role="button"></div>
+                                    <span class="pull-right icon-horizontal-align">
+                                        <a class="color-lightgray fa fa-times outline-none" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeInstruction | args instruction %instruction%"></a>
+                                    </span>
+                                </div>
+                            </li>
+                    </div>
+                    </ul>
+                </div>
+                <div class="row mb-add-offset">
+                    <div class="col-sm-12 dropdown">
+                        <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">+ Add
+                        </button>
+                        <ul class="dropdown-menu" role="menu" id="instructionmenu" aria-labelledby="menu1" style="left: 15px;">
+                            <li class="border-bottom-dashed" role="presentation">
+                                <a class='dropdown-toggle disabled' role="menuitem" href="#" rv-on-click="addInstruction">Instruction Text</a>
+                            </li>
+                            <li class="border-bottom-dashed" role="presentation">
+                                <a class='dropdown-toggle disabled' role="menuitem" href="#">Description Text</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="answer-choice" class="section answer border-bottom-shadow">
+            <div class="section-box">
+                <div class="row no-margin-left" rv-each-interact="editorContent.content.interactions">
+                    <header>
+                        <h4 class="headerlabel font-semibold color-gray">Answer Options
+                            <span class="dropdown font-medium ml-md">
+                                <a class="dropdown-toggle color-lightgray text-underline font-normal" data-toggle="dropdown" aria-expanded="false">
+                                    <span rv-text="interact.type | interactTypeVal"></span>
+                                    <b class="caret">
+                                    </b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li rv-class-active='mcqsr'>
+                                        <a id="MCQSR" rv-text="'MCQSR' | interactTypeVal" rv-on-click="changeQuestionType |  args 'MCQSR' interact"></a>
+                                    </li>
+                                    <li rv-class-active='mcqmr'>
+                                        <a id="MCQMR" rv-text="'MCQMR' | interactTypeVal" rv-on-click="changeQuestionType |  args 'MCQMR' interact"></a>
+                                    </li>
+                                </ul>
+                            </span>
+                        </h4>
+                    </header>
+                    <!-- Loop over all questiondata inside interaction -->
+                    <div class="col-sm-12 questions-editor mt-md" id="mcqeditor-mr" rv-if="editorContent.MCQMR">
+
+                        <ul class="list-unstyled nested-list editor sortable">
+                            <!-- Loop over all options inside interaction  (mcq Array)-->
+                            <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.answeroptions"
+                                rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index"
+                                rv-interactIndex="%interact%">
+                                <div>
+                                    <label class="checkbox optionlabel" rv-for="%element% | idcreator element.customAttribs.id">
+                                        <i class="square-icon choices"></i>
+                                    </label>
+                                    <input type="checkbox" name="optionsRadios" rv-id="%element% | idcreator element.customAttribs.id" class="hide-option mcq-option"
+                                        rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect" />
+                                </div>
+                                <div class="vertical-bottom-align" style="width: 100%">
+                                    <span class="ml-xl pull-left mt-xs option-icon-pencil">
+                                        <i class="fa fa-pencil"></i>
+                                    </span>
+                                    <div rv-content-editable="element.customAttribs.value" data-text="Placeholder answer option text. Please update with valid answer option text"
+                                        class="option-div adjusted-width pr-7pc pl-md border-bottom-dashed" role="button"></div>
+                                    <span class="pull-right  icon-box vertical-align-self">
+                                        <a rv-class-linkenabled="interact.editlink.enabled" rv-class-linkdisabled="interact.editlink.disabled" class="color-lightgray drag-icon fa fa-times outline-none mr-1em"
+                                            data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>
+                                        <a rv-class-linkenabled="interact.editlink.enabled" rv-class-linkdisabled="interact.editlink.disabled" class="color-lightgray drag-icon fa fa-bars outline-none "
+                                            data-toggle="tooltip" title="Click & drag move this option"></a>
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-12  questions-editor mt-md" id="mcqeditor-sr" rv-if="editorContent.MCQSR">
+                        <ul class="list-unstyled nested-list editor sortable">
+                            <!-- Loop over all options inside interaction  (mcq Array)-->
+                            <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="interact.answeroptions"
+                                rv-class-highlight="element.customAttribs.isCorrect" rv-elementIndex="element.customAttribs.index"
+                                rv-interactIndex="%interact%">
+                                <div>
+                                    <label class="radio optionlabel" rv-for="%element% | idcreator element.customAttribs.id">
+                                        <i class="round-icon choices"></i>
+                                    </label>
+                                    <input type="radio" name="optionsRadios" rv-id="%element% | idcreator element.customAttribs.id" class="hide-option mcq-option"
+                                        rv-key="element.customAttribs.key" rv-checked="element.customAttribs.isCorrect" />
+                                </div>
+                                <div class="vertical-bottom-align" style="width: 100%">
+                                    <span class="ml-xl pull-left mt-xs option-icon-pencil">
+                                        <i class="fa fa-pencil"></i>
+                                    </span>
+                                    <div rv-content-editable="element.customAttribs.value" data-text="Placeholder answer option text. Please update with valid answer option text"
+                                        class="option-div adjusted-width pr-7pc pl-md border-bottom-dashed" role="button"></div>
+                                    <span class="pull-right  icon-box vertical-align-self">
+                                        <a rv-class-linkenabled="interact.editlink.enabled" rv-class-linkdisabled="interact.editlink.disabled" class="drag-icon fa fa-times outline-none mr-1em"
+                                            data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeItem | args element %interact%"></a>
+                                        <a rv-class-linkenabled="interact.editlink.enabled" rv-class-linkdisabled="interact.editlink.disabled" class="drag-icon fa fa-bars outline-none "
+                                            data-toggle="tooltip" title="Click & drag move this option"></a>
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <a class="add-item ml-xxl" rv-on-click="addItem | args %interact%">
+                        <button type="button" class="btn btn-default btn-sm mb-sm">
+                            </span>+ Add</button>
+                    </a>
+                </div>
+            </div>
+        </section>
+        <section id="feedback" class="section feedback  border-bottom-shadow">
+            <div class="section-box">
+                <div class="row mt-sm mb-sm">
+                    <div class="col-sm-12" rv-hide="editorContent.enableFeedBack">
+                        <a class="enable-feedback">
+                            <button type="button" class="btn btn-default active-btn border-dashed" rv-on-click="showFeedBack">
+                                <h4 class="font-semibold color-gray">Enable Feedback</h4>
+                            </button>
+                        </a>
+                    </div>
+                    <div class="col-sm-12" rv-show="editorContent.enableFeedBack">
+                        <div>
+                            <header>
+                                <h4 class="headerlabel font-semibold color-gray">Feedback</h4>
+                            </header>
+                        </div>
+                        <ul class="list-unstyled nested-list">
+                            <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="editorContent.feedback.global">
+                                <div class="pl-sm">
+                                    <div class="radio">
+                                        <i class="round-icon feedback" rv-addclass='element.customAttribs.icon'></i>
+                                    </div>
+                                </div>
+                                <div class="vertical-bottom-align" style="width: 100%">
+                                    <span class="ml-xl pull-left mt-xs option-icon-pencil">
+                                        <i class="fa fa-pencil"></i>
+                                    </span>
+                                    <div rv-content-editable="element.customAttribs.value" style="width: 100%;" data-text='Placeholder Feedback text. Update "Me" with a valid Feedback text for this question.'
+                                        class="pr-3pc pl-md border-bottom-dashed" role="button"></div>
+                                    <span class="pull-right icon-horizontal-align">
+                                        <a class="color-lightgray fa fa-times outline-none" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeFeedback | args %element%"></a>
+                                    </span>
+
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="col-sm-12 dropdown">
+                            <button class="btn btn-default btn-sm dropdown-toggle ml-xxl" rv-class-disabled="enableFeedback.hide" type="button" id="menu2"
+                                data-toggle="dropdown">+ Add
+                            </button>
+                            <ul class="dropdown-menu" id="feedbackmenu" role="menu" aria-labelledby="menu1" style="left: 75px;">
+                                <li class="" rv-show="feedback.showDropdown" role="presentation" rv-each-feedback="feedbackPresets">
+                                    <a class='dropdown-toggle disabled' role="menuitem" rv-on-click="addFeedback | args feedback %feedback% " rv-text="feedback.value"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- a class="add-item ml-xxl" rv-on-click="">
+                    <button type="button" class="btn btn-default btn-sm mt-sm mb-sm"></span>+ Add</button>
+              </a -->
+                </div>
+            </div>
+
+        </section>
+        <section id="media" class="section border-bottom-shadow">
+            <div class="section-box">
+                <div class="row mt-sm mb-sm">
+                    <div class="col-sm-12">
+                        <a class="enable-media">
+                            <button type="button" class="btn btn-default active-btn border-dashed">
+                                <h4 class="color-gray font-semibold">Enable Media & Assets</h4>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- div id="uploader"></div -->
+
+        <script type="text/template" id="qq-template">
+        <div class="qq-uploader-selector qq-uploader qq-gallery" qq-drop-area-text="Drop files here">
+            <div class="progress qq-total-progress-bar-container-selector qq-total-progress-bar-container">
+                <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="progress-bar bar qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
+            </div>
+            <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
+                <span class="qq-upload-drop-area-text-selector"></span>
+            </div>
+            <div class="qq-upload-button-selector qq-upload-button border-dashed btn btn-default" style="min-width:150px;">
+                <div>Upload a file</div>
+            </div>
+            <span class="qq-drop-processing-selector qq-drop-processing">
+                <span>Processing dropped files...</span>
+                <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+            </span>
+            <ul class="qq-upload-list-selector qq-upload-list" role="region" aria-live="polite" aria-relevant="additions removals">
+                <li>
+                    <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
+                    <div class="progress qq-progress-bar-container-selector qq-progress-bar-container">
+                        <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="progress-bar bar qq-progress-bar-selector qq-progress-bar"></div>
+                    </div>
+                    <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                    <div class="qq-thumbnail-wrapper">
+                        <img class="qq-thumbnail-selector" qq-max-size="120" qq-server-scale>
+                    </div>
+                    <button type="button" class="qq-upload-cancel-selector qq-upload-cancel">X</button>
+                    <button type="button" class="qq-upload-retry-selector qq-upload-retry">
+                        <span class="qq-btn qq-retry-icon" aria-label="Retry"></span>
+                        Retry
+                    </button>
+                    <div class="qq-file-info">
+                        <div class="qq-file-name">
+                            <span class="qq-upload-file-selector qq-upload-file"></span>
+                            <span class="qq-edit-filename-icon-selector qq-btn qq-edit-filename-icon" aria-label="Edit filename"></span>
+                        </div>
+                        <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                        <span class="qq-upload-size-selector qq-upload-size"></span>
+                        <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">
+                            <span class="qq-btn qq-delete-icon" aria-label="Delete"></span>
+                        </button>
+                        <button type="button" class="qq-btn qq-upload-pause-selector qq-upload-pause">
+                            <span class="qq-btn qq-pause-icon" aria-label="Pause"></span>
+                        </button>
+                        <button type="button" class="qq-btn qq-upload-continue-selector qq-upload-continue">
+                            <span class="qq-btn qq-continue-icon" aria-label="Continue"></span>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+            <dialog class="qq-alert-dialog-selector">
+                <div class="qq-dialog-message-selector"></div>
+                <div class="qq-dialog-buttons">
+                    <button type="button" class="qq-cancel-button-selector">Close</button>
+                </div>
+            </dialog>
+            <dialog class="qq-confirm-dialog-selector">
+                <div class="qq-dialog-message-selector"></div>
+                <div class="qq-dialog-buttons">
+                    <button type="button" class="qq-cancel-button-selector">No</button>
+                    <button type="button" class="qq-ok-button-selector">Yes</button>
+                </div>
+            </dialog>
+            <dialog class="qq-prompt-dialog-selector">
+                <div class="qq-dialog-message-selector"></div>
+                <input type="text">
+                <div class="qq-dialog-buttons">
+                    <button type="button" class="qq-cancel-button-selector">Cancel</button>
+                    <button type="button" class="qq-ok-button-selector">Ok</button>
+                </div>
+            </dialog>
+        </div>
+    </script>
+    </main>
+</div>

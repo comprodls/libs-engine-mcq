@@ -4,7 +4,6 @@ const webpack = require('webpack');
 const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const path = require('path');
 const env = require('yargs').argv.env;
-// contains externals function that ignores node_modules when bundling in Webpack
 const nodeExternals = require('webpack-node-externals');
 
 let libraryName = 'mcq';
@@ -20,17 +19,14 @@ plugins.push(new webpack.ProvidePlugin({
 
 if (env === 'build') {
   plugins.push(new UglifyJsPlugin({ minimize: true }));
-  outputFile = libraryName + '.min.js';
-} else {
-  outputFile = libraryName + '.js';
 }
 
 const config = {
-  entry: __dirname + '/src/js/index.js',
+  entry: { 'mcq': __dirname + '/src/js/index.js', 'mcq-editor': __dirname + '/src/js/mcq-editor/mcqEditor.js' },
   devtool: 'source-map',
   output: {
     path: __dirname + '/dist',
-    filename: outputFile,
+    filename: '[name].js',
     libraryTarget: 'umd',
     umdNamedDefine: true,
   },

@@ -1,0 +1,394 @@
+//colors
+$color_chicago_approx: #585858;
+$color_tuatara_approx: #343434;
+$color_quill_gray_approx: #d5d5d5;
+$white: #fff;
+$color_waterloo__approx: lightslategray;
+$color_moody_blue_approx: #6778e3;
+$color_concrete_approx: #f3f3f3;
+$color_mine_shaft_approx: #333;
+$color_japanese_laurel_approx: green;
+$red: red;
+$color_lucky_point_approx: #162375;
+$color_silver_approx: #bdbdbd;
+$color_white_linen_approx: #fae9e9;
+$color_peppermint_approx: #e0ffe0;
+$color_alto_approx: #dfdddd;
+$gray: grey;
+//fonts
+$font_0: Open Sans;
+$font_1: fontawesome;
+#mcq-editor {
+    .global {
+        font-size: 1.3em;
+        font-family: $font_0;
+        color: $color_chicago_approx;
+        padding: 10px;
+    }
+    .outline-none {
+        outline: none;
+    }
+    .color-gray {
+        color: $color_tuatara_approx;
+    }
+    .color-lightslategray {
+        color: $color_quill_gray_approx;
+    }
+    .color-lightgray {
+        color: $color_chicago_approx;
+    }
+    .bg-white {
+        background-color: $white;
+    }
+    .global-border {
+        border: 1px solid $color_waterloo__approx;
+    }
+    .font-semibold {
+        font-weight: 600;
+    }
+    .font-normal {
+        font-weight: 400;
+    }
+    .noborder {
+        border: none;
+    }
+    .adjusted-width {
+        width: 96%;
+    }
+    .mt-sm {
+        margin-top: 15px;
+    }
+    .mt-md {
+        margin-top: 20px;
+    }
+    .ml-md {
+        margin-left: 20px;
+    }
+    .ml-xl {
+        margin-left: 40px;
+    }
+    .mt-xs {
+        margin-top: 5px;
+    }
+    .ml-xxl {
+        margin-left: 60px;
+    }
+    .ml-sm {
+        margin-left: 15px;
+    }
+    .mb-sm {
+        margin-bottom: 15px;
+    }
+    .mb-md {
+        margin-bottom: 20px;
+    }
+    .mb-add-offset {
+        margin-bottom: 25px;
+    }
+    .mr-1em {
+        margin-right: 1em;
+    }
+    .pl-md {
+        padding-left: 25px;
+    }
+    .pl-sm {
+        padding-left: 15px;
+    }
+    .pr-3pc {
+        padding-right: 3%;
+    }
+    .pr-7pc {
+        padding-right: 3%;
+    }
+    .border-bottom-dashed {
+        border-bottom: 1px dashed $color_quill_gray_approx; //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+        transition: border-color 0.5s ease-in-out;
+    }
+    .border-bottom-blue {
+        border-bottom: 1px solid $color_moody_blue_approx; //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+        transition: border-color 0.5s ease-in-out;
+    }
+    .border-dashed {
+        border: 1px dashed;
+    }
+    .border-top {
+        border-top: 1px solid $color_quill_gray_approx;
+    }
+    .border-left {
+        border-left: 1px solid $color_quill_gray_approx;
+    }
+    .border-right {
+        border-right: 1px solid $color_quill_gray_approx;
+    }
+    .border-bottom {
+        border-bottom: 1px solid $color_quill_gray_approx;
+    }
+    .border-bottom-shadow {
+        border-bottom: 1px solid $color_concrete_approx; //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+        box-shadow: 0 12px 15px -20px $color_mine_shaft_approx;
+    }
+    .font-medium {
+        font-size: 14px;
+    }
+    .text-underline {
+        text-decoration: underline;
+    }
+    .correct {
+        color: $color_japanese_laurel_approx;
+    }
+    .incorrect {
+        color: $red;
+    }
+    [contentEditable=true] {
+        &:focus {
+            border: none;
+            border-bottom: 1px solid $color_lucky_point_approx;
+            outline: none;
+        }
+        &:empty:not(:focus):before {
+            content: attr(data-text);
+        }
+    }
+    .option-div {
+        line-height: 1.8em;
+        width: 94%;
+    }
+    .ribbon-adjustments {
+        margin: 0 15px 0 15px !important;
+    }
+    .icon-horizontal-align {
+        position: absolute;
+        right: 14px;
+    }
+    .hide-option {
+        position: absolute;
+        left: -9999px;
+    }
+    i {
+        &.choices {
+            height: 2.35em;
+            width: 2.35em;
+            position: absolute;
+            top: -30px;
+            left: 0;
+            display: block;
+            outline: 0;
+            border: 1px solid $color_silver_approx;
+            background: $white;
+            padding: 10px;
+            &:after {
+                opacity: 0;
+                background-color: $white;
+                content: "\f00c";
+                color: $color_japanese_laurel_approx;
+                font-family: $font_1;
+                font-size: 1.6em;
+                position: relative;
+                left: -4px;
+                top: -10px;
+                font-weight: 400;
+                font-style: normal;
+            }
+            &:hover {
+                cursor: pointer;
+            }
+        }
+        &.thumbs-o-down {
+            height: 2.35em;
+            width: 2.35em;
+            position: absolute;
+            top: -30px;
+            left: 0;
+            display: block;
+            outline: 0;
+            border: 1px solid $red;
+            background: $color_white_linen_approx;
+            padding: 10px;
+            &:after {
+                opacity: 0.7;
+                background-color: $color_white_linen_approx;
+                color: $red;
+                content: "\f088";
+                font-family: $font_1;
+                font-size: 1.3em;
+                position: relative;
+                left: 0;
+                top: -6px;
+                font-weight: 400;
+                font-style: normal;
+            }
+        }
+        &.thumbs-o-up {
+            height: 2.35em;
+            width: 2.35em;
+            position: absolute;
+            top: -30px;
+            left: 0;
+            display: block;
+            outline: 0;
+            border: 1px solid $color_japanese_laurel_approx;
+            background: $color_peppermint_approx;
+            padding: 10px;
+            &:after {
+                opacity: 0.7;
+                background-color: $color_peppermint_approx;
+                color: $color_japanese_laurel_approx;
+                content: "\f087";
+                font-family: $font_1;
+                font-size: 1.3em;
+                position: relative;
+                left: 0;
+                top: -6px;
+                font-weight: 400;
+                font-style: normal;
+            }
+        }
+        &.hand-o-right {
+            height: 2.35em;
+            width: 2.35em;
+            position: absolute;
+            top: -30px;
+            left: 0;
+            display: block;
+            outline: 0;
+            border: 1px solid $gray;
+            background-color: $white;
+            padding: 10px;
+            &:after {
+                opacity: 0.7;
+                background-color: $white;
+                color: $gray;
+                content: "\f0e5";
+                font-family: $font_1;
+                font-size: 1.3em;
+                position: relative;
+                left: -1px;
+                top: -7px;
+                font-weight: 400;
+                font-style: normal;
+            }
+        }
+    }
+    .round-icon {
+        //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+        border-radius: 50%;
+    }
+    .vertical-center-align {
+        display: flex;
+        align-items: center;
+    }
+    .vertical-bottom-align {
+        display: flex;
+        align-items: flex-end;
+    }
+    .vertical-align-self {
+        align-self: center;
+    }
+    .option-icon-pencil {
+        position: relative;
+        left: 15px;
+    }
+    .icon-box {
+        width: 7%;
+        position: absolute;
+        right: -25px;
+    }
+    .icon-pencil {
+        position: absolute;
+        bottom: 20px;
+    }
+    .bottom {
+        bottom: 0;
+    }
+    .no-margin-left {
+        margin-left: 0;
+    }
+    @media(max-width: 1240px) {
+        .icon-box {
+            width: 7%;
+            right: -10px;
+        }
+        .option-div {
+            width: 92%;
+        }
+    }
+    @media(max-width: 980px) {
+        .icon-box {
+            width: 8%;
+            right: 0;
+        }
+        .option-div {
+            width: 90%;
+        }
+    }
+    @media(max-width: 720px) {
+        .icon-box {
+            width: 10%;
+            right: -10px;
+        }
+        .option-div {
+            width: 86%;
+        }
+    }
+    .linkenabled {
+        color: $color_chicago_approx;
+    }
+    .linkdisabled {
+        color: $color_alto_approx;
+        pointer-events: none;
+        cursor: default;
+    }
+    .qq-gallery {
+        .qq-progress-bar {
+            background: $color_quill_gray_approx;
+        }
+        .qq-upload-button {
+            color: $color_mine_shaft_approx;
+            background-color: $white;
+            min-width: 150px;
+            color: $color_mine_shaft_approx;
+            display: inline-block;
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            touch-action: manipulation;
+            cursor: pointer; //Instead of the line below you could use @include user-select($select)
+            user-select: none;
+            background-image: none;
+            border: 1px dashed $color_mine_shaft_approx; //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+            border-radius: 4px; //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+            box-shadow: none;
+            outline: none;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+    }
+    .fa-pencil:before {
+        color: $color_waterloo__approx;
+    }
+    .textEditable[contentEditable=true]:not(:focus) {
+        border-bottom: 1px dashed $color_quill_gray_approx;
+    }
+    .option-div[contentEditable=true]:focus {
+        border: none;
+        border-bottom: 1px solid $color_lucky_point_approx;
+        outline: none;
+    }
+    a:hover {
+        text-decoration: none;
+        cursor: pointer;
+    }
+    li.highlight i.choices {
+        border-color: $color_japanese_laurel_approx;
+        &:after {
+            opacity: 0.7;
+        }
+    }
+    .fa-thumbs-o-up:before {
+        content: "\f087";
+    }
+}

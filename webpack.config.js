@@ -11,6 +11,13 @@ let libraryName = 'mcq';
 
 let plugins = [], outputFile;
 
+plugins.push(new webpack.ProvidePlugin({
+  "$": "jquery",
+  "jQuery": "jquery",
+  "window.jQuery": "jquery",
+  "jquery-ui": "jquery-ui-dist"
+}));
+
 if (env === 'build') {
   plugins.push(new UglifyJsPlugin({ minimize: true }));
   outputFile = libraryName + '.min.js';
@@ -65,10 +72,13 @@ const config = {
   },
   resolve: {
     modules: [path.resolve('./node_modules'), path.resolve('./src')],
-    extensions: ['.json', '.js']
+    extensions: ['.json', '.js'],
+    alias: {
+      "jquery-ui-dist": "jquery-ui-dist/jquery-ui.js"
+    }
   },
   plugins: plugins,
-  externals: [nodeExternals({ whitelist: ['sightglass', 'rivets'] })] // in order to avoid bundling of modules in node_modules folder  
+  externals: [nodeExternals({ whitelist: ['sightglass', 'rivets', 'jquery', 'jquery-ui-dist'] })] // in order to avoid bundling of modules in node_modules folder  
 };
 
 module.exports = config;

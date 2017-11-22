@@ -70,11 +70,102 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export InteractionIds */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rivets__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rivets___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rivets__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__html_mcq_html__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__html_mcq_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__html_mcq_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scss_mcq_scss__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scss_mcq_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__scss_mcq_scss__);
+/* global $ */
+
+
+
+const initializeRivets = Symbol('initializeRivets');
+
+/*
+ * Constants.
+ */
+const Constants = {
+    TEMPLATES: {
+        /* Regular MCQ Layout */
+        MCQ: __WEBPACK_IMPORTED_MODULE_1__html_mcq_html___default.a
+    },
+    THEMES: {
+        MCQ: 'main',
+        MCQ_LIGHT: 'main-light',
+        MCQ_DARK: 'main-dark'
+    }
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = Constants;
+
+
+let InteractionIds = [];
+
+class McqModelAndView {
+    constructor(model) {
+        this.model = model;
+    }
+    get template() {
+        return Constants.TEMPLATES.MCQ;
+    }
+    get themes() {
+        return Constants.THEMES;
+    }
+
+    bindData() {
+        this[initializeRivets]();
+    }
+
+    [initializeRivets]() {
+        __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.formatters.propertyList = function (obj) {
+            return function () {
+                let properties = [];
+
+                for (let key in obj) {
+                    properties.push({ key: key, value: obj[key] });
+                };
+                return properties;
+            }();
+        };
+
+        __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.formatters.idcreator = function (index, idvalue) {
+            return idvalue + index;
+        };
+
+        __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.binders.addclass = function (el, value) {
+            if (el.addedClass) {
+                $(el).removeClass(el.addedClass);
+                delete el.addedClass;
+            }
+            if (value) {
+                $(el).addClass(value);
+                el.addedClass = value;
+            }
+        };
+        console.log('feedback: ', this.model.feedback);
+        let data = {
+            content: this.model,
+            feedback: this.model.feedback,
+            showFeedback: this.model.feedbackState
+        };
+
+        /*Bind the data to template using rivets*/
+        __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.bind($('#mcq-engine'), data);
+    }
+}
+/* harmony default export */ __webpack_exports__["b"] = (McqModelAndView);
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function() {
@@ -295,119 +386,503 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function() {
 
 
 /***/ }),
-/* 1 */
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* global $ */
+const __constants = {
+    STATUS_NOERROR: 'NO_ERROR'
+};
+
+/*
+    * Internal Engine State. (Need to refactor)
+    */
+let __state = {
+    currentTries: 0, /* Current try of sending results to platform */
+    activityPariallySubmitted: false, /* State whether activity has been partially submitted. Possible Values: true/false(Boolean) */
+    activitySubmitted: false /* State whether activity has been submitted. Possible Values: true/false(Boolean) */
+};
+
+let __correctAnswers = {};
+/*
+* Internal Engine Config.
+*/
+let __config = {
+    MAX_RETRIES: 10 /* Maximum number of retries for sending results to platform for a particular activity. */
+};
+let markCheckBox = Symbol('markCheckBox');
+
+class McqUserResponse {
+    constructor(mcqObj) {
+        this.mcqObj = mcqObj;
+        __correctAnswers = mcqObj.content.responses;
+    }
+
+    savePartial(interactionid, mcqObj) {
+        let answerJSONs = null;
+        let uniqueId = this.mcqObj.adaptor.getId();
+
+        answerJSONs = this.__getAnswersJSON(false, interactionid);
+
+        answerJSONs.forEach((answerJSON, idx) => {
+            this.mcqObj.adaptor.savePartialResults(answerJSON, uniqueId, function (data, status) {
+                if (status === __constants.STATUS_NOERROR) {
+                    __state.activityPariallySubmitted = true;
+                } else {
+                    // There was an error during platform communication, do nothing for partial saves
+                }
+            });
+        });
+    }
+
+    /**
+     *  Function used to create JSON from user Answers for submit(soft/hard).
+     *  Called by :-
+     *   1. __saveResults (internal).
+     *   2. Multi-item-handler (external).
+     *   3. Divide the maximum marks among interaction.
+     *   4. Returns result objects.  [{ itemUID: interactionId,  answer: answer,   score: score }]
+     */
+    __getAnswersJSON(skipQuestion, interactionid) {
+        let response = [];
+        let filteredInteraction = null;
+        let interactiontype = null;
+        var mcqmrans = null;
+        var mcqsrans = null;
+
+        if (typeof interactionid === undefined) {
+
+            filteredInteraction = this.mcqObj.mcqModel.interactions.filter(function (interaction) {
+                return interaction.id === interactionid;
+            });
+
+            // Match the interaction id to set partial results and save
+            if (filteredInteraction) {
+                interactiontype = filteredInteraction[0].type;
+
+                if (interactiontype === 'MCQMR') {
+                    mcqmrans = this.__getAnswersJSONMCQMR();
+                    response.push(mcqmrans);
+                }
+                if (interactiontype === 'MCQSR') {
+                    mcqsrans = this.__getAnswersJSONMCQSR(false);
+                    response.push(mcqsrans);
+                }
+            }
+        } else {
+            mcqmrans = this.__getAnswersJSONMCQMR();
+            response.push(mcqmrans);
+            mcqsrans = this.__getAnswersJSONMCQSR();
+            response.push(mcqsrans);
+        }
+        return response;
+    }
+
+    __getAnswersJSONMCQMR() {
+        var resultArray = [];
+        var statusEvaluation = 'empty';
+        var feedback = '';
+        var maxscore = this.mcqObj.content.meta.score.max;
+        var perInteractionScore = this.mcqObj.mcqModel.interactionIds.length / maxscore;
+        //TBDvar interactioncount = Object.keys(__correctAnswers).length;
+        var isUserAnswerCorrect = false;
+        // Filter all the MCQMRs
+        var filtered = this.mcqObj.mcqModel.interactions.filter(function (interaction) {
+            return interaction.type === 'MCQMR';
+        });
+
+        var countCorrectInteractionAttempt = 0;
+        /* Iterate over userAnswers and calculate */
+
+        filtered.forEach((eachElem, idx) => {
+            var score = 0;
+            var id = eachElem.id;
+
+            if (this.mcqObj.userAnswers.hasOwnProperty(id)) {
+                if (this.mcqObj.userAnswers[id].length === __correctAnswers[id]['correct'].length) {
+                    if (this.mcqObj.userAnswers[id].sort().join('') === __correctAnswers[id]['correct'].sort().join('')) {
+                        score = perInteractionScore;
+                    }
+                    countCorrectInteractionAttempt++;
+                    isUserAnswerCorrect = true;
+                }
+            }
+            resultArray.push({
+                itemUID: id,
+                answer: this.mcqObj.userAnswers[id],
+                score: score
+            });
+        });
+
+        if (isUserAnswerCorrect) {
+            statusEvaluation = 'correct';
+            feedback = this.__buildFeedbackResponse('global.correct', 'correct', this.mcqObj.mcqModel.feedback.correct);
+        } else if (countCorrectInteractionAttempt === 0) {
+            statusEvaluation = 'incorrect';
+            feedback = this.__buildFeedbackResponse('global.incorrect', statusEvaluation, this.mcqObj.mcqModel.incorrect);
+        } else {
+            statusEvaluation = 'partially_correct';
+            feedback = this.__buildFeedbackResponse('global.incorrect', 'incorrect', this.mcqObj.mcqModel.incorrect);
+        }
+        return {
+            response: {
+                'interactions': resultArray,
+                'statusEvaluation': statusEvaluation,
+                'feedback': feedback
+            }
+        };
+    }
+
+    /**
+    * Prepare feedback response.
+    * @param {*} id
+    * @param {*} status
+    * @param {*} content
+    */
+    __buildFeedbackResponse(id, status, content) {
+        var feedback = {};
+
+        feedback.id = id;
+        feedback.status = status;
+        feedback.content = content;
+        return feedback;
+    }
+
+    __getAnswersJSONMCQSR(skipQuestion) {
+        var score = 0;
+        var answer = '';
+        var interactions = {};
+        var response = {};
+
+        /*Setup results array */
+        var interactionArray = new Array(1);
+        /* Split questionJSON to get interactionId. */
+        //var questionData = __content.questionsJSON[0].split("^^");
+        var interactionId = null;
+        // Filter all the MCQMRs
+        var filtered = this.mcqObj.mcqModel.interactions.filter(function (interaction) {
+            return interaction.type === 'MCQSR';
+        });
+
+        if (skipQuestion) {
+            answer = 'Not Answered';
+        } else {
+
+            filtered.forEach((el, idx) => {
+                interactionId = el.id;
+                answer = this.mcqObj.content.userAnswers[el.id];
+
+                if (__correctAnswers[el.id] === this.mcqObj.content.userAnswers[el.id]) {
+                    score++;
+                }
+            });
+        }
+
+        interactions = {
+            id: interactionId,
+            answer: answer,
+            score: score,
+            maxscore: this.mcqObj.content.meta.score.max
+        };
+        interactionArray[0] = interactions;
+
+        response = {
+            'interactions': interactionArray
+        };
+
+        return {
+            response: response
+        };
+    }
+
+    /**
+    * Function called to send result JSON to adaptor (partial save OR submit).
+    * Parameters:
+    * 1. bSumbit (Boolean): true: for Submit, false: for Partial Save.
+    */
+    saveResults(bSubmit) {
+        var uniqueId = this.mcqObj.adaptor.getId();
+
+        /*Getting answer in JSON format*/
+        var answerJSONs = this.__getAnswersJSON();
+
+        answerJSONs.forEach((answerJSON, idx) => {
+            /* User clicked the Submit button*/
+            if (bSubmit === true) {
+                answerJSON.statusProgress = 'attempted';
+                /*Send Results to platform*/
+                this.mcqObj.adaptor.submitResults(answerJSON, uniqueId, (data, status) => {
+                    if (status === __constants.STATUS_NOERROR) {
+                        __state.activitySubmitted = true;
+                        /*Close platform's session*/
+                        this.mcqObj.adaptor.closeActivity();
+                        __state.currentTries = 0;
+                    } else {
+                        /* There was an error during platform communication, so try again (till MAX_RETRIES) */
+                        if (__state.currentTries < __config.MAX_RETRIES) {
+                            __state.currentTries++;
+                            this.__saveResults(bSubmit);
+                        }
+                    }
+                });
+            }
+        });
+    }
+    /**
+     * Function to show correct Answers to User, called on click of Show Answers/Submit Button.
+    */
+    markAnswers() {
+        this[markCheckBox]();
+    }
+    /* Add correct or wrong answer classes*/
+    [markCheckBox]() {
+        var interactions = this.mcqObj.mcqModel.interactions;
+        // Assuming that there is only one interaction.
+        var type = interactions[0]['type'];
+        var interaction = null;
+
+        if (type === 'MCQMR') {
+            $('input[id^=option]').closest('li').removeClass('highlight');
+            $('input[id^=option]').closest('li').addClass('wrong');
+            for (interaction in __correctAnswers) {
+                if (__correctAnswers.hasOwnProperty(interaction)) {
+                    for (let j = 0; j < __correctAnswers[interaction]['correct'].length; j++) {
+                        $('#' + interaction + " input[name='" + __correctAnswers[interaction]['correct'][j] + "']").closest('li').removeClass('wrong');
+                        $('#' + interaction + " input[name='" + __correctAnswers[interaction]['correct'][j] + "']").closest('li').addClass('correct');
+                    }
+                }
+            }
+        }
+
+        if (type === 'MCQSR') {
+            let interactionid = Object.keys(__correctAnswers);
+
+            if (interactionid) {
+
+                let correctAnswer = __correctAnswers[interactionid]['correct'];
+                let userAnswer = this.mcqObj.userAnswers[interactionid];
+
+                if (userAnswer.trim() === correctAnswer.trim()) {
+                    $('#' + userAnswer).closest('li').removeClass('highlight');
+                    $('#' + userAnswer).closest('li').addClass('correct');
+                } else {
+                    $('#' + userAnswer).closest('li').removeClass('highlight');
+                    $('#' + userAnswer).closest('li').addClass('wrong');
+                }
+                //     $("#" + userAnswer).siblings('.answer').removeClass("invisible");
+            }
+        }
+    }
+
+    feedbackProcessor() {
+        var type = this.mcqObj.mcqModel.interactions[0]['type'];
+
+        function isCorrect(answerjson, useranswerjson) {
+            let isCorrect = false;
+            let countCorrectInteractionAttempt = 0;
+
+            if (answerjson == null || useranswerjson == null) {
+                isCorrect = false;
+                return isCorrect;
+            }
+
+            if (Object.keys(answerjson).length !== Object.keys(useranswerjson).length) {
+                isCorrect = false;
+                return isCorrect;
+            }
+
+            for (let key in this.mcqObj.userAnswers) {
+                if (this.mcqObj.userAnswers.hasOwnProperty(key)) {
+                    if (this.mcqObj.userAnswers[key].length === __correctAnswers[key]['correct'].length) {
+                        if (this.mcqObj.userAnswers[key].sort().join('') === __correctAnswers[key]['correct'].sort().join('')) {
+                            countCorrectInteractionAttempt++;
+                        }
+                    }
+                }
+            }
+
+            if (countCorrectInteractionAttempt === Object.keys(__correctAnswers).length) {
+                isCorrect = true;
+                return isCorrect;
+            }
+            if (countCorrectInteractionAttempt !== Object.keys(__correctAnswers).length) {
+                isCorrect = false;
+                return isCorrect;
+            }
+            this.mcqObj.adaptor.autoResizeActivityIframe();
+            return isCorrect;
+        }
+
+        if (type === 'MCQMR') {
+            for (let prop in this.mcqObj.mcqModel.feedback) {
+                this.mcqObj.mcqModel.feedbackState[prop] = false;
+            }
+            if (this.mcqObj.userAnswers.length <= 0) {
+                this.mcqObj.mcqModel.feedbackState.empty = true;
+            } else if (isCorrect(__correctAnswers, this.mcqObj.userAnswers)) {
+                this.mcqObj.mcqModel.feedbackState.correct = true;
+            } else {
+                this.mcqObj.mcqModel.feedbackState.incorrect = true;
+            }
+        }
+
+        if (type === 'MCQSR') {
+            Object.keys(__correctAnswers).forEach((elem, idx) => {
+                let correctAnswer = __correctAnswers[elem]['correct'];
+                let userAnswer = this.mcqObj.userAnswers[elem];
+
+                if (userAnswer === correctAnswer) {
+                    this.mcqObj.mcqModel.feedbackState.correct = true;
+                    this.mcqObj.mcqModel.feedbackState.incorrect = false;
+                    this.mcqObj.mcqModel.feedbackState.empty = false;
+                } else {
+                    this.mcqObj.mcqModel.feedbackState.correct = false;
+                    this.mcqObj.mcqModel.feedbackState.incorrect = true;
+                    this.mcqObj.mcqModel.feedbackState.empty = false;
+                }
+
+                if (userAnswer === '') {
+                    this.mcqObj.mcqModel.feedbackState.correct = false;
+                    this.mcqObj.mcqModel.feedbackState.incorrect = false;
+                    this.mcqObj.mcqModel.feedbackState.empty = true;
+                }
+            });
+        }
+        this.mcqObj.adaptor.autoResizeActivityIframe();
+    }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (McqUserResponse);
+
+/***/ }),
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mcq_mcq_js__ = __webpack_require__(2);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "mcq", function() { return __WEBPACK_IMPORTED_MODULE_0__mcq_mcq_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mcq_engine_mcq__ = __webpack_require__(4);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "mcq", function() { return __WEBPACK_IMPORTED_MODULE_0__mcq_engine_mcq__["a"]; });
 
 
 
 
 /***/ }),
-/* 2 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mcq_utils_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mcq_transformer__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mcq_modelview__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mcq_events__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mcq_responseProcessor__ = __webpack_require__(2);
 /* global $ */
-/* global jQuery */
 
 
 
-/**
- *  Engine initialization Class. Provides public functions
- *  -getConfig()
- *  -getStatus()
- */
+
+
+const load = Symbol('loadMCQ');
+const transform = Symbol('transformMCQ');
+const renderView = Symbol('renderMCQ');
+const bindEvents = Symbol('bindEvents');
 
 class mcq {
-
     /**  ENGINE-SHELL CONSTRUCTOR FUNCTION
-     *   @constructor
-     *   @param {String} elRoot - DOM Element reference where the engine should paint itself.
-     *   @param {Object} params - Startup params passed by platform. Include the following sets of parameters:
-     *                   (a) State (Initial launch / Resume / Gradebook mode ).
-     *                   (b) TOC parameters (contentFile, layout, etc.).
-     *   @param {Object} adaptor - An adaptor interface for communication with platform (__saveResults, closeActivity, savePartialResults, getLastResults, etc.).
-     *   @param {String} htmlLayout - Activity HTML layout (as defined in the TOC LINK paramter).
-     *   @param {Object} jsonContent - Activity JSON content (as defined in the TOC LINK paramter).
-     *   @param {Function} callback - To inform the shell that init is complete.
-     */
-
+    *   @constructor
+    *   @param {String} elRoot - DOM Element reference where the engine should paint itself.
+    *   @param {Object} params - Startup params passed by platform. Include the following sets of parameters:
+    *                   (a) State (Initial launch / Resume / Gradebook mode ).
+    *                   (b) TOC parameters (contentFile, layout, etc.).
+    *   @param {Object} adaptor - An adaptor interface for communication with platform (__saveResults, closeActivity, savePartialResults, getLastResults, etc.).
+    *   @param {String} htmlLayout - Activity HTML layout (as defined in the TOC LINK paramter).
+    *   @param {Object} jsonContent - Activity JSON content (as defined in the TOC LINK paramter).
+    *   @param {Function} callback - To inform the shell that init is complete.
+    */
     constructor(elRoot, params, adaptor, htmlLayout, jsonContentObj, callback) {
-        /**
-          * @member {Object}
-          * Clone the JSON so that original is preserved.
-          */
-        this.jsonContent = jQuery.extend(true, {}, jsonContentObj);
-
-        /**
-          * Validation block.
-          */
-        if (this.jsonContent.content === undefined) {
-            if (callback) {
-                callback();
-            }
-            //TODO - In future more advanced schema validations could be done here.
-            return;
-        }
-
-        /**
-          * Store the adaptor.
-          */
-        __WEBPACK_IMPORTED_MODULE_0__mcq_utils_js__["i" /* setAdaptor */](adaptor);
-
-        /**
-          * @member {String}
-          * Apply the content JSON to the htmllayout.
-          */
-        __WEBPACK_IMPORTED_MODULE_0__mcq_utils_js__["e" /* buildModelandViewContent */](jsonContentObj, params, htmlLayout);
-
-        $(elRoot).html(__WEBPACK_IMPORTED_MODULE_0__mcq_utils_js__["b" /* __constants */].TEMPLATES['MCQ']);
-        /**
-          * Update the DOM and render the processed HTML - main body of the activity.
-          */
-        __WEBPACK_IMPORTED_MODULE_0__mcq_utils_js__["h" /* initializeRivets */]();
-
-        /**
-          * Register the click events
-          */
-        __WEBPACK_IMPORTED_MODULE_0__mcq_utils_js__["g" /* initializeHandlers */]();
-
-        /** Inform the shell that initialization is complete */
+        this.elRoot = elRoot;
+        this.params = params;
+        this.adaptor = adaptor;
+        this.theme = htmlLayout;
+        this.content = jsonContentObj;
+        this.userAnswers = [];
+        this[load]();
         if (callback) {
             callback();
         }
     }
+
+    [load]() {
+        this[transform]();
+        this[renderView]();
+        this[bindEvents]();
+    }
+
+    [transform]() {
+        let mcqTransformer = new __WEBPACK_IMPORTED_MODULE_0__mcq_transformer__["a" /* default */](this.content, this.params, this.theme);
+
+        this.mcqModel = mcqTransformer.transform();
+    }
+    [renderView]() {
+        let mcqModelAndView = new __WEBPACK_IMPORTED_MODULE_1__mcq_modelview__["b" /* default */](this.mcqModel);
+        let htmltemplate = mcqModelAndView.template;
+
+        $(this.elRoot).html(htmltemplate);
+        mcqModelAndView.bindData();
+    }
+    [bindEvents]() {
+        let mcqEvents = new __WEBPACK_IMPORTED_MODULE_2__mcq_events__["a" /* default */](this);
+
+        mcqEvents.bindEvents();
+    }
+
     /**
      * ENGINE-SHELL Interface
      * @return {String} - Configuration
      */
-    getConfig() {
-        return __WEBPACK_IMPORTED_MODULE_0__mcq_utils_js__["a" /* __config */];
-    }
+    getConfig() {}
+    //return utils.__config;
+
 
     /**
      * ENGINE-SHELL Interface
      * @return {Boolean} - The current state (Activity Submitted/ Partial Save State.) of activity.
      */
-    getStatus() {
-        return __WEBPACK_IMPORTED_MODULE_0__mcq_utils_js__["d" /* __state */].activitySubmitted || __WEBPACK_IMPORTED_MODULE_0__mcq_utils_js__["d" /* __state */].activityPariallySubmitted;
-    }
+    getStatus() {}
+    //return utils.__state.activitySubmitted || utils.__state.activityPariallySubmitted;
 
+
+    /**
+    * Bound to click of Activity submit button.
+    */
     handleSubmit() {
-        return __WEBPACK_IMPORTED_MODULE_0__mcq_utils_js__["f" /* handleSubmit */]();
+        let mcqResponseProcessor = new __WEBPACK_IMPORTED_MODULE_3__mcq_responseProcessor__["a" /* default */](this);
+
+        /* Saving Answers. */
+        mcqResponseProcessor.saveResults(true);
+        $('input[id^=option]').attr('disabled', true);
+        $('input[class^=mcqsroption]').attr('disabled', true);
+
+        $('li[class^=line-item]').hover(function () {
+            $(this).addClass('disable-li-hover');
+        });
+        $('label[class^=line-item-label]').hover(function () {
+            $(this).addClass('disable-li-hover');
+        });
     }
 
     showGrades() {
-        return __WEBPACK_IMPORTED_MODULE_0__mcq_utils_js__["c" /* __markAnswers */]();
+        let mcqResponseProcessor = new __WEBPACK_IMPORTED_MODULE_3__mcq_responseProcessor__["a" /* default */](this);
+
+        /* Show last saved answers. */
+        $('input[id^=option]').attr('disabled', true);
+        mcqResponseProcessor.markAnswers();
     }
 
     showFeedback() {
-        return __WEBPACK_IMPORTED_MODULE_0__mcq_utils_js__["j" /* showfeedback */]();
+        let mcqResponseProcessor = new __WEBPACK_IMPORTED_MODULE_3__mcq_responseProcessor__["a" /* default */](this);
+
+        mcqResponseProcessor.feedbackProcessor();
     }
 
     resetAnswers() {
@@ -422,638 +897,128 @@ class mcq {
 /* harmony default export */ __webpack_exports__["a"] = (mcq);
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export __content */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __state; });
-/* unused harmony export __interactionIds */
-/* unused harmony export __correctAnswers */
-/* unused harmony export __scoring */
-/* unused harmony export __feedback */
-/* unused harmony export __feedbackState */
-/* unused harmony export INTERACTION_REFERENCE_STR */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __constants; });
-/* unused harmony export feedbackFlags */
-/* harmony export (immutable) */ __webpack_exports__["f"] = handleSubmit;
-/* unused harmony export __markCheckBox */
-/* harmony export (immutable) */ __webpack_exports__["c"] = __markAnswers;
-/* unused harmony export showGrades */
-/* unused harmony export updateLastSavedResults */
-/* harmony export (immutable) */ __webpack_exports__["j"] = showfeedback;
-/* harmony export (immutable) */ __webpack_exports__["h"] = initializeRivets;
-/* unused harmony export __savePartial */
-/* harmony export (immutable) */ __webpack_exports__["e"] = buildModelandViewContent;
-/* harmony export (immutable) */ __webpack_exports__["g"] = initializeHandlers;
-/* harmony export (immutable) */ __webpack_exports__["i"] = setAdaptor;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rivets__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rivets___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rivets__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mcq_modelview__ = __webpack_require__(0);
 /* global $ */
 
 
-/*
- * Reference to platform's activity adaptor (initialized during init() ).
-*/
-var activityAdaptor;
 
-let __content = {
-    userAnswers: {},
-    instructions: [],
-    interactions: [],
-    stimuli: [],
-    type: ''
-};
+const buildModelandViewContent = Symbol('ModelandViewContent');
+const setTheme = Symbol('engine-theme');
+const setinteractions = Symbol('setInteractions');
+const setStimuli = Symbol('setStimuli');
+const setInstructions = Symbol('setInstructions');
+const setFeedback = Symbol('setFeedback');
 
-let mcqTemplateRef = __webpack_require__(6);
+const INTERACTION_REFERENCE_STR = 'http://www.comprodls.com/m1.0/interaction/mcq';
 
-__webpack_require__(7);
-/*
- * Internal Engine Config.
- */
-const __config = {
-    MAX_RETRIES: 10 /* Maximum number of retries for sending results to platform for a particular activity. */
-};
-/* harmony export (immutable) */ __webpack_exports__["a"] = __config;
-
-
-/*
- * Internal Engine State.
- */
-let __state = {
-    currentTries: 0, /* Current try of sending results to platform */
-    activityPariallySubmitted: false, /* State whether activity has been partially submitted. Possible Values: true/false(Boolean) */
-    activitySubmitted: false /* State whether activity has been submitted. Possible Values: true/false(Boolean) */
-};
-
-/*
- * Content (loaded / initialized during init() ).
- */
-let __interactionIds = [];
-let __correctAnswers = {};
-let __scoring = {};
-let __feedback = {};
-let __feedbackState = { 'correct': false,
-    'incorrect': false,
-    'empty': false
-};
-
-let INTERACTION_REFERENCE_STR = 'http://www.comprodls.com/m1.0/interaction/mcq';
-
-/*
- * Constants.
- */
-let __constants = {
-    /* CONSTANT for PLATFORM Save Status NO ERROR */
-    STATUS_NOERROR: 'NO_ERROR',
-    TEMPLATES: {
-        /* Regular MCQ Layout */
-        MCQ: mcqTemplateRef
-    },
-    THEMES: {
-        MCQ: 'main',
-        MCQ_LIGHT: 'main-light',
-        MCQ_DARK: 'main-dark'
-    }
-};
-
-/**
- * Prepare feedback response.
- * @param {*} id
- * @param {*} status
- * @param {*} content
- */
-function __buildFeedbackResponse(id, status, content) {
-    var feedback = {};
-
-    feedback.id = id;
-    feedback.status = status;
-    feedback.content = content;
-    return feedback;
-}
-
-function feedbackFlags() {
-    __feedbackState = { 'correct': false,
-        'incorrect': false,
-        'empty': false
-    };
-};
-
-function __getAnswersJSONMCQMR() {
-    var resultArray = [];
-    var statusEvaluation = 'empty';
-    var feedback = '';
-    var maxscore = __scoring.max;
-    var perInteractionScore = __interactionIds.length / maxscore;
-    var isUserAnswerCorrect = false;
-    // Filter all the MCQMRs
-    var filtered = __content.interactions.filter(function (interaction) {
-        return interaction.type === 'MCQMR';
-    });
-    var countCorrectInteractionAttempt = 0;
-
-    /* Iterate over user_answers and calculate */
-
-    filtered.forEach(function (eachElem, idx) {
-        var score = 0;
-        var id = eachElem.id;
-
-        if (__content.userAnswers.hasOwnProperty(id)) {
-            if (__content.userAnswers[id].length === __correctAnswers[id]['correct'].length) {
-                if (__content.userAnswers[id].sort().join('') === __correctAnswers[id]['correct'].sort().join('')) {
-                    score = perInteractionScore;
-                    countCorrectInteractionAttempt++;
-                    isUserAnswerCorrect = true;
-                }
-            }
-        }
-        resultArray.push({
-            itemUID: id,
-            answer: __content.userAnswers[id],
-            score: score
-        });
-    });
-
-    if (isUserAnswerCorrect) {
-        statusEvaluation = 'correct';
-        feedback = __buildFeedbackResponse('global.correct', 'correct', __feedback.correct);
-    } else if (countCorrectInteractionAttempt === 0) {
-        statusEvaluation = 'incorrect';
-        feedback = __buildFeedbackResponse('global.incorrect', statusEvaluation, __feedback.incorrect);
-    } else {
-        statusEvaluation = 'partially_correct';
-        feedback = __buildFeedbackResponse('global.incorrect', 'incorrect', __feedback.incorrect);
+class McqTransformer {
+    constructor(entity, params, themeObj) {
+        this.entity = entity;
+        this.params = params;
+        this.themeObj = themeObj;
+        this.mcqModel = {
+            instructions: [],
+            interactions: [],
+            stimuli: [],
+            scoring: {},
+            feedback: {},
+            feedbackState: { 'correct': false,
+                'incorrect': false,
+                'empty': false
+            },
+            type: '',
+            theme: '',
+            interactionIds: []
+        };
     }
 
-    return {
-        response: {
-            'interactions': resultArray,
-            'statusEvaluation': statusEvaluation,
-            'feedback': feedback
-        }
-    };
-}
+    transform() {
+        console.log('transform data');
+        this[buildModelandViewContent]();
+        console.log('test data: ', JSON.stringify(this.mcqModel, null, 4));
+        return this.mcqModel;
+    }
 
-function __getAnswersJSONMCQSR() {
-    var score = 0;
-    var answer = '';
-    var interactions = {};
-    var response;
+    [buildModelandViewContent]() {
+        this[setTheme](this.themeObj);
+        this[setinteractions]();
+        this[setStimuli]();
+        this[setInstructions]();
+        this[setFeedback]();
+    }
+    [setTheme](themeKey) {
+        console.log(__WEBPACK_IMPORTED_MODULE_0__mcq_modelview__["a" /* Constants */].THEMES[themeKey], themeKey);
+        this.mcqModel.theme = __WEBPACK_IMPORTED_MODULE_0__mcq_modelview__["a" /* Constants */].THEMES[themeKey];
+    }
 
-    /*Setup results array */
-    var interactionArray = new Array(1);
-    /* Split questionJSON to get interactionId. */
-    //var questionData = __content.questionsJSON[0].split("^^");
-    var interactionId = null;
-    // Filter all the MCQMRs
-    var filtered = __content.interactions.filter(function (interaction) {
-        return interaction.type === 'MCQSR';
-    });
-
-    filtered.forEach(function (el, idx) {
-        interactionId = el.id;
-        answer = __content.userAnswers[el.id];
-
-        if (__correctAnswers[el.id] === __content.userAnswers[el.id]) {
-            score++;
-        }
-    });
-
-    interactions = {
-        id: interactionId,
-        answer: answer,
-        score: score,
-        maxscore: __scoring.max
-    };
-    interactionArray[0] = interactions;
-
-    response = {
-        'interactions': interactionArray
-    };
-
-    return {
-        response: response
-    };
-}
-
-/**
- *  Function used to create JSON from user Answers for submit(soft/hard).
- *  Called by :-
- *   1. __saveResults (internal).
- *   2. Multi-item-handler (external).
- *   3. Divide the maximum marks among interaction.
- *   4. Returns result objects.  [{ itemUID: interactionId,  answer: answer,   score: score }]
- */
-function __getAnswersJSON(skipQuestion, interactionid) {
-
-    var response = [];
-    var filteredInteraction = '';
-    var interactiontype = '';
-
-    if (typeof interactionid === undefined) {
-        filteredInteraction = __content.interactions.filter(function (interaction) {
-            return interaction.id === interactionid;
+    [setInstructions]() {
+        this.mcqModel.instructions = this.entity.content.instructions.map(function (element) {
+            return element[element['tag']];
         });
+    }
+    [setinteractions]() {
+        let entity = this.entity;
+        let __self = this;
 
-        // Match the interaction id to set partial results and save
-        if (filteredInteraction) {
-            interactiontype = filteredInteraction[0].type;
+        this.mcqModel.interactions = entity.content.canvas.data.questiondata.map(function (element) {
+            var obj = {};
+            let tempobj = null;
+            let interactiontype = null;
+            let parsedQuestionArray = $('<div>' + element['text'] + '</div>');
+            let currinteractionid = $(parsedQuestionArray).find("a[href='" + INTERACTION_REFERENCE_STR + "']").text().trim();
+
+            $(parsedQuestionArray).find("a[href='" + INTERACTION_REFERENCE_STR + "']").remove();
+            obj.id = currinteractionid;
+            obj.questiontext = $(parsedQuestionArray).html();
+            obj.prompt = '';
+            tempobj = entity.content.interactions[currinteractionid];
+            interactiontype = tempobj['type'];
+            obj.type = interactiontype;
 
             if (interactiontype === 'MCQMR') {
-                let mcqmrans = __getAnswersJSONMCQMR();
-
-                response.push(mcqmrans);
+                obj.MCQMR = true;
             }
             if (interactiontype === 'MCQSR') {
-                let mcqsrans = __getAnswersJSONMCQSR(false);
-
-                response.push(mcqsrans);
+                obj.MCQSR = true;
             }
-        }
-    } else {
-        let mcqmrans = __getAnswersJSONMCQMR();
 
-        response.push(mcqmrans);
-
-        let mcqsrans = __getAnswersJSONMCQSR();
-
-        response.push(mcqsrans);
-    }
-    return response;
-}
-
-/**
- * Function called to send result JSON to adaptor (partial save OR submit).
- * Parameters:
- * 1. bSumbit (Boolean): true: for Submit, false: for Partial Save.
- */
-function __saveResults(bSubmit) {
-
-    var uniqueId = activityAdaptor.getId();
-
-    /*Getting answer in JSON format*/
-    var answerJSONs = __getAnswersJSON();
-
-    answerJSONs.forEach(function (answerJSON, idx) {
-        /* User clicked the Submit button*/
-        if (bSubmit === true) {
-            answerJSON.statusProgress = 'attempted';
-            /*Send Results to platform*/
-            activityAdaptor.submitResults(answerJSON, uniqueId, function (data, status) {
-                if (status === __constants.STATUS_NOERROR) {
-                    __state.activitySubmitted = true;
-                    /*Close platform's session*/
-                    activityAdaptor.closeActivity();
-                    __state.currentTries = 0;
-                } else {
-                    /* There was an error during platform communication, so try again (till MAX_RETRIES) */
-                    if (__state.currentTries < __config.MAX_RETRIES) {
-                        __state.currentTries++;
-                        __saveResults(bSubmit);
-                    }
-                }
+            obj.options = {};
+            tempobj[interactiontype].forEach(function (element) {
+                obj.options[Object.keys(element)[0]] = element[Object.keys(element)[0]];
             });
-        }
-    });
-}
 
-/**
- * Bound to click of Activity submit button.
- */
-function handleSubmit() {
-    __saveResults(true);
-    $('#mcq-sr li').removeClass('enabled').addClass('diabled');
-    //$('#mcq-sr input[id^=option]').attr('disabled', true);
-    //$('input[class^=mcqsroption]').attr('disabled', true);
-
-    $('li[class^=line-item]').hover(function () {
-        $(this).addClass('disable-li-hover');
-    });
-    $('label[class^=line-item-label]').hover(function () {
-        $(this).addClass('disable-li-hover');
-    });
-}
-
-/* Add correct or wrong answer classes*/
-function __markCheckBox() {
-
-    var interactions = __content.interactions;
-    // Assuming that there is only one interaction.
-    var type = interactions[0]['type'];
-
-    if (type === 'MCQMR') {
-        $('input[id^=option]').closest('li').removeClass('highlight');
-        $('input[id^=option]').closest('li').addClass('wrong');
-        for (let interaction in __correctAnswers) {
-            if (__correctAnswers.hasOwnProperty(interaction)) {
-                for (let j = 0; j < __correctAnswers[interaction]['correct'].length; j++) {
-                    $('#' + interaction + ' input[name=' + __correctAnswers[interaction]['correct'][j] + ']').closest('li').removeClass('wrong');
-                    $('#' + interaction + ' input[name=' + __correctAnswers[interaction]['correct'][j] + ']').closest('li').addClass('correct');
-                }
-            }
-        }
-    }
-
-    if (type === 'MCQSR') {
-        let interactionid = Object.keys(__correctAnswers);
-
-        if (interactionid) {
-
-            let correctAnswer = __correctAnswers[interactionid]['correct'];
-            let userAnswer = __content.userAnswers[interactionid];
-
-            if (userAnswer.trim() === correctAnswer.trim()) {
-                $('#' + userAnswer).closest('li').removeClass('highlight');
-                $('#' + userAnswer).closest('li').addClass('correct');
-            } else {
-                $('#' + userAnswer).closest('li').removeClass('highlight');
-                $('#' + userAnswer).closest('li').addClass('wrong');
-            }
-        }
-    }
-}
-
-/**
- * Function to show correct Answers to User, called on click of Show Answers/Submit Button.
- */
-function __markAnswers() {
-    __markCheckBox();
-}
-
-/**
-  * Function to show user grades.
-*/
-function showGrades(uniqueid) {
-    /* Show last saved answers. */
-    $('input[id^=option]').attr('disabled', true);
-    __markAnswers();
-}
-
-/**
- * Function to display last result saved in LMS.
- */
-function updateLastSavedResults(lastResults) {
-    // Read data and populate answerjson.
-    __content.userAnswers = {};
-    for (let interaction in lastResults.response) {
-        __content.userAnswers[interaction] = lastResults.response[interaction];
-        for (let j = 0; j < __content.userAnswers[interaction].length; j++) {
-            $('#' + interaction + ' input[name=' + __content.userAnswers[interaction][j] + ']').checked = true;
-        }
-    }
-}
-
-function isCorrect(answerjson, useranswerjson) {
-    var isCorrect = false;
-
-    var countCorrectInteractionAttempt = 0;
-
-    if (answerjson == null || useranswerjson == null) {
-        isCorrect = false;
-        return isCorrect;
-    }
-
-    if (Object.keys(answerjson).length !== Object.keys(useranswerjson).length) {
-        isCorrect = false;
-        return isCorrect;
-    }
-
-    for (let key in __content.userAnswers) {
-        if (__content.userAnswers.hasOwnProperty(key)) {
-            if (__content.userAnswers[key].length === __correctAnswers[key]['correct'].length) {
-                if (__content.userAnswers[key].sort().join('') === __correctAnswers[key]['correct'].sort().join('')) {
-                    countCorrectInteractionAttempt++;
-                }
-            }
-        }
-    }
-
-    if (countCorrectInteractionAttempt === Object.keys(__correctAnswers).length) {
-        isCorrect = true;
-    }
-    if (countCorrectInteractionAttempt !== Object.keys(__correctAnswers).length) {
-        isCorrect = false;
-    }
-    activityAdaptor.autoResizeActivityIframe();
-    return isCorrect;
-}
-
-/** Default feedback. This feedback will be shown if app doesn't wan't to override it by its own Feedback. */
-function showfeedback() {
-    var type = __content.interactions[0]['type'];
-
-    if (type === 'MCQMR') {
-        for (let prop in __feedback) {
-            __feedbackState[prop] = false;
-        }
-        if (__content.userAnswers.length <= 0) {
-            __feedbackState.empty = true;
-        } else if (isCorrect(__correctAnswers, __content.userAnswers)) {
-            __feedbackState.correct = true;
-        } else {
-            __feedbackState.incorrect = true;
-        }
-    }
-
-    if (type === 'MCQSR') {
-        Object.keys(__correctAnswers).forEach(function (elem, idx) {
-            var correctAnswer = __correctAnswers[elem]['correct'];
-
-            var userAnswer = __content.userAnswers[elem];
-
-            if (userAnswer === correctAnswer) {
-                __feedbackState.correct = true;
-                __feedbackState.incorrect = false;
-                __feedbackState.empty = false;
-            } else {
-                __feedbackState.correct = false;
-                __feedbackState.incorrect = true;
-                __feedbackState.empty = false;
-            }
-
-            if (userAnswer === '') {
-                __feedbackState.correct = false;
-                __feedbackState.incorrect = false;
-                __feedbackState.empty = true;
-            }
+            // InteractionIds.push(currinteractionid);
+            __self.mcqModel.interactionIds.push(currinteractionid);
+            return obj;
         });
     }
-    activityAdaptor.autoResizeActivityIframe();
-}
 
-function initializeRivets() {
+    [setStimuli]() {
+        let params = this.params;
 
-    __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.formatters.propertyList = function (obj) {
-        return function () {
-            var properties = [];
+        this.mcqModel.stimuli = this.entity.content.stimulus.map(function (element) {
+            let tagtype = element['tag'];
 
-            for (let key in obj) {
-                properties.push({ key: key, value: obj[key] });
-            };
-            return properties;
-        }();
-    };
-
-    __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.formatters.idcreator = function (index, idvalue) {
-        return idvalue + index;
-    };
-
-    __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.binders.addclass = function (el, value) {
-        if (el.addedClass) {
-            $(el).removeClass(el.addedClass);
-            delete el.addedClass;
-        }
-        if (value) {
-            $(el).addClass(value);
-            el.addedClass = value;
-        }
-    };
-
-    let data = {
-        content: __content,
-        feedback: __feedback,
-        showFeedback: __feedbackState
-    };
-
-    /*Bind the data to template using rivets*/
-    __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.bind($('#mcq-engine'), data);
-};
-
-function __savePartial(interactionid) {
-    var uniqueId = activityAdaptor.getId();
-    var answerJSONs = __getAnswersJSON(false, interactionid);
-
-    answerJSONs.forEach(function (answerJSON, idx) {
-        activityAdaptor.savePartialResults(answerJSON, uniqueId, function (data, status) {
-            if (status === __constants.STATUS_NOERROR) {
-                __state.activityPariallySubmitted = true;
-            } else {
-                // There was an error during platform communication, do nothing for partial saves
-                //
+            if (tagtype === 'image') {
+                return params.questionMediaBasePath + element[tagtype];
             }
+            return element[tagtype];
         });
-    });
-}
+    }
 
-function remove(arr, value) {
-    var found = arr.indexOf(value);
-
-    if (found !== -1) {
-        arr.splice(found, 1);
+    [setFeedback]() {
+        this.mcqModel.feedback = this.entity.feedback;
     }
 }
 
-/**
-* Function to handle checkbox click.
-*/
-function __handleCheckboxClick(event) {
-    var currentTarget = event.currentTarget;
-    var currentInteractionId = currentTarget.parentElement.parentElement.parentElement.getAttribute('id');
-    var currentChoice = currentTarget.getAttribute('name');
-
-    if (currentTarget.checked) {
-        $(currentTarget).closest('li').addClass('highlight');
-        if (!__content.userAnswers[currentInteractionId]) {
-            __content.userAnswers[currentInteractionId] = [];
-        }
-        __content.userAnswers[currentInteractionId].push(currentChoice);
-    } else {
-        remove(__content.userAnswers[currentInteractionId], currentChoice);
-        $(currentTarget).closest('li').removeClass('highlight');
-    }
-    //$(document).triggerHandler('userAnswered');
-    __savePartial(currentInteractionId);
-}
-
-/** Function to handle radio button click.*/
-function __handleRadioButtonClick(event) {
-    var currentTarget = event.currentTarget;
-
-    var currentInteractionId = currentTarget.parentElement.parentElement.getAttribute('id');
-
-    /*
-     * Soft save here
-     */
-    $('#mcq-sr li').removeClass('highlight');
-    $(currentTarget).addClass('highlight');
-
-    // currentTarget = currentTarget.value.replace(/^\s+|\s+$/g, '');
-    /* Save new Answer in memory. */
-    __content.userAnswers[currentInteractionId] = $(event.currentTarget).children('input').attr('id');
-    //not in use
-    __state.radioButtonClicked = true;
-    __content.feedbackJSON = __feedback;
-    __savePartial(currentInteractionId);
-}
-
-function buildModelandViewContent(jsonContent, params, theme) {
-    __content['theme'] = __constants.THEMES[theme];
-    __content.instructions = jsonContent.content.instructions.map(function (element) {
-        var tagtype = element['tag'];
-
-        return element[tagtype];
-    });
-
-    __content.interactions = jsonContent.content.canvas.data.questiondata.map(function (element) {
-        //var txt = element['text'];
-        var obj = {};
-        var parsedQuestionArray = $('<div>' + element['text'] + '</div>');
-        var currinteractionid = $(parsedQuestionArray).find("a[href='" + INTERACTION_REFERENCE_STR + "']").text().trim();
-        //var href = $('<div>').append(txt).find('a:first').attr('href');
-
-        $(parsedQuestionArray).find("a[href='" + INTERACTION_REFERENCE_STR + "']").remove();
-        obj.id = currinteractionid;
-        obj.questiontext = $(parsedQuestionArray).html();
-        obj.prompt = '';
-        let tempobj = jsonContent.content.interactions[currinteractionid];
-        let interactiontype = tempobj['type'];
-
-        obj.type = interactiontype;
-
-        if (interactiontype === 'MCQMR') {
-            obj.MCQMR = true;
-        }
-        if (interactiontype === 'MCQSR') {
-            obj.MCQSR = true;
-        }
-
-        obj.options = {};
-        tempobj[interactiontype].forEach(function (element) {
-            obj.options[Object.keys(element)[0]] = element[Object.keys(element)[0]];
-        });
-
-        __interactionIds.push(currinteractionid);
-        return obj;
-    });
-
-    __content.stimuli = jsonContent.content.stimulus.map(function (element) {
-        var tagtype = element['tag'];
-
-        if (tagtype === 'image') {
-            return params.questionMediaBasePath + element[tagtype];
-        }
-        return element[tagtype];
-    });
-    __correctAnswers = jsonContent.responses;
-    __scoring = jsonContent.meta.score;
-    __feedback = jsonContent.feedback;
-}
-
-function initializeHandlers() {
-    // Registering the checkbox click handler for MCQMR
-    $('input[id^=option]').change(__handleCheckboxClick);
-
-    // Registering the radio click handler for MCQSR
-    // $('.options label.radio').change(__handleRadioButtonClick);
-    $(document).on('click', '.options li.enabled', __handleRadioButtonClick);
-}
-
-function setAdaptor(_adaptor) {
-    activityAdaptor = _adaptor;
-}
+/* harmony default export */ __webpack_exports__["a"] = (McqTransformer);
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Rivets.js
@@ -2453,9 +2418,9 @@ function setAdaptor(_adaptor) {
   };
 
   if (typeof (typeof module !== "undefined" && module !== null ? module.exports : void 0) === 'object') {
-    module.exports = Rivets.factory(__webpack_require__(0));
+    module.exports = Rivets.factory(__webpack_require__(1));
   } else if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0)], __WEBPACK_AMD_DEFINE_RESULT__ = function(sightglass) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_RESULT__ = function(sightglass) {
       return this.rivets = Rivets.factory(sightglass);
     }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -2465,10 +2430,10 @@ function setAdaptor(_adaptor) {
 
 }).call(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)(module)))
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -2496,19 +2461,19 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = "<!-- Engine Renderer Template -->\r\n<!-- Top level div handler to embed test engine into rendering app -->\r\n<div class=\"mcq-body\" id=\"mcq-engine\">\r\n  <main rv-addclass='content.theme'>\r\n    <section class=\"instructions\" rv-each-instruction=\"content.instructions\">\r\n      <p class=\"instruction\" rv-text=\"instruction\"></p>\r\n    </section>\r\n    <section class=\"stimuli\">\r\n      <figure class=\"stimuli\" rv-each-stimuli=\"content.stimuli\"></figure>\r\n    </section>\r\n    <section class=\"interactions mt-md\">\r\n      <section class=\"interaction\" rv-id=\"interaction.id\" rv-each-interaction=\"content.interactions\">\r\n        <p class=\"question-text\" rv-text=\"interaction.questiontext\"></p>\r\n        <!-- prompt Will be shown only if prompt text is available for interaction /-->\r\n        <p class=\"prompt\"></p>\r\n        <ul class=\"options list-unstyled nested-list\" id=\"mcq-mr\" rv-if=\"interaction.MCQMR\">\r\n          <li class=\"line-item option\" rv-each-optionitem=\"interaction.options | propertyList\">\r\n            <label class=\"line-item-label checkbox input-label align-2-item\" rv-for=\"%optionitem%   | idcreator 'option'\">\r\n              <span class=\"pull-left\">\r\n                <i></i>\r\n                </span>\r\n              <span class='option-content' rv-text=\"optionitem.value\">{optionitem.value}</span>\r\n            </label>\r\n            <input class=\"option option-value mcq-option option-input\" rv-id=\"%optionitem%   | idcreator 'option'\" type=\"checkbox\" rv-name=\"optionitem.key\"\r\n            rv-id=\"optionitem.key\" data-val=\"{optionitem.key}\" autocomplete=\"off\" />        \r\n          </li>\r\n        </ul>        \r\n        <ul class=\"options list-unstyled nested-list\" id=\"mcq-sr\"  rv-if=\"interaction.MCQSR\">\r\n          <li class=\"line-item enabled\" rv-each-element=\"interaction.options | propertyList\">\r\n            <label class=\"line-item-label radio radio-lg\" rv-for=\"element.key\">\r\n              <span>\r\n                <i></i>\r\n              </span>\r\n              <span class=\"content option-content\" rv-text=\"element.value\"></span>\r\n            </label>\r\n            <input type=\"radio\" name=\"optionsRadios\" class=\"mcq-option\" rv-id=\"element.key\" rv-value=\"element.value\">\r\n          </li>\r\n        </ul>\r\n      </section>\r\n    </section>\r\n    <section class=\"feedback\">\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-12 col-md-12\">\r\n          <div class=\"alert alert-success align-2-item\" role=\"alert\" rv-show=\"showFeedback.correct\">\r\n            <span>\r\n              <i class=\"fa fa-2x fa-smile-o\"></i>&nbsp;</span>\r\n            <span rv-text=\"feedback.global.correct\"></span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-12 col-md-12\">\r\n          <div class=\"alert alert-danger align-2-item\" role=\"alert\" rv-show=\"showFeedback.incorrect\">\r\n            <span>\r\n              <i class=\"fa fa-2x fa-meh-o\"></i>\r\n            </span>&nbsp;\r\n            <span rv-text=\"feedback.global.incorrect\"></span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-6 col-md-6\">\r\n          <div class=\"alert alert-warning align-2-item\" role=\"alert\" rv-show=\"showFeedback.empty\">\r\n            <span>\r\n              <i class=\"fa fa-2x fa-meh-o\"></i>&nbsp;</span>\r\n            <span rv-text=\"feedback.global.empty\"></span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n  </main>\r\n</div>";
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(8);
+var content = __webpack_require__(10);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2516,7 +2481,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(10)(content, options);
+var update = __webpack_require__(12)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -2533,10 +2498,10 @@ if(false) {
 }
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(9)(undefined);
+exports = module.exports = __webpack_require__(11)(undefined);
 // imports
 
 
@@ -2547,7 +2512,7 @@ exports.push([module.i, "/******************************************************
 
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports) {
 
 /*
@@ -2629,7 +2594,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -2685,7 +2650,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(11);
+var	fixUrls = __webpack_require__(13);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -3001,7 +2966,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports) {
 
 
@@ -3094,6 +3059,84 @@ module.exports = function (css) {
 	return fixedCss;
 };
 
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mcq_responseProcessor__ = __webpack_require__(2);
+/* global $ */
+
+
+class McqEvents {
+    constructor(mcqObj) {
+        this.McqInstance = mcqObj;
+        this.mcqResponseProcessor = new __WEBPACK_IMPORTED_MODULE_0__mcq_responseProcessor__["a" /* default */](mcqObj);
+    }
+
+    bindEvents() {
+        let __remove;
+        let __handleCheckboxClick;
+        let __handleRadioButtonClick;
+
+        __remove = (arr, value) => {
+
+            let found = arr.indexOf(value);
+
+            if (found !== -1) {
+                arr.splice(found, 1);
+            }
+        };
+        /**
+        * Function to handle checkbox click.
+        */
+        __handleCheckboxClick = event => {
+            let currentTarget = event.currentTarget;
+            let currentInteractionId = currentTarget.parentElement.parentElement.parentElement.getAttribute('id');
+            let currentChoice = currentTarget.getAttribute('name');
+
+            if (currentTarget.checked) {
+                $(currentTarget).closest('li').addClass('highlight');
+                console.log('not loading', this.McqInstance);
+                if (!this.McqInstance.userAnswers[currentInteractionId]) {
+                    this.McqInstance.userAnswers[currentInteractionId] = [];
+                }
+                this.McqInstance.userAnswers[currentInteractionId].push(currentChoice);
+            } else {
+                __remove(this.McqInstance.userAnswers[currentInteractionId], currentChoice);
+                $(currentTarget).closest('li').removeClass('highlight');
+            }
+            //$(document).triggerHandler('userAnswered');
+            this.mcqResponseProcessor.savePartial(currentInteractionId, this.McqInstance);
+        };
+
+        /** Function to handle radio button click.*/
+        __handleRadioButtonClick = event => {
+            console.log('event called');
+            /* var currentTarget = event.currentTarget;
+             var currentInteractionId = currentTarget.parentElement.parentElement.getAttribute('id');
+             $('#mcq-sr li').removeClass('highlight');
+             $(currentTarget).addClass('highlight');
+            // currentTarget = currentTarget.value.replace(/^\s+|\s+$/g, '');
+             // Save new Answer in memory. //
+             __content.userAnswers[currentInteractionId] = $(event.currentTarget).children('input').attr('id');
+            //not in use
+             __state.radioButtonClicked = true;
+             __content.feedbackJSON = __feedback;
+             __savePartial(currentInteractionId); */
+        };
+
+        // Registering the checkbox click handler for MCQMR
+        $('input[id^=option]').change(__handleCheckboxClick);
+
+        // Registering the radio click handler for MCQSR
+        // $('.options label.radio').change(__handleRadioButtonClick);
+        $(document).on('click', '.options li.enabled', __handleRadioButtonClick);
+    }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (McqEvents);
 
 /***/ })
 /******/ ]);

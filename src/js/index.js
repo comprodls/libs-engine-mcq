@@ -1,3 +1,3 @@
-import mcq from './mcq/mcq.js';
+import mcq from './mcq-engine/mcq';
 
 export { mcq };

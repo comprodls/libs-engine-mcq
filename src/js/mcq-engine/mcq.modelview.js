@@ -62,7 +62,6 @@ class McqModelAndView {
                 el.addedClass = value;
             }
         };
-console.log('feedback: ', this.model.feedback);
         let data = {
             content: this.model,
             feedback: this.model.feedback,

@@ -9348,7 +9348,6 @@ class McqModelAndView {
                 el.addedClass = value;
             }
         };
-        console.log('feedback: ', this.model.feedback);
         let data = {
             content: this.model,
             feedback: this.model.feedback,
@@ -9875,8 +9874,9 @@ class McqUserResponse {
 
     feedbackProcessor() {
         var type = this.mcqObj.mcqModel.interactions[0]['type'];
+        var isCorrect = null;
 
-        function isCorrect(answerjson, useranswerjson) {
+        isCorrect = (answerjson, useranswerjson) => {
             let isCorrect = false;
             let countCorrectInteractionAttempt = 0;
 
@@ -9890,10 +9890,10 @@ class McqUserResponse {
                 return isCorrect;
             }
 
-            for (let key in this.mcqObj.userAnswers) {
-                if (this.mcqObj.userAnswers.hasOwnProperty(key)) {
-                    if (this.mcqObj.userAnswers[key].length === __correctAnswers[key]['correct'].length) {
-                        if (this.mcqObj.userAnswers[key].sort().join('') === __correctAnswers[key]['correct'].sort().join('')) {
+            for (let key in useranswerjson) {
+                if (useranswerjson.hasOwnProperty(key)) {
+                    if (useranswerjson[key].length === __correctAnswers[key]['correct'].length) {
+                        if (useranswerjson[key].sort().join('') === __correctAnswers[key]['correct'].sort().join('')) {
                             countCorrectInteractionAttempt++;
                         }
                     }
@@ -9910,13 +9910,14 @@ class McqUserResponse {
             }
             this.mcqObj.adaptor.autoResizeActivityIframe();
             return isCorrect;
-        }
-
+        };
         if (type === 'MCQMR') {
             for (let prop in this.mcqObj.mcqModel.feedback) {
                 this.mcqObj.mcqModel.feedbackState[prop] = false;
             }
-            if (this.mcqObj.userAnswers.length <= 0) {
+            let keys = Object.keys(this.mcqObj.userAnswers);
+
+            if (this.mcqObj.userAnswers[keys[0]].length <= 0) {
                 this.mcqObj.mcqModel.feedbackState.empty = true;
             } else if (isCorrect(__correctAnswers, this.mcqObj.userAnswers)) {
                 this.mcqObj.mcqModel.feedbackState.correct = true;
@@ -10137,9 +10138,7 @@ class McqTransformer {
     }
 
     transform() {
-        console.log('transform data');
         this[buildModelandViewContent]();
-        console.log('test data: ', JSON.stringify(this.mcqModel, null, 4));
         return this.mcqModel;
     }
 
@@ -10151,7 +10150,6 @@ class McqTransformer {
         this[setFeedback]();
     }
     [setTheme](themeKey) {
-        console.log(__WEBPACK_IMPORTED_MODULE_0__mcq_modelview__["a" /* Constants */].THEMES[themeKey], themeKey);
         this.mcqModel.theme = __WEBPACK_IMPORTED_MODULE_0__mcq_modelview__["a" /* Constants */].THEMES[themeKey];
     }
 
@@ -12304,11 +12302,11 @@ class McqEvents {
                     this.McqInstance.userAnswers[currentInteractionId] = [];
                 }
                 this.McqInstance.userAnswers[currentInteractionId].push(currentChoice);
+                console.log(this.McqInstance.userAnswers, currentInteractionId, currentChoice);
             } else {
                 __remove(this.McqInstance.userAnswers[currentInteractionId], currentChoice);
                 $(currentTarget).closest('li').removeClass('highlight');
             }
-            //$(document).triggerHandler('userAnswered');
             this.mcqResponseProcessor.savePartial(currentInteractionId, this.McqInstance);
         };
 

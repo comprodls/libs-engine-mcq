@@ -33,9 +33,7 @@ class McqTransformer {
     }
 
     transform() {
-        console.log('transform data');
         this[buildModelandViewContent]();
-        console.log('test data: ', JSON.stringify(this.mcqModel, null, 4));
         return this.mcqModel;
     }
 
@@ -47,7 +45,6 @@ class McqTransformer {
         this[setFeedback]();
     }
     [setTheme](themeKey) {
-        console.log(Constants.THEMES[themeKey], themeKey);
         this.mcqModel.theme = Constants.THEMES[themeKey];
     }
 

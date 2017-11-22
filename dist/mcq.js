@@ -151,8 +151,6 @@ class McqModelAndView {
                 el.addedClass = value;
             }
         };
-        console.log('feedback: ', JSON.stringify(this.model.feedback, null, 4));
-        console.log('feedback: ', JSON.stringify(this.model.feedbackState, null, 4));
         let data = {
             content: this.model,
             feedback: this.model.feedback,
@@ -680,7 +678,6 @@ class McqUserResponse {
         var type = this.mcqObj.mcqModel.interactions[0]['type'];
         var isCorrect = null;
 
-        console.log(this);
         isCorrect = (answerjson, useranswerjson) => {
             let isCorrect = false;
             let countCorrectInteractionAttempt = 0;
@@ -716,7 +713,6 @@ class McqUserResponse {
             this.mcqObj.adaptor.autoResizeActivityIframe();
             return isCorrect;
         };
-        console.log(this.mcqObj);
         if (type === 'MCQMR') {
             for (let prop in this.mcqObj.mcqModel.feedback) {
                 this.mcqObj.mcqModel.feedbackState[prop] = false;
@@ -887,7 +883,6 @@ class mcq {
     showFeedback() {
         let mcqResponseProcessor = new __WEBPACK_IMPORTED_MODULE_3__mcq_responseProcessor__["a" /* default */](this);
 
-        console.log(this);
         mcqResponseProcessor.feedbackProcessor();
     }
 
@@ -943,9 +938,7 @@ class McqTransformer {
     }
 
     transform() {
-        console.log('transform data');
         this[buildModelandViewContent]();
-        console.log('test data: ', JSON.stringify(this.mcqModel, null, 4));
         return this.mcqModel;
     }
 
@@ -957,7 +950,6 @@ class McqTransformer {
         this[setFeedback]();
     }
     [setTheme](themeKey) {
-        console.log(__WEBPACK_IMPORTED_MODULE_0__mcq_modelview__["a" /* Constants */].THEMES[themeKey], themeKey);
         this.mcqModel.theme = __WEBPACK_IMPORTED_MODULE_0__mcq_modelview__["a" /* Constants */].THEMES[themeKey];
     }
 

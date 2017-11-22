@@ -104,7 +104,6 @@ class mcq {
     showFeedback() {
         let mcqResponseProcessor = new McqResponseProcessor(this);
 
-        console.log(this);
         mcqResponseProcessor.feedbackProcessor();
     }
 

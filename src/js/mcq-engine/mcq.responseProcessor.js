@@ -287,7 +287,6 @@ class McqUserResponse {
         var type = this.mcqObj.mcqModel.interactions[0]['type'];
         var isCorrect = null;
 
-        console.log(this);
         isCorrect = (answerjson, useranswerjson) => {
             let isCorrect = false;
             let countCorrectInteractionAttempt = 0;
@@ -323,7 +322,6 @@ class McqUserResponse {
             this.mcqObj.adaptor.autoResizeActivityIframe();
             return isCorrect;
         };
-        console.log(this.mcqObj);
         if (type === 'MCQMR') {
             for (let prop in this.mcqObj.mcqModel.feedback) {
                 this.mcqObj.mcqModel.feedbackState[prop] = false;

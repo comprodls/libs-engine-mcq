@@ -179,9 +179,9 @@ class McqUserResponse {
 
             filtered.forEach((el, idx) => {
                 interactionId = el.id;
-                answer = this.mcqObj.content.userAnswers[el.id];
+                answer = this.mcqObj.userAnswers[el.id];
 
-                if (__correctAnswers[el.id] === this.mcqObj.content.userAnswers[el.id]) {
+                if (__correctAnswers[el.id] === this.mcqObj.userAnswers[el.id]) {
                     score++;
                 }
             });
@@ -264,6 +264,7 @@ class McqUserResponse {
         }
 
         if (type === 'MCQSR') {
+            console.log(__correctAnswers);
             let interactionid = Object.keys(__correctAnswers);
 
             if (interactionid) {
@@ -271,6 +272,7 @@ class McqUserResponse {
                 let correctAnswer = __correctAnswers[interactionid]['correct'];
                 let userAnswer = this.mcqObj.userAnswers[interactionid];
 
+                console.log(JSON.stringify(correctAnswer, null, 4));
                 if (userAnswer.trim() === correctAnswer.trim()) {
                     $('#' + userAnswer).closest('li').removeClass('highlight');
                     $('#' + userAnswer).closest('li').addClass('correct');

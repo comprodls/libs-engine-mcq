@@ -8,7 +8,7 @@ import * as utils from './mcqeditor-utils.js';
  *  -getStatus()
  */
 
-class mcqEditor {
+class mcq6Editor {
 
   /**  ENGINE-SHELL CONSTRUCTOR FUNCTION
    *   @constructor
@@ -79,4 +79,4 @@ class mcqEditor {
     utils.saveItemInEditor();
   }
 }
-export { mcqEditor };
+export { mcq6Editor };

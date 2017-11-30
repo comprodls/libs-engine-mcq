@@ -46,18 +46,14 @@ bindEvents() {
 
      /** Function to handle radio button click.*/
     __handleRadioButtonClick = (event) => {
-         console.log('event called');
-        /* var currentTarget = event.currentTarget;
-         var currentInteractionId = currentTarget.parentElement.parentElement.getAttribute('id');
+         let currentTarget = event.currentTarget;
+         let currentInteractionId = currentTarget.parentElement.parentElement.getAttribute('id');
+
          $('#mcq-sr li').removeClass('highlight');
          $(currentTarget).addClass('highlight');
-        // currentTarget = currentTarget.value.replace(/^\s+|\s+$/g, '');
-         // Save new Answer in memory. //
-         __content.userAnswers[currentInteractionId] = $(event.currentTarget).children('input').attr('id');
-     //not in use
-         __state.radioButtonClicked = true;
-         __content.feedbackJSON = __feedback;
-         __savePartial(currentInteractionId); */
+         this.McqInstance.userAnswers[currentInteractionId] = $(event.currentTarget).children('input').attr('id');
+         this.mcqResponseProcessor
+         .savePartial(currentInteractionId, this.McqInstance);
      };
 
    // Registering the checkbox click handler for MCQMR

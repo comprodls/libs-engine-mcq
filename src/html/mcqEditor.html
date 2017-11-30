@@ -208,7 +208,131 @@
             </div>
 
         </section>
-        <section id="media" class="section border-bottom-shadow">
+        <section id="dlsmedia" class="dls-media">
+            <div class="row mt-sm mb-sm">
+                <div class="col-sm-12" rv-hide="editorContent.enableMedia">
+                    <a class="enable-media">
+                        <button type="button" class="btn btn-default active-btn border-dashed" rv-on-click="showMedia">
+                            <h4 class="font-semibold color-gray">Enable Media & Assets</h4>
+                        </button>
+                    </a>
+                </div>
+                <div class="col-sm-12" rv-show="editorContent.enableMedia">
+                    <div>
+                        <header>
+                            <h4 class="headerlabel font-semibold color-gray">Media & Assets</h4>
+                        </header>
+                    </div>
+                    <ul class="list-unstyled nested-list" rv-hide="editorContent.editMedia">
+                        <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="editorContent.stimuls">
+                            <div class="pl-sm">
+                                <div class="radio">
+                                    <i class="round-icon feedback hand-o-right"></i>
+                                </div>
+                            </div>
+                            <div class="vertical-bottom-align" style="width: 100%">
+                                <span class="ml-xl pull-left mt-xs option-icon-pencil">
+                                    <i class="fa fa-pencil"></i>
+                                </span>
+                                <div rv-content-editable="element.customAttribs.value" style="width: 100%;" data-text='Placeholder Feedback text. Update "Me" with a valid Feedback text for this question.'
+                                    class="pr-3pc pl-md border-bottom-dashed" role="button"></div>
+                                <span class="pull-right icon-horizontal-align">
+                                    <a class="color-lightgray fa fa-times outline-none" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeFeedback | args %element%"></a>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="col-sm-12" rv-show="editorContent.editMedia">
+                        <div class="bg-capecode plr-1pc ptb-sm">
+                            <span>Add Image</span>
+                            <span class="pull-right">
+                                    <button rv-on-click="hideMediaEditor" type="button" class="btn btn-sm btn-link color-white">
+                                            Cancel
+                                        </button>
+                                    <button type="button" class="btn btn-sm btn-success">
+                                            Apply
+                                        </button>
+                            </span>
+                        </div>
+                        <div class="bg-zanah plr-1pc ptb-sm" >
+                            Selected Image
+                        </div>
+                        <div class=""> 
+                            <div id="myCarousel" class="dls-gallery carousel slide">
+                            <!-- Carousel items -->
+                            <div class="plr-md carousel-inner">
+                                
+                            <div class="item active">
+                                <div class="row-fluid">
+                                  <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
+                                  <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
+                                  <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
+                                  <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
+                                </div><!--/row-fluid-->
+                            </div><!--/item-->
+                             
+                            <div class="item">
+                                <div class="row-fluid">
+                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
+                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
+                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
+                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
+                                </div><!--/row-fluid-->
+                            </div><!--/item-->
+                             
+                            <div class="item">
+                                <div class="row-fluid">
+                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
+                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
+                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
+                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
+                                </div><!--/row-fluid-->
+                            </div><!--/item-->
+                             
+                            </div><!--/carousel-inner-->
+                             
+                            <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+                            <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                            </div><!--/myCarousel-->
+                             
+                        </div><!--/well-->  
+                        <div class="">
+                                <div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- Nav tabs --><div class="card">
+                                        <ul id="mediaTabs" class="nav nav-tabs" role="tablist">
+                                            <li role="presentation" class="active"><a href="#assestlibrary" aria-controls="assestlibrary" role="tab" data-toggle="tab">Asset Library</a></li>
+                                            <li role="presentation"><a href="#upload" aria-controls="upload" role="tab" data-toggle="tab">Upload</a></li>
+                                            <li role="presentation"><a href="#contentful" aria-controls="contentful" role="tab" data-toggle="tab">Contentful</a></li>
+                                            
+                                        </ul>
+                                        <!-- Tab panes -->
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="assestlibrary">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
+                                            <div role="tabpanel" class="tab-pane" id="upload">Coming Soon...</div>
+                                            <div role="tabpanel" class="tab-pane" id="contentful">Coming Soon...</div>                                           
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 dropdown" rv-hide="editorContent.editMedia" >
+                        <button class="btn btn-default btn-sm dropdown-toggle ml-xxl" type="button" id="menu3"
+                            data-toggle="dropdown">+ Add
+                        </button>
+                        <ul class="dropdown-menu" id="mediamenu" class="media-choice" role="menu" aria-labelledby="menu1" style="left: 75px;">
+                            <li class="" role="presentation" rv-each-media="mediaPresets">
+                                <button class='btn btn-link dropdown-toggle nounderline' rv-addclass='media.active' role="menuitem" rv-on-click="appendMedia | args media.value" rv-text="media.value"></button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div> 
+        </section>
+        <!-- section id="media" class="section border-bottom-shadow">
             <div class="section-box">
                 <div class="row mt-sm mb-sm">
                     <div class="col-sm-12">
@@ -220,7 +344,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section -->
         <!-- div id="uploader"></div -->
 
         <script type="text/template" id="qq-template">

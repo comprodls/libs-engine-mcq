@@ -15,6 +15,10 @@ $color_white_linen_approx: #fae9e9;
 $color_peppermint_approx: #e0ffe0;
 $color_alto_approx: #dfdddd;
 $gray: grey;
+$color_cape_cod_approx: #3f3f3f;
+
+$color_mine_shaft_approx: #2e2e2e;
+$color_zanah_approx: #def2d3;
 //fonts
 $font_0: Open Sans;
 $font_1: fontawesome;
@@ -31,6 +35,9 @@ $font_1: fontawesome;
     .color-gray {
         color: $color_tuatara_approx;
     }
+    .color-white {
+        color: $white;
+    }
     .color-lightslategray {
         color: $color_quill_gray_approx;
     }
@@ -39,6 +46,14 @@ $font_1: fontawesome;
     }
     .bg-white {
         background-color: $white;
+    }
+    .bg-capecode {
+        background-color: $color_cape_cod_approx;
+        color: $white;
+    }
+    .bg-zanah {
+        color: $color_mine_shaft_approx;
+        background-color: $color_zanah_approx;
     }
     .global-border {
         border: 1px solid $color_waterloo__approx;
@@ -99,6 +114,18 @@ $font_1: fontawesome;
     }
     .pr-7pc {
         padding-right: 3%;
+    }
+    .plr-1pc {
+        padding-left: 1%;
+        padding-right: 1%;
+    }
+    .plr-md {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .ptb-sm {
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
     .border-bottom-dashed {
         border-bottom: 1px dashed $color_quill_gray_approx; //Instead of the line below you could use @include transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
@@ -391,4 +418,32 @@ $font_1: fontawesome;
     .fa-thumbs-o-up:before {
         content: "\f087";
     }
+
+    .nav-tabs { border-bottom: 2px solid #DDD; }
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover { border-width: 0; }
+    .nav-tabs > li > a { border: none; color: #666; }
+        .nav-tabs > li.active > a, .nav-tabs > li > a:hover { border: none; color: #4285F4 !important; background: transparent; }
+        .nav-tabs > li > a::after { content: ""; background: #4285F4; height: 2px; position: absolute; width: 100%; left: 0px; bottom: -1px; transition: all 250ms ease 0s; transform: scale(0); }
+    .nav-tabs > li.active > a::after, .nav-tabs > li:hover > a::after { transform: scale(1); }
+.tab-nav > li > a::after { background: #21527d none repeat scroll 0% 0%; color: #fff; }
+.tab-pane { padding: 15px 0; }
+.tab-content{padding:20px}
+
+.dls-media .carousel .carousel-control.left > i,
+.dls-media .carousel .carousel-control.left > i {
+    /*position: absolute;*/
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px !important;
+    height: 30px !important;
+}
+.dls-media .carousel .carousel-control.left > i {
+    left: auto;
+    right: 12px;
+}
+.nounderline {
+    text-decoration: none;
+    outline: none;    
+}
 }

@@ -1,6 +1,6 @@
 /* global $ */
 import MCQTransformer from './mcq.transformer';
-import McqModelAndView from './mcq.modelview';
+import {McqModelAndView, Constants} from './mcq.modelview';
 import McqEvents from './mcq.events';
 import McqResponseProcessor from './mcq.responseProcessor';
 
@@ -9,7 +9,7 @@ const transform = Symbol('transformMCQ');
 const renderView = Symbol('renderMCQ');
 const bindEvents = Symbol('bindEvents');
 
-class mcq {
+class mcq6 {
      /**  ENGINE-SHELL CONSTRUCTOR FUNCTION
      *   @constructor
      *   @param {String} elRoot - DOM Element reference where the engine should paint itself.
@@ -30,7 +30,7 @@ class mcq {
       this.userAnswers = [];
       this[load]();
       if (callback) {
-          callback();
+          callback({backgroundColor: Constants.LAYOUT_COLOR.BG[htmlLayout]});
       }
     }
 
@@ -116,4 +116,4 @@ class mcq {
     }
 }
 
-export default mcq;
+export default mcq6;

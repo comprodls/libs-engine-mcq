@@ -16,7 +16,14 @@ export const Constants = {
       MCQ: 'main',
       MCQ_LIGHT: 'main-light',
       MCQ_DARK: 'main-dark'
-    }
+    },
+    LAYOUT_COLOR: {
+        'BG': {
+            'MCQ': '#FFFFFF',
+            'MCQ_LIGHT': '#f6f6f6',
+            'MCQ_DARK': '#222222'
+        }
+}
 };
 
 export let InteractionIds = [];
@@ -72,4 +79,4 @@ class McqModelAndView {
         rivets.bind($('#mcq-engine'), data);
     }
 }
-export default McqModelAndView;
+export {McqModelAndView};

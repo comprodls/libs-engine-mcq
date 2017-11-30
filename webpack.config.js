@@ -22,13 +22,13 @@ if (env === 'build') {
 }
 
 const config = {
-  entry: { 'mcq': __dirname + '/src/js/index.js', 'mcq-editor': __dirname + '/src/js/mcq-editor/mcqEditor.js' },
+  entry: { 'mcq6': __dirname + '/src/js/index.js', 'mcq6-editor': __dirname + '/src/js/mcq-editor/mcqeditor.js' },
   devtool: 'source-map',
   output: {
     path: __dirname + '/dist',
     filename: '[name].js',
     libraryTarget: 'umd',
-    umdNamedDefine: true,
+    umdNamedDefine: true
   },
   module: {
     rules: [

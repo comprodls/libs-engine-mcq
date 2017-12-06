@@ -37,6 +37,7 @@ ul {
     position: absolute;
     left: -999px;
 }
+
 #mcq-sr {
     position: relative;
     li {
@@ -268,4 +269,25 @@ ul {
 
 li:hover {
     background: $color_early_dawn_approx;
+}
+
+li:hover {
+    background: $color_early_dawn_approx;
+}
+
+.stimuli {
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+@media screen and (min-width: 1005px) {
+    .stimuli {
+        margin: 20px 0 0 0;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .stimuli {
+        padding: 0 0 0 0;
+    }
 }

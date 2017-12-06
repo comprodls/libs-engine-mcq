@@ -13,9 +13,9 @@ export const Constants = {
         MCQ: mcqTemplateRef
     },
     THEMES: {
-      MCQ: 'main',
-      MCQ_LIGHT: 'main-light',
-      MCQ_DARK: 'main-dark'
+        MCQ: 'main',
+        MCQ_LIGHT: 'main-light',
+        MCQ_DARK: 'main-dark'
     },
     LAYOUT_COLOR: {
         'BG': {
@@ -23,7 +23,7 @@ export const Constants = {
             'MCQ_LIGHT': '#f6f6f6',
             'MCQ_DARK': '#222222'
         }
-}
+    }
 };
 
 export let InteractionIds = [];
@@ -36,7 +36,7 @@ class McqModelAndView {
         return Constants.TEMPLATES.MCQ;
     }
     get themes() {
-         return Constants.THEMES;
+        return Constants.THEMES;
     }
 
     bindData() {
@@ -59,6 +59,16 @@ class McqModelAndView {
             return idvalue + index;
         };
 
+        rivets.binders['src-strict'] = function (el, value) {
+            var img = new Image();
+
+            img.onload = function () {
+                $(el).attr('src', value);
+            };
+
+            img.src = value;
+        };
+
         rivets.binders.addclass = function (el, value) {
             if (el.addedClass) {
                 $(el).removeClass(el.addedClass);
@@ -79,4 +89,4 @@ class McqModelAndView {
         rivets.bind($('#mcq-engine'), data);
     }
 }
-export {McqModelAndView};
+export { McqModelAndView };

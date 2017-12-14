@@ -7,7 +7,7 @@
 		var a = factory();
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(this, function() {
+})(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -9227,9 +9227,9 @@ jQuery.fn.andSelf = jQuery.fn.addBack;
 // https://github.com/jrburke/requirejs/wiki/Updating-existing-libraries#wiki-anon
 
 if ( true ) {
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function() {
 		return jQuery;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+	}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 }
 
@@ -9481,9 +9481,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function() {
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = sightglass
   } else if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function() {
       return this.sightglass = sightglass
-    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+    }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
   } else {
     this.sightglass = sightglass
@@ -10894,9 +10894,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function() {
   if (typeof (typeof module !== "undefined" && module !== null ? module.exports : void 0) === 'object') {
     module.exports = Rivets.factory(__webpack_require__(1));
   } else if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_RESULT__ = function(sightglass) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_RESULT__ = (function(sightglass) {
       return this.rivets = Rivets.factory(sightglass);
-    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+    }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else {
     this.rivets = Rivets.factory(sightglass);
@@ -11086,7 +11086,7 @@ module.exports = function(list, options) {
 
 	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
 	// tags it will allow on a page
-	if (!options.singleton) options.singleton = isOldIE();
+	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
 
 	// By default, add <style> tags to the <head> element
 	if (!options.insertInto) options.insertInto = "head";
@@ -11974,7 +11974,7 @@ class McqUserResponse {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mcq_engine_mcq__ = __webpack_require__(10);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "mcq6", function() { return __WEBPACK_IMPORTED_MODULE_0__mcq_engine_mcq__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "mcq", function() { return __WEBPACK_IMPORTED_MODULE_0__mcq_engine_mcq__["a"]; });
 
 
 
@@ -11999,7 +11999,7 @@ const transform = Symbol('transformMCQ');
 const renderView = Symbol('renderMCQ');
 const bindEvents = Symbol('bindEvents');
 
-class mcq6 {
+class mcq {
     /**  ENGINE-SHELL CONSTRUCTOR FUNCTION
     *   @constructor
     *   @param {String} elRoot - DOM Element reference where the engine should paint itself.
@@ -12106,7 +12106,7 @@ class mcq6 {
     }
 }
 
-/* harmony default export */ __webpack_exports__["a"] = (mcq6);
+/* harmony default export */ __webpack_exports__["a"] = (mcq);
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0)))
 
 /***/ }),
@@ -12362,4 +12362,4 @@ class McqEvents {
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=mcq6.js.map
+//# sourceMappingURL=mcq.js.map

@@ -1,4 +1,5 @@
 /* global $ */
+import generateStatement from '../utils';
 const __constants = {
     STATUS_NOERROR: 'NO_ERROR'
 };
@@ -30,9 +31,9 @@ class McqUserResponse {
     savePartial(interactionid, mcqObj) {
         let answerJSONs = null;
         let uniqueId = this.mcqObj.adaptor.getId();
-
+        
+        this.mcqObj.adaptor.sendStatement(uniqueId, generateStatement('answered'));
         answerJSONs = this.__getAnswersJSON(false, interactionid);
-
         answerJSONs.forEach((answerJSON, idx) => {
             this.mcqObj.adaptor.savePartialResults(answerJSON, uniqueId, function (data, status) {
                 if (status === __constants.STATUS_NOERROR) {
@@ -364,5 +365,5 @@ class McqUserResponse {
      this.mcqObj.adaptor.autoResizeActivityIframe();
     }
 }
-
 export default McqUserResponse;
+

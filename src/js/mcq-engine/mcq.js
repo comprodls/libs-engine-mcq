@@ -3,13 +3,14 @@ import MCQTransformer from './mcq.transformer';
 import {McqModelAndView, Constants} from './mcq.modelview';
 import McqEvents from './mcq.events';
 import McqResponseProcessor from './mcq.responseProcessor';
+import generateStatement from '../utils';
 
 const load = Symbol('loadMCQ');
 const transform = Symbol('transformMCQ');
 const renderView = Symbol('renderMCQ');
 const bindEvents = Symbol('bindEvents');
 
-class mcq6 {
+class mcq {
      /**  ENGINE-SHELL CONSTRUCTOR FUNCTION
      *   @constructor
      *   @param {String} elRoot - DOM Element reference where the engine should paint itself.
@@ -22,6 +23,7 @@ class mcq6 {
      *   @param {Function} callback - To inform the shell that init is complete.
      */
     constructor(elRoot, params, adaptor, htmlLayout, jsonContentObj, callback) {
+    adaptor.sendStatement(adaptor.getId(), generateStatement('started'));
       this.elRoot = elRoot;
       this.params = params;
       this.adaptor = adaptor;
@@ -116,4 +118,4 @@ class mcq6 {
     }
 }
 
-export default mcq6;
+export default mcq;

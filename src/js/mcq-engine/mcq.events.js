@@ -34,6 +34,7 @@ bindEvents() {
          if (!this.McqInstance.userAnswers[currentInteractionId]) {
             this.McqInstance.userAnswers[currentInteractionId] = [];
          }
+
          this.McqInstance.userAnswers[currentInteractionId].push(currentChoice);
          console.log(this.McqInstance.userAnswers, currentInteractionId, currentChoice);
     } else {

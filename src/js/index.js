@@ -1,3 +1,3 @@
-import mcq6 from './mcq-engine/mcq';
+import mcq from './mcq-engine/mcq';
 
-export { mcq6 };
+export { mcq };

@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11492,9 +11492,9 @@ module.exports = function (css) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return McqModelAndView; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rivets__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rivets___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rivets__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__html_mcq_html__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__html_mcq_html__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__html_mcq_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__html_mcq_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scss_mcq_scss__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scss_mcq_scss__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scss_mcq_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__scss_mcq_scss__);
 /* global $ */
 
@@ -11597,7 +11597,9 @@ class McqModelAndView {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* global $ */
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(9);
+/* global $ */
+
 const __constants = {
     STATUS_NOERROR: 'NO_ERROR'
 };
@@ -11630,8 +11632,8 @@ class McqUserResponse {
         let answerJSONs = null;
         let uniqueId = this.mcqObj.adaptor.getId();
 
+        this.mcqObj.adaptor.sendStatement(uniqueId, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* default */])('answered'));
         answerJSONs = this.__getAnswersJSON(false, interactionid);
-
         answerJSONs.forEach((answerJSON, idx) => {
             this.mcqObj.adaptor.savePartialResults(answerJSON, uniqueId, function (data, status) {
                 if (status === __constants.STATUS_NOERROR) {
@@ -11963,7 +11965,6 @@ class McqUserResponse {
         this.mcqObj.adaptor.autoResizeActivityIframe();
     }
 }
-
 /* harmony default export */ __webpack_exports__["a"] = (McqUserResponse);
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0)))
 
@@ -11972,23 +11973,48 @@ class McqUserResponse {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mcq_engine_mcq__ = __webpack_require__(10);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "mcq", function() { return __WEBPACK_IMPORTED_MODULE_0__mcq_engine_mcq__["a"]; });
+/* harmony export (immutable) */ __webpack_exports__["a"] = generateStatement;
+/**
+ * Function to generate XAPI statements.
+ */
+function generateStatement(verb) {
+    var statement = {
+        'timestamp': new Date(),
+        'verb': {
+            'id': 'http://comprotechnologies.com/expapi/verbs/' + verb,
+            'display': {
+                'und': verb
+            }
+        }
+    };
 
-
-
+    return statement;
+}
 
 /***/ }),
 /* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mcq_transformer__ = __webpack_require__(11);
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mcq_engine_mcq__ = __webpack_require__(11);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "mcq", function() { return __WEBPACK_IMPORTED_MODULE_0__mcq_engine_mcq__["a"]; });
+
+
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mcq_transformer__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mcq_modelview__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mcq_events__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mcq_events__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mcq_responseProcessor__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils__ = __webpack_require__(9);
 /* global $ */
+
 
 
 
@@ -12012,6 +12038,7 @@ class mcq {
     *   @param {Function} callback - To inform the shell that init is complete.
     */
     constructor(elRoot, params, adaptor, htmlLayout, jsonContentObj, callback) {
+        adaptor.sendStatement(adaptor.getId(), Object(__WEBPACK_IMPORTED_MODULE_4__utils__["a" /* default */])('started'));
         this.elRoot = elRoot;
         this.params = params;
         this.adaptor = adaptor;
@@ -12110,7 +12137,7 @@ class mcq {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0)))
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12235,19 +12262,19 @@ class McqTransformer {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0)))
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = "<!-- Engine Renderer Template -->\r\n<!-- Top level div handler to embed test engine into rendering app -->\r\n<div class=\"mcq-body\" id=\"mcq-engine\">\r\n  <main rv-addclass='content.theme'>\r\n    <section class=\"instructions\" rv-each-instruction=\"content.instructions\">\r\n      <p class=\"instruction\" rv-text=\"instruction\"></p>\r\n    </section>\r\n    <section class=\"interactions mt-md\" rv-unless=\"content.stimuli.0\">\r\n      <section class=\"interaction\" rv-id=\"interaction.id\" rv-each-interaction=\"content.interactions\">\r\n        <p class=\"question-text\" rv-text=\"interaction.questiontext\"></p>\r\n        <!-- prompt Will be shown only if prompt text is available for interaction /-->\r\n        <p class=\"prompt\"></p>\r\n        <ul class=\"options list-unstyled nested-list\" id=\"mcq-mr\" rv-if=\"interaction.MCQMR\">\r\n          <li class=\"line-item option\" rv-each-optionitem=\"interaction.options | propertyList\">\r\n            <label class=\"line-item-label checkbox input-label align-2-item\" rv-for=\"%optionitem%   | idcreator 'option'\">\r\n              <span class=\"pull-left\">\r\n                <i></i>\r\n              </span>\r\n              <span class='option-content' rv-text=\"optionitem.value\">{optionitem.value}</span>\r\n            </label>\r\n            <input class=\"option option-value mcq-option option-input\" rv-id=\"%optionitem%   | idcreator 'option'\" type=\"checkbox\" rv-name=\"optionitem.key\"\r\n              rv-id=\"optionitem.key\" data-val=\"{optionitem.key}\" autocomplete=\"off\" />\r\n          </li>\r\n        </ul>\r\n        <ul class=\"options list-unstyled nested-list\" id=\"mcq-sr\" rv-if=\"interaction.MCQSR\">\r\n          <li class=\"line-item enabled\" rv-each-element=\"interaction.options | propertyList\">\r\n            <label class=\"line-item-label radio radio-lg\" rv-for=\"element.key\">\r\n              <span>\r\n                <i></i>\r\n              </span>\r\n              <span class=\"content option-content\" rv-text=\"element.value\"></span>\r\n            </label>\r\n            <input type=\"radio\" name=\"optionsRadios\" class=\"mcq-option\" rv-id=\"element.key\" rv-value=\"element.value\">\r\n          </li>\r\n        </ul>\r\n      </section>\r\n    </section>\r\n    <section class=\"question\" rv-if=\"content.stimuli.0\">\r\n      <div class=\"row\">\r\n        <div class=\"col-xs-12 col-md-4\" rv-if=\"content.stimuli.0\">\r\n          <section class=\"stimuli\">\r\n            <figure class=\"img-thumbnail\" rv-each-stimuli=\"content.stimuli\">\r\n              <img rv-src=\"stimuli.src\" class=\"img-responsive\">\r\n            </figure>\r\n          </section>\r\n        </div>\r\n        <div class=\"col-xs-12 col-sm-6 col-md-8\">\r\n          <section class=\"interactions mt-md\">\r\n            <section class=\"interaction\" rv-id=\"interaction.id\" rv-each-interaction=\"content.interactions\">\r\n              <p class=\"question-text\" rv-text=\"interaction.questiontext\"></p>\r\n              <!-- prompt Will be shown only if prompt text is available for interaction /-->\r\n              <p class=\"prompt\"></p>\r\n              <ul class=\"options list-unstyled nested-list\" id=\"mcq-mr\" rv-if=\"interaction.MCQMR\">\r\n                <li class=\"line-item option\" rv-each-optionitem=\"interaction.options | propertyList\">\r\n                  <label class=\"line-item-label checkbox input-label align-2-item\" rv-for=\"%optionitem%   | idcreator 'option'\">\r\n                    <span class=\"pull-left\">\r\n                      <i></i>\r\n                    </span>\r\n                    <span class='option-content' rv-text=\"optionitem.value\">{optionitem.value}</span>\r\n                  </label>\r\n                  <input class=\"option option-value mcq-option option-input\" rv-id=\"%optionitem%   | idcreator 'option'\" type=\"checkbox\" rv-name=\"optionitem.key\"\r\n                    rv-id=\"optionitem.key\" data-val=\"{optionitem.key}\" autocomplete=\"off\" />\r\n                </li>\r\n              </ul>\r\n              <ul class=\"options list-unstyled nested-list\" id=\"mcq-sr\" rv-if=\"interaction.MCQSR\">\r\n                <li class=\"line-item enabled\" rv-each-element=\"interaction.options | propertyList\">\r\n                  <label class=\"line-item-label radio radio-lg\" rv-for=\"element.key\">\r\n                    <span>\r\n                      <i></i>\r\n                    </span>\r\n                    <span class=\"content option-content\" rv-text=\"element.value\"></span>\r\n                  </label>\r\n                  <input type=\"radio\" name=\"optionsRadios\" class=\"mcq-option\" rv-id=\"element.key\" rv-value=\"element.value\">\r\n                </li>\r\n              </ul>\r\n            </section>\r\n          </section>\r\n        </div>\r\n      </div>\r\n    </section>\r\n    <section class=\"feedback\">\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-12 col-md-12\">\r\n          <div class=\"alert alert-success align-2-item\" role=\"alert\" rv-show=\"showFeedback.correct\">\r\n            <span>\r\n              <i class=\"fa fa-2x fa-smile-o\"></i>&nbsp;</span>\r\n            <span rv-text=\"feedback.global.correct\"></span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-12 col-md-12\">\r\n          <div class=\"alert alert-danger align-2-item\" role=\"alert\" rv-show=\"showFeedback.incorrect\">\r\n            <span>\r\n              <i class=\"fa fa-2x fa-meh-o\"></i>\r\n            </span>&nbsp;\r\n            <span rv-text=\"feedback.global.incorrect\"></span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-6 col-md-6\">\r\n          <div class=\"alert alert-warning align-2-item\" role=\"alert\" rv-show=\"showFeedback.empty\">\r\n            <span>\r\n              <i class=\"fa fa-2x fa-meh-o\"></i>&nbsp;</span>\r\n            <span rv-text=\"feedback.global.empty\"></span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n  </main>\r\n</div>";
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(14);
+var content = __webpack_require__(15);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -12272,7 +12299,7 @@ if(false) {
 }
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(undefined);
@@ -12286,7 +12313,7 @@ exports.push([module.i, "/******************************************************
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12327,6 +12354,7 @@ class McqEvents {
                 if (!this.McqInstance.userAnswers[currentInteractionId]) {
                     this.McqInstance.userAnswers[currentInteractionId] = [];
                 }
+
                 this.McqInstance.userAnswers[currentInteractionId].push(currentChoice);
                 console.log(this.McqInstance.userAnswers, currentInteractionId, currentChoice);
             } else {

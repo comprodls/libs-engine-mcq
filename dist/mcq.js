@@ -9532,7 +9532,8 @@ const Constants = {
     },
     STATEMENT_STARTED: 'started',
     STATEMENT_ANSWERED: 'answered',
-    STATEMENT_INTERACTED: 'interacted'
+    STATEMENT_INTERACTED: 'interacted',
+    STATEMENT_SUBMITTED: 'submitted'
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = Constants;
 
@@ -9552,7 +9553,7 @@ class McqModelAndView {
 
     resetView() {
         $('.interactions ul li').removeClass('highlight');
-        $('.interactions ul li').addClass('enabled');
+        //$('.interactions ul li').addClass('enabled');
     }
 
     clearGrades() {
@@ -12119,14 +12120,9 @@ class mcq {
         mcqResponseProcessor.saveResults(true);
         $('input[id^=option]').attr('disabled', true);
         $('input[class^=mcqsroption]').attr('disabled', true);
-
-        $('li[class^=line-item]').hover(function () {
-            $(this).removeClass('enabled');
-            $(this).addClass('disable-li-hover');
-        });
-        $('label[class^=line-item-label]').hover(function () {
-            $(this).addClass('disable-li-hover');
-        });
+        $('li[class^=line-item]').removeClass('enabled').addClass('disable-li-hover');
+        $('label[class^=line-item-label]').addClass('disable-li-hover');
+        this.adaptor.sendStatement(this.adaptor.getId(), Object(__WEBPACK_IMPORTED_MODULE_4__utils__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1__mcq_modelview__["a" /* Constants */].STATEMENT_SUBMITTED));
     }
 
     showGrades() {
@@ -12151,16 +12147,12 @@ class mcq {
     clearGrades() {
         let keys = Object.keys(this.userAnswers);
 
-        $('#mcq-sr li').removeClass('correct');
-        $('#mcq-sr li').removeClass('wrong');
-        $('#mcq-sr li').addClass('enabled');
-        $('#mcq-sr label').removeClass('disable-li-hover');
-        $('#mcq-sr li').removeClass('disable-li-hover');
-        $('#' + this.userAnswers[keys]).closest('li').addClass('highlight');
+        $('li[class^=line-item]').removeClass('disable-li-hover').addClass('enabled');
+        $('li[class^=line-item]').removeClass('correct');
+        $('li[class^=line-item]').removeClass('wrong');
+        $('label[class^=line-item-label]').removeClass('disable-li-hover');
+        $('#' + this.userAnswers[keys[0]]).closest('li').addClass('highlight');
         mcqModelAndView.clearGrades();
-
-        console.log(JSON.stringify(this.userAnswers, null, 4));
-        console.log(this.userAnswers[0] + ' clear grades called');
     }
 }
 

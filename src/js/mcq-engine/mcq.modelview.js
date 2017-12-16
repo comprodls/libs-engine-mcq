@@ -26,7 +26,8 @@ export const Constants = {
     },
     STATEMENT_STARTED: 'started',
     STATEMENT_ANSWERED: 'answered',
-    STATEMENT_INTERACTED: 'interacted'
+    STATEMENT_INTERACTED: 'interacted',
+    STATEMENT_SUBMITTED: 'submitted'
 };
 
 export let InteractionIds = [];
@@ -44,7 +45,7 @@ class McqModelAndView {
 
     resetView() {
         $('.interactions ul li').removeClass('highlight');
-        $('.interactions ul li').addClass('enabled');
+        //$('.interactions ul li').addClass('enabled');
     }
 
     clearGrades() {

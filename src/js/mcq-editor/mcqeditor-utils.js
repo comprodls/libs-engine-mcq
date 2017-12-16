@@ -1,6 +1,5 @@
 /* global $ */
 /* global jQuery */
-
 var activityAdaptor;
 var __state = {
     'hasUnsavedChanges': false
@@ -9,12 +8,21 @@ var sendItemChangeNotification = false;
 var __enableFeedback = { hide: false };
 let __editedJsonContent;
 let mcqTemplateRef = require('../../html/mcqEditor.html');
+let __mediaManager = null;
+let __mediaConfig = [];
+let __assets = {
+                items: [ ]
+                };
+let __imageSelected = {
+        stimulus: [],
+        isImageSelected: false
+    };
+let __assetBasePath = null;
 
 /* let mediaConfiguration = null;
 
 mediaConfiguration = {
-
-    'mediaConfig': {
+'mediaConfig': {
       'upload': {
         'location': 's3',
         'S3': {
@@ -38,6 +46,7 @@ mediaConfiguration = {
 require('../../scss/mcq-editor.scss');
 require('jquery');
 require('jquery-ui-dist');
+require('bootpag');
 
 import rivets from 'rivets';
 
@@ -76,9 +85,9 @@ let __feedbackPresets = [{ key: 'correct', value: 'Show when Correct', showDropd
                             { key: 'incorrect', value: 'Show when Incorrect', showDropdown: true, order: 2 },
                             { key: 'generic', value: 'Show Always', showDropdown: true, order: 100 }];
 
-let __mediaPresets = [{ key: 'audio', value: 'Audio', showDropdown: true, active: 'disabled', order: 1 },
-                        { key: 'image', value: 'Image', showDropdown: true, active: 'enabled', order: 2 },
-                        { key: 'video', value: 'Video', showDropdown: true, active: 'disabled', order: 100 }];
+let __mediaPresets = [{ key: 'audio', value: 'Audio', showDropdown: true, active: 'disabled color-lightgray', order: 1, icon: 'fa-volume-up'},
+                        { key: 'image', value: 'Image', showDropdown: true, active: 'enabled color-gray', order: 2, icon: 'fa-picture-o' },
+                        { key: 'video', value: 'Video', showDropdown: true, active: 'disabled color-lightgray', order: 100, icon: 'fa-video-camera' }];
 
 export function setJsonContent(_jsonContent) {
     __editedJsonContent = _jsonContent;
@@ -224,9 +233,13 @@ function __parseInstructionTextJSONForRivets() {
 }
 
 function __parseMediaJSONForRivets() {
+    __mediaManager.getMediaConfig().then((data) => {
+        Object.entries(data.mediaConfig).forEach(([key, value]) => {
+            __mediaConfig.push({[key]: value});
+        });
+    });
     __editedJsonContent.enableMedia = false;
     if (__editedJsonContent.content.stimulus && __editedJsonContent.content.stimulus.length > 0) {
-        console.log(__editedJsonContent.content.stimulus.length, __editedJsonContent.enableMedia);
         __editedJsonContent.enableMedia = true;
     }
 
@@ -330,7 +343,8 @@ export function __parseAndUpdateJSONForInteractions() {
 
 export function buildModelandViewContent(jsonContent, params) {
     __editedJsonContent = jsonContent;
-    console.log(JSON.stringify(__editedJsonContent, null, 4));
+    __mediaManager = params.mediaManager;
+    __assetBasePath = params.productAssetsBasePath;
     // Process JSON to remove interaction tags and initiate __interactionIds
     // and __interactionTags Arrays
     __parseAndUpdateJSONForInteractions();
@@ -586,14 +600,85 @@ function __appendMedia(event, type) {
     if (type.toLowerCase() === 'image') {
         __editedJsonContent.editMedia = true;
     }
+
+    __mediaManager.getAssetLibrary().getAssets(type.toLowerCase(),
+    {'skip': 0,
+    'limit': 4
+    }, function (err, data) {
+        if (err) {
+            console.log(err);
+        }
+        __assets.items = data.items;
+    });
+
     activityAdaptor.autoResizeActivityIframe();
+}
+
+function __imageSelector(event, asset, key) {
+    //requirements
+    // tabkey, id, type, filename
+    __imageSelected.stimulus = [];
+    __imageSelected.key = key;
+    __imageSelected.isImageSelected = true;
+    __imageSelected.stimulus.push({
+                    'tag': 'image',
+                    'url': asset.sourcepath,
+                    '_id': asset['_id'],
+                    'filename': asset.filename
+                });
 }
 
 function __hideMediaEditor() {
     __editedJsonContent.editMedia = false;
+    __imageSelected.stimulus = [];
+    __imageSelected.isImageSelected = false;
     activityAdaptor.autoResizeActivityIframe();
 }
 
+function __createAssetsObj(data, key) {
+  let assetStruct = {
+    'source': 'library',
+    'assets': [
+            {
+                'type': data.tag,
+                'id': data._id,
+                'filename': data.filename
+            }
+        ]
+    };
+
+  return assetStruct;
+}
+
+function __finalizeAssets(args) {
+    function assetNotificationCb(err, processedAssets) {
+        if (err) {
+            console.log(err);
+        }
+        __imageSelected.processedAssets = processedAssets;
+        processedAssets.forEach(function (element) {
+
+            __editedJsonContent.content.stimulus.push({
+                'tag': element.type,
+                'url': element.path
+            });
+        });
+        __editedJsonContent.editMedia = false;
+    };
+
+    if (__imageSelected.isImageSelected) {
+        let finalizedAssets = __createAssetsObj(__imageSelected.stimulus[0],
+            __imageSelected.key);
+
+        __mediaManager.finalizeAssets(finalizedAssets, assetNotificationCb);
+    }
+}
+
+function __removeAssets(event, index) {
+    __imageSelected.stimulus = [];
+    __imageSelected.isImageSelected = false;
+    __editedJsonContent.content.stimulus.splice(index, 1);
+}
 /*------------------------RIVET INITIALIZATION & BINDINGS -------------------------------*/
 export function initializeRivets() {
     /*
@@ -627,6 +712,12 @@ export function initializeRivets() {
         return text;
     };
 
+    rivets.formatters.formatDate = function (timeInMilliSec) {
+        let d = new Date(timeInMilliSec);
+
+        return d ;
+    };
+
     rivets.formatters.interactTypeVal = function (key) {
         var types = {
             'MCQMR': 'Multiple Choice Question',
@@ -634,6 +725,25 @@ export function initializeRivets() {
         };
 
         return types[key];
+    };
+
+    rivets.formatters.assets = function (url) {
+        var basepath = __assetBasePath;
+        var returnUrl = null;
+
+        if (url.indexOf('http' === -1)) {
+            returnUrl = basepath + url;
+        } else {
+            returnUrl = url;
+        }
+
+        return returnUrl;
+    };
+
+    rivets.formatters.assetname = function (url) {
+        let name = url.substring(url.lastIndexOf('/') + 1);
+
+        return name;
     };
 
     rivets.binders['content-editable'] = {
@@ -673,6 +783,15 @@ export function initializeRivets() {
         }
     };
 
+    rivets.binders['src-strict'] = function (el, value) {
+        var img = new Image();
+
+        img.onload = function () {
+            $(el).attr('src', value);
+        };
+
+        img.src = value;
+    };
     let data = {
         editorContent: __editedJsonContent,
         removeItem: __removeItem,
@@ -692,9 +811,16 @@ export function initializeRivets() {
         mediaPresets: __mediaPresets,
         showMedia: __showMedia,
         appendMedia: __appendMedia,
-        hideMediaEditor: __hideMediaEditor
+        hideMediaEditor: __hideMediaEditor,
+        mediaConfig: __mediaConfig,
+        assets: __assets,
+        imageSelector: __imageSelector,
+        selectedStimulus: __imageSelected,
+        finalizeAssets: __finalizeAssets,
+        removeAssets: __removeAssets
     };
 
+    console.log(JSON.stringify(__editedJsonContent.content.stimulus, null, 4));
     rivets.bind($('#mcq-editor'), data);
 }
 /*------------------------RIVETS END-------------------------------*/

@@ -70,11 +70,12 @@ const config = {
     modules: [path.resolve('./node_modules'), path.resolve('./src')],
     extensions: ['.json', '.js'],
     alias: {
-      "jquery-ui-dist": "jquery-ui-dist/jquery-ui.js"
+      "jquery-ui-dist": "jquery-ui-dist/jquery-ui.js",
+      "bootpag": "bootpag/lib/jquery.bootpag.js"
     }
   },
   plugins: plugins,
-  externals: [nodeExternals({ whitelist: ['sightglass', 'rivets', 'jquery', 'jquery-ui-dist'] })] // in order to avoid bundling of modules in node_modules folder  
+  externals: [nodeExternals({ whitelist: ['sightglass', 'rivets', 'jquery', 'jquery-ui-dist','bootpag' ] })] // in order to avoid bundling of modules in node_modules folder  
 };
 
 module.exports = config;

@@ -28,7 +28,6 @@ class mcq6Editor {
       * Clone the JSON so that original is preserved.
       */
     this.jsonContent = jQuery.extend(true, {}, jsonContentObj);
-
     /**
       * Validation block.
       */

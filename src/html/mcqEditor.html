@@ -224,20 +224,15 @@
                         </header>
                     </div>
                     <ul class="list-unstyled nested-list" rv-hide="editorContent.editMedia">
-                        <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-element="editorContent.stimuls">
-                            <div class="pl-sm">
-                                <div class="radio">
-                                    <i class="round-icon feedback hand-o-right"></i>
-                                </div>
-                            </div>
+                        <li class="vertical-center-align col-xs-12 col-sm-12 bg-white mt-md mb-add-offset" rv-each-mediaasset="editorContent.content.stimulus">                            
                             <div class="vertical-bottom-align" style="width: 100%">
-                                <span class="ml-xl pull-left mt-xs option-icon-pencil">
-                                    <i class="fa fa-pencil"></i>
+                                <span class="ml-xl pull-left mt-xs option-icon-pencil">                                    
+                                    <img rv-src="mediaasset.url | assets" style="width:50px; height: 50px;"/>
                                 </span>
-                                <div rv-content-editable="element.customAttribs.value" style="width: 100%;" data-text='Placeholder Feedback text. Update "Me" with a valid Feedback text for this question.'
+                                <div rv-content-editable="mediaasset.url | assetname" style="width: 100%;" data-text='Placeholder Feedback text. Update "Me" with a valid Feedback text for this question.'
                                     class="pr-3pc pl-md border-bottom-dashed" role="button"></div>
                                 <span class="pull-right icon-horizontal-align">
-                                    <a class="color-lightgray fa fa-times outline-none" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeFeedback | args %element%"></a>
+                                    <a class="color-lightgray fa fa-times outline-none" data-toggle="tooltip" title="Click to remove this option" rv-on-click="removeAssets | args %mediaasset%"></a>
                                 </span>
                             </div>
                         </li>
@@ -249,7 +244,7 @@
                                     <button rv-on-click="hideMediaEditor" type="button" class="btn btn-sm btn-link color-white">
                                             Cancel
                                         </button>
-                                    <button type="button" class="btn btn-sm btn-success">
+                                    <button type="button" rv-on-click="finalizeAssets" class="btn btn-sm btn-success">
                                             Apply
                                         </button>
                             </span>
@@ -257,59 +252,67 @@
                         <div class="bg-zanah plr-1pc ptb-sm" >
                             Selected Image
                         </div>
-                        <div class=""> 
-                            <div id="myCarousel" class="dls-gallery carousel slide">
-                            <!-- Carousel items -->
-                            <div class="plr-md carousel-inner">
-                                
-                            <div class="item active">
-                                <div class="row-fluid">
-                                  <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
-                                  <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
-                                  <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
-                                  <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
-                                </div><!--/row-fluid-->
-                            </div><!--/item-->
-                             
-                            <div class="item">
-                                <div class="row-fluid">
-                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
-                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
-                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
-                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
-                                </div><!--/row-fluid-->
-                            </div><!--/item-->
-                             
-                            <div class="item">
-                                <div class="row-fluid">
-                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
-                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
-                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
-                                    <div class="col-sm-3"><a href="#x" class="thumbnail"><img src="http://placehold.it/250x250" alt="Image" style="max-width:100%;" /></a></div>
-                                </div><!--/row-fluid-->
-                            </div><!--/item-->
-                             
-                            </div><!--/carousel-inner-->
-                             
-                            <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-                            <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-                            </div><!--/myCarousel-->
-                             
-                        </div><!--/well-->  
+                        <div class="">
+                            <div id="mySelection" rv-show="selectedStimulus.isImageSelected" class="dls-gallery" rv-each-stimuli= "selectedStimulus.stimulus">                                
+                                 <div class="row">
+                                    <div class="col-sm-4 col-md-4"></div>
+                                    <div class="col-sm-4 col-md-4">                                                
+                                      <div class="thumbnail">
+                                        <img rv-src="stimuli.url" alt="Image"/>
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-4 col-md-4"></div>
+                                  </div>
+                            </div>
+                            <div rv-hide="selectedStimulus.isImageSelected">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12">
+                                                <div class="preview-empty flex-center">
+                                                    <i class="fa fa-image fa-5x"></i>
+                                                </div>
+                                        </div>                                            
+                            </div>
+                            </div>                            
+                        </div>
                         <div class="">
                                 <div>
                                 <div class="row">
                                     <div class="col-md-12">
+                                  
+                                            <ul class="pagination pull-right">
+                                                    <li><a href="#">&laquo;</a></li>
+                                                    <!-- 
+                                                        Pagination logic:
+                                                        1. create array for pagination List
+                                                        2. It should have numbers
+                                                        3. 
+                                                    -->
+                                                    <li rv-each-pag="asset.item.pag"><a href="#">1</a></li>
+                                                    <li><a href="#">&raquo;</a></li>
+                                            </ul>
                                         <!-- Nav tabs --><div class="card">
                                         <ul id="mediaTabs" class="nav nav-tabs" role="tablist">
                                             <li role="presentation" class="active"><a href="#assestlibrary" aria-controls="assestlibrary" role="tab" data-toggle="tab">Asset Library</a></li>
                                             <li role="presentation"><a href="#upload" aria-controls="upload" role="tab" data-toggle="tab">Upload</a></li>
                                             <li role="presentation"><a href="#contentful" aria-controls="contentful" role="tab" data-toggle="tab">Contentful</a></li>
-                                            
                                         </ul>
                                         <!-- Tab panes -->
                                         <div class="tab-content">
-                                            <div role="tabpanel" class="tab-pane active" id="assestlibrary">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
+                                            <div role="tabpanel" class="tab-pane active" id="assestlibrary">
+                                             <div class="row">
+                                              <div class="col-sm-6 col-md-3" rv-each-asset="assets.items">                                                
+                                               <a rv-on-click="imageSelector | args asset library">
+                                                <div class="thumbnail">
+                                                        <img rv-src="asset.sourcepath" alt="asset.filename">
+                                                        <div class="caption">
+                                                          <h3>{asset.filename}</h3>
+                                                          <p>last-modified <span rv-text="formatDate | asset.last-modified.time"></span> </p>                                                          
+                                                        </div>
+                                                </div>
+                                              </a>
+                                            </div>
+                                            </div>
+                                            </div>
                                             <div role="tabpanel" class="tab-pane" id="upload">Coming Soon...</div>
                                             <div role="tabpanel" class="tab-pane" id="contentful">Coming Soon...</div>                                           
                                         </div>
@@ -325,7 +328,7 @@
                         </button>
                         <ul class="dropdown-menu" id="mediamenu" class="media-choice" role="menu" aria-labelledby="menu1" style="left: 75px;">
                             <li class="" role="presentation" rv-each-media="mediaPresets">
-                                <button class='btn btn-link dropdown-toggle nounderline' rv-addclass='media.active' role="menuitem" rv-on-click="appendMedia | args media.value" rv-text="media.value"></button>
+                                <button class='btn btn-link dropdown-toggle nounderline' rv-addclass='media.active' role="menuitem" rv-on-click="appendMedia | args media.value"><i class="mr-xs fa" rv-addclass='media.icon' aria-hidden="true"></i><span class="" rv-text="media.value"></span></button>
                             </li>
                         </ul>
                     </div>

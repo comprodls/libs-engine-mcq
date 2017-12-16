@@ -62,8 +62,9 @@
   },
   "homepage": "",
   "dependencies": {
+    "bootpag": "^1.0.7",
+    "bootstrap": "3.3.4",
     "jquery": "2.1.1",
-    "jquery-ui-dist": "^1.12.1",
-    "bootstrap": "3.3.4"
+    "jquery-ui-dist": "^1.12.1"
   }
 }

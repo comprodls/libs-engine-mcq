@@ -43,6 +43,9 @@ bindEvents() {
     }
      this.mcqResponseProcessor
      .savePartial(currentInteractionId, this.McqInstance);
+
+     event.stopPropagation();
+     return false;
    };
 
      /** Function to handle radio button click.*/
@@ -57,6 +60,9 @@ bindEvents() {
          console.log(JSON.stringify(this.McqInstance.userAnswers, null, 4));
          this.mcqResponseProcessor
          .savePartial(currentInteractionId, this.McqInstance);
+
+         event.stopPropagation();
+         return false;
      };
 
    // Registering the checkbox click handler for MCQMR

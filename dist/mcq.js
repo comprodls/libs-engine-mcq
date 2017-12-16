@@ -12393,6 +12393,9 @@ class McqEvents {
                 $(currentTarget).closest('li').removeClass('highlight');
             }
             this.mcqResponseProcessor.savePartial(currentInteractionId, this.McqInstance);
+
+            event.stopPropagation();
+            return false;
         };
 
         /** Function to handle radio button click.*/
@@ -12406,6 +12409,9 @@ class McqEvents {
             this.McqInstance.userAnswers[currentInteractionId] = $(event.currentTarget).children('input').attr('id');
             console.log(JSON.stringify(this.McqInstance.userAnswers, null, 4));
             this.mcqResponseProcessor.savePartial(currentInteractionId, this.McqInstance);
+
+            event.stopPropagation();
+            return false;
         };
 
         // Registering the checkbox click handler for MCQMR

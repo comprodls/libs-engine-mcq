@@ -664,6 +664,8 @@ function __finalizeAssets(args) {
             });
         });
         __editedJsonContent.editMedia = false;
+        __imageSelected.stimulus = [];
+        __imageSelected.isImageSelected = false;
     };
 
     if (__imageSelected.isImageSelected) {
@@ -675,8 +677,6 @@ function __finalizeAssets(args) {
 }
 
 function __removeAssets(event, index) {
-    __imageSelected.stimulus = [];
-    __imageSelected.isImageSelected = false;
     __editedJsonContent.content.stimulus.splice(index, 1);
 }
 /*------------------------RIVET INITIALIZATION & BINDINGS -------------------------------*/
@@ -820,7 +820,6 @@ export function initializeRivets() {
         removeAssets: __removeAssets
     };
 
-    console.log(JSON.stringify(__editedJsonContent.content.stimulus, null, 4));
     rivets.bind($('#mcq-editor'), data);
 }
 /*------------------------RIVETS END-------------------------------*/

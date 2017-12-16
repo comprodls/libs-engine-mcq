@@ -1,6 +1,6 @@
 /* global $ */
 
-import {Constants} from './mcq.modelview';
+import { Constants } from './mcq.modelview';
 
 const buildModelandViewContent = Symbol('ModelandViewContent');
 const setTheme = Symbol('engine-theme');
@@ -22,10 +22,11 @@ class McqTransformer {
             stimuli: [],
             scoring: {},
             feedback: {},
-            feedbackState: {'correct': false,
-                             'incorrect': false,
-                             'empty': false
-                        },
+            feedbackState: {
+                'correct': false,
+                'incorrect': false,
+                'empty': false
+            },
             type: '',
             theme: '',
             interactionIds: []
@@ -84,22 +85,27 @@ class McqTransformer {
                 obj.options[Object.keys(element)[0]] = element[Object.keys(element)[0]];
             });
 
-           // InteractionIds.push(currinteractionid);
-           __self.mcqModel.interactionIds.push(currinteractionid);
+            // InteractionIds.push(currinteractionid);
+            __self.mcqModel.interactionIds.push(currinteractionid);
             return obj;
         });
     }
 
     [setStimuli]() {
-        let params = this.params;
+        //let params = this.params;
 
         this.mcqModel.stimuli = this.entity.content.stimulus.map(function (element) {
             let tagtype = element['tag'];
+            let obj;
 
-            if (tagtype === 'image') {
-                return params.questionMediaBasePath + element[tagtype];
+            if (tagtype) {
+                obj = { 'src': element[tagtype] };
+                obj[tagtype] = true;
             }
-            return element[tagtype];
+            if (!obj) {
+                obj = element;
+            }
+            return obj;
         });
     }
 

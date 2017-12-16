@@ -23,7 +23,10 @@ export const Constants = {
             'MCQ_LIGHT': '#f6f6f6',
             'MCQ_DARK': '#222222'
         }
-    }
+    },
+    STATEMENT_STARTED: 'started',
+    STATEMENT_ANSWERED: 'answered',
+    STATEMENT_INTERACTED: 'interacted'
 };
 
 export let InteractionIds = [];
@@ -37,6 +40,19 @@ class McqModelAndView {
     }
     get themes() {
         return Constants.THEMES;
+    }
+
+    resetView() {
+        $('.interactions ul li').removeClass('highlight');
+        $('.interactions ul li').addClass('enabled');
+    }
+
+    clearGrades() {
+        this.model.feedbackState = {
+                'correct': false,
+                'incorrect': false,
+                'empty': false
+        };
     }
 
     bindData() {
@@ -82,7 +98,7 @@ class McqModelAndView {
         let data = {
             content: this.model,
             feedback: this.model.feedback,
-            showFeedback: this.model.feedbackState
+            showFeedback: this.model
         };
 
         /*Bind the data to template using rivets*/

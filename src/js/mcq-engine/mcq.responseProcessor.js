@@ -1,5 +1,6 @@
 /* global $ */
 import generateStatement from '../utils';
+import {Constants} from './mcq.modelview';
 const __constants = {
     STATUS_NOERROR: 'NO_ERROR'
 };
@@ -31,8 +32,10 @@ class McqUserResponse {
     savePartial(interactionid, mcqObj) {
         let answerJSONs = null;
         let uniqueId = this.mcqObj.adaptor.getId();
+        let counter = 0;
 
-        this.mcqObj.adaptor.sendStatement(uniqueId, generateStatement('answered'));
+        console.log(' Is it logged twice: ', counter++);
+        this.mcqObj.adaptor.sendStatement(uniqueId, generateStatement(Constants.STATEMENT_INTERACTED));
         answerJSONs = this.__getAnswersJSON(false, interactionid);
         answerJSONs.forEach((answerJSON, idx) => {
             this.mcqObj.adaptor.savePartialResults(answerJSON, uniqueId, function (data, status) {

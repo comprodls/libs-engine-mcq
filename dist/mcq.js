@@ -9493,6 +9493,131 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function() {
 
 /***/ }),
 /* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* unused harmony export InteractionIds */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return McqModelAndView; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rivets__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rivets___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rivets__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__html_mcq_html__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__html_mcq_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__html_mcq_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scss_mcq_scss__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scss_mcq_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__scss_mcq_scss__);
+/* global $ */
+
+
+
+const initializeRivets = Symbol('initializeRivets');
+
+/*
+ * Constants.
+ */
+const Constants = {
+    TEMPLATES: {
+        /* Regular MCQ Layout */
+        MCQ: __WEBPACK_IMPORTED_MODULE_1__html_mcq_html___default.a
+    },
+    THEMES: {
+        MCQ: 'main',
+        MCQ_LIGHT: 'main-light',
+        MCQ_DARK: 'main-dark'
+    },
+    LAYOUT_COLOR: {
+        'BG': {
+            'MCQ': '#FFFFFF',
+            'MCQ_LIGHT': '#f6f6f6',
+            'MCQ_DARK': '#222222'
+        }
+    },
+    STATEMENT_STARTED: 'started',
+    STATEMENT_ANSWERED: 'answered',
+    STATEMENT_INTERACTED: 'interacted'
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = Constants;
+
+
+let InteractionIds = [];
+
+class McqModelAndView {
+    constructor(model) {
+        this.model = model;
+    }
+    get template() {
+        return Constants.TEMPLATES.MCQ;
+    }
+    get themes() {
+        return Constants.THEMES;
+    }
+
+    resetView() {
+        $('.interactions ul li').removeClass('highlight');
+        $('.interactions ul li').addClass('enabled');
+    }
+
+    clearGrades() {
+        this.model.feedbackState = {
+            'correct': false,
+            'incorrect': false,
+            'empty': false
+        };
+    }
+
+    bindData() {
+        this[initializeRivets]();
+    }
+
+    [initializeRivets]() {
+        __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.formatters.propertyList = function (obj) {
+            return function () {
+                let properties = [];
+
+                for (let key in obj) {
+                    properties.push({ key: key, value: obj[key] });
+                };
+                return properties;
+            }();
+        };
+
+        __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.formatters.idcreator = function (index, idvalue) {
+            return idvalue + index;
+        };
+
+        __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.binders['src-strict'] = function (el, value) {
+            var img = new Image();
+
+            img.onload = function () {
+                $(el).attr('src', value);
+            };
+
+            img.src = value;
+        };
+
+        __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.binders.addclass = function (el, value) {
+            if (el.addedClass) {
+                $(el).removeClass(el.addedClass);
+                delete el.addedClass;
+            }
+            if (value) {
+                $(el).addClass(value);
+                el.addedClass = value;
+            }
+        };
+        let data = {
+            content: this.model,
+            feedback: this.model.feedback,
+            showFeedback: this.model
+        };
+
+        /*Bind the data to template using rivets*/
+        __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.bind($('#mcq-engine'), data);
+    }
+}
+
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0)))
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(__webpack_provided_window_dot_jQuery, module) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Rivets.js
@@ -10904,10 +11029,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function() {
 
 }).call(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(3)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(4)(module)))
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -10935,7 +11060,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 /*
@@ -11017,7 +11142,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -11073,7 +11198,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(6);
+var	fixUrls = __webpack_require__(7);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -11389,7 +11514,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 
@@ -11484,121 +11609,14 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* unused harmony export InteractionIds */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return McqModelAndView; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rivets__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rivets___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rivets__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__html_mcq_html__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__html_mcq_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__html_mcq_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scss_mcq_scss__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scss_mcq_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__scss_mcq_scss__);
-/* global $ */
-
-
-
-const initializeRivets = Symbol('initializeRivets');
-
-/*
- * Constants.
- */
-const Constants = {
-    TEMPLATES: {
-        /* Regular MCQ Layout */
-        MCQ: __WEBPACK_IMPORTED_MODULE_1__html_mcq_html___default.a
-    },
-    THEMES: {
-        MCQ: 'main',
-        MCQ_LIGHT: 'main-light',
-        MCQ_DARK: 'main-dark'
-    },
-    LAYOUT_COLOR: {
-        'BG': {
-            'MCQ': '#FFFFFF',
-            'MCQ_LIGHT': '#f6f6f6',
-            'MCQ_DARK': '#222222'
-        }
-    }
-};
-/* harmony export (immutable) */ __webpack_exports__["a"] = Constants;
-
-
-let InteractionIds = [];
-
-class McqModelAndView {
-    constructor(model) {
-        this.model = model;
-    }
-    get template() {
-        return Constants.TEMPLATES.MCQ;
-    }
-    get themes() {
-        return Constants.THEMES;
-    }
-
-    bindData() {
-        this[initializeRivets]();
-    }
-
-    [initializeRivets]() {
-        __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.formatters.propertyList = function (obj) {
-            return function () {
-                let properties = [];
-
-                for (let key in obj) {
-                    properties.push({ key: key, value: obj[key] });
-                };
-                return properties;
-            }();
-        };
-
-        __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.formatters.idcreator = function (index, idvalue) {
-            return idvalue + index;
-        };
-
-        __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.binders['src-strict'] = function (el, value) {
-            var img = new Image();
-
-            img.onload = function () {
-                $(el).attr('src', value);
-            };
-
-            img.src = value;
-        };
-
-        __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.binders.addclass = function (el, value) {
-            if (el.addedClass) {
-                $(el).removeClass(el.addedClass);
-                delete el.addedClass;
-            }
-            if (value) {
-                $(el).addClass(value);
-                el.addedClass = value;
-            }
-        };
-        let data = {
-            content: this.model,
-            feedback: this.model.feedback,
-            showFeedback: this.model.feedbackState
-        };
-
-        /*Bind the data to template using rivets*/
-        __WEBPACK_IMPORTED_MODULE_0_rivets___default.a.bind($('#mcq-engine'), data);
-    }
-}
-
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0)))
-
-/***/ }),
 /* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mcq_modelview__ = __webpack_require__(2);
 /* global $ */
+
 
 const __constants = {
     STATUS_NOERROR: 'NO_ERROR'
@@ -11631,8 +11649,10 @@ class McqUserResponse {
     savePartial(interactionid, mcqObj) {
         let answerJSONs = null;
         let uniqueId = this.mcqObj.adaptor.getId();
+        let counter = 0;
 
-        this.mcqObj.adaptor.sendStatement(uniqueId, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* default */])('answered'));
+        console.log(' Is it logged twice: ', counter++);
+        this.mcqObj.adaptor.sendStatement(uniqueId, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1__mcq_modelview__["a" /* Constants */].STATEMENT_INTERACTED));
         answerJSONs = this.__getAnswersJSON(false, interactionid);
         answerJSONs.forEach((answerJSON, idx) => {
             this.mcqObj.adaptor.savePartialResults(answerJSON, uniqueId, function (data, status) {
@@ -11981,10 +12001,7 @@ function generateStatement(verb) {
     var statement = {
         'timestamp': new Date(),
         'verb': {
-            'id': 'http://comprotechnologies.com/expapi/verbs/' + verb,
-            'display': {
-                'und': verb
-            }
+            'id': verb
         }
     };
 
@@ -12009,7 +12026,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mcq_transformer__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mcq_modelview__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mcq_modelview__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mcq_events__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mcq_responseProcessor__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils__ = __webpack_require__(9);
@@ -12024,6 +12041,7 @@ const load = Symbol('loadMCQ');
 const transform = Symbol('transformMCQ');
 const renderView = Symbol('renderMCQ');
 const bindEvents = Symbol('bindEvents');
+let mcqModelAndView = null;
 
 class mcq {
     /**  ENGINE-SHELL CONSTRUCTOR FUNCTION
@@ -12038,13 +12056,13 @@ class mcq {
     *   @param {Function} callback - To inform the shell that init is complete.
     */
     constructor(elRoot, params, adaptor, htmlLayout, jsonContentObj, callback) {
-        adaptor.sendStatement(adaptor.getId(), Object(__WEBPACK_IMPORTED_MODULE_4__utils__["a" /* default */])('started'));
+        adaptor.sendStatement(adaptor.getId(), Object(__WEBPACK_IMPORTED_MODULE_4__utils__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1__mcq_modelview__["a" /* Constants */].STATEMENT_STARTED));
         this.elRoot = elRoot;
         this.params = params;
         this.adaptor = adaptor;
         this.theme = htmlLayout;
         this.content = jsonContentObj;
-        this.userAnswers = [];
+        this.userAnswers = {};
         this[load]();
         if (callback) {
             callback({ backgroundColor: __WEBPACK_IMPORTED_MODULE_1__mcq_modelview__["a" /* Constants */].LAYOUT_COLOR.BG[htmlLayout] });
@@ -12063,7 +12081,7 @@ class mcq {
         this.mcqModel = mcqTransformer.transform();
     }
     [renderView]() {
-        let mcqModelAndView = new __WEBPACK_IMPORTED_MODULE_1__mcq_modelview__["b" /* McqModelAndView */](this.mcqModel);
+        mcqModelAndView = new __WEBPACK_IMPORTED_MODULE_1__mcq_modelview__["b" /* McqModelAndView */](this.mcqModel);
         let htmltemplate = mcqModelAndView.template;
 
         $(this.elRoot).html(htmltemplate);
@@ -12103,6 +12121,7 @@ class mcq {
         $('input[class^=mcqsroption]').attr('disabled', true);
 
         $('li[class^=line-item]').hover(function () {
+            $(this).removeClass('enabled');
             $(this).addClass('disable-li-hover');
         });
         $('label[class^=line-item-label]').hover(function () {
@@ -12125,11 +12144,23 @@ class mcq {
     }
 
     resetAnswers() {
-        console.log('reset called');
+        this.userAnswers = [];
+        mcqModelAndView.resetView();
     }
 
     clearGrades() {
-        console.log('clear grades called');
+        let keys = Object.keys(this.userAnswers);
+
+        $('#mcq-sr li').removeClass('correct');
+        $('#mcq-sr li').removeClass('wrong');
+        $('#mcq-sr li').addClass('enabled');
+        $('#mcq-sr label').removeClass('disable-li-hover');
+        $('#mcq-sr li').removeClass('disable-li-hover');
+        $('#' + this.userAnswers[keys]).closest('li').addClass('highlight');
+        mcqModelAndView.clearGrades();
+
+        console.log(JSON.stringify(this.userAnswers, null, 4));
+        console.log(this.userAnswers[0] + ' clear grades called');
     }
 }
 
@@ -12141,7 +12172,7 @@ class mcq {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mcq_modelview__ = __webpack_require__(7);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mcq_modelview__ = __webpack_require__(2);
 /* global $ */
 
 
@@ -12265,7 +12296,7 @@ class McqTransformer {
 /* 13 */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- Engine Renderer Template -->\r\n<!-- Top level div handler to embed test engine into rendering app -->\r\n<div class=\"mcq-body\" id=\"mcq-engine\">\r\n  <main rv-addclass='content.theme'>\r\n    <section class=\"instructions\" rv-each-instruction=\"content.instructions\">\r\n      <p class=\"instruction\" rv-text=\"instruction\"></p>\r\n    </section>\r\n    <section class=\"interactions mt-md\" rv-unless=\"content.stimuli.0\">\r\n      <section class=\"interaction\" rv-id=\"interaction.id\" rv-each-interaction=\"content.interactions\">\r\n        <p class=\"question-text\" rv-text=\"interaction.questiontext\"></p>\r\n        <!-- prompt Will be shown only if prompt text is available for interaction /-->\r\n        <p class=\"prompt\"></p>\r\n        <ul class=\"options list-unstyled nested-list\" id=\"mcq-mr\" rv-if=\"interaction.MCQMR\">\r\n          <li class=\"line-item option\" rv-each-optionitem=\"interaction.options | propertyList\">\r\n            <label class=\"line-item-label checkbox input-label align-2-item\" rv-for=\"%optionitem%   | idcreator 'option'\">\r\n              <span class=\"pull-left\">\r\n                <i></i>\r\n              </span>\r\n              <span class='option-content' rv-text=\"optionitem.value\">{optionitem.value}</span>\r\n            </label>\r\n            <input class=\"option option-value mcq-option option-input\" rv-id=\"%optionitem%   | idcreator 'option'\" type=\"checkbox\" rv-name=\"optionitem.key\"\r\n              rv-id=\"optionitem.key\" data-val=\"{optionitem.key}\" autocomplete=\"off\" />\r\n          </li>\r\n        </ul>\r\n        <ul class=\"options list-unstyled nested-list\" id=\"mcq-sr\" rv-if=\"interaction.MCQSR\">\r\n          <li class=\"line-item enabled\" rv-each-element=\"interaction.options | propertyList\">\r\n            <label class=\"line-item-label radio radio-lg\" rv-for=\"element.key\">\r\n              <span>\r\n                <i></i>\r\n              </span>\r\n              <span class=\"content option-content\" rv-text=\"element.value\"></span>\r\n            </label>\r\n            <input type=\"radio\" name=\"optionsRadios\" class=\"mcq-option\" rv-id=\"element.key\" rv-value=\"element.value\">\r\n          </li>\r\n        </ul>\r\n      </section>\r\n    </section>\r\n    <section class=\"question\" rv-if=\"content.stimuli.0\">\r\n      <div class=\"row\">\r\n        <div class=\"col-xs-12 col-md-4\" rv-if=\"content.stimuli.0\">\r\n          <section class=\"stimuli\">\r\n            <figure class=\"img-thumbnail\" rv-each-stimuli=\"content.stimuli\">\r\n              <img rv-src=\"stimuli.src\" class=\"img-responsive\">\r\n            </figure>\r\n          </section>\r\n        </div>\r\n        <div class=\"col-xs-12 col-sm-6 col-md-8\">\r\n          <section class=\"interactions mt-md\">\r\n            <section class=\"interaction\" rv-id=\"interaction.id\" rv-each-interaction=\"content.interactions\">\r\n              <p class=\"question-text\" rv-text=\"interaction.questiontext\"></p>\r\n              <!-- prompt Will be shown only if prompt text is available for interaction /-->\r\n              <p class=\"prompt\"></p>\r\n              <ul class=\"options list-unstyled nested-list\" id=\"mcq-mr\" rv-if=\"interaction.MCQMR\">\r\n                <li class=\"line-item option\" rv-each-optionitem=\"interaction.options | propertyList\">\r\n                  <label class=\"line-item-label checkbox input-label align-2-item\" rv-for=\"%optionitem%   | idcreator 'option'\">\r\n                    <span class=\"pull-left\">\r\n                      <i></i>\r\n                    </span>\r\n                    <span class='option-content' rv-text=\"optionitem.value\">{optionitem.value}</span>\r\n                  </label>\r\n                  <input class=\"option option-value mcq-option option-input\" rv-id=\"%optionitem%   | idcreator 'option'\" type=\"checkbox\" rv-name=\"optionitem.key\"\r\n                    rv-id=\"optionitem.key\" data-val=\"{optionitem.key}\" autocomplete=\"off\" />\r\n                </li>\r\n              </ul>\r\n              <ul class=\"options list-unstyled nested-list\" id=\"mcq-sr\" rv-if=\"interaction.MCQSR\">\r\n                <li class=\"line-item enabled\" rv-each-element=\"interaction.options | propertyList\">\r\n                  <label class=\"line-item-label radio radio-lg\" rv-for=\"element.key\">\r\n                    <span>\r\n                      <i></i>\r\n                    </span>\r\n                    <span class=\"content option-content\" rv-text=\"element.value\"></span>\r\n                  </label>\r\n                  <input type=\"radio\" name=\"optionsRadios\" class=\"mcq-option\" rv-id=\"element.key\" rv-value=\"element.value\">\r\n                </li>\r\n              </ul>\r\n            </section>\r\n          </section>\r\n        </div>\r\n      </div>\r\n    </section>\r\n    <section class=\"feedback\">\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-12 col-md-12\">\r\n          <div class=\"alert alert-success align-2-item\" role=\"alert\" rv-show=\"showFeedback.correct\">\r\n            <span>\r\n              <i class=\"fa fa-2x fa-smile-o\"></i>&nbsp;</span>\r\n            <span rv-text=\"feedback.global.correct\"></span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-12 col-md-12\">\r\n          <div class=\"alert alert-danger align-2-item\" role=\"alert\" rv-show=\"showFeedback.incorrect\">\r\n            <span>\r\n              <i class=\"fa fa-2x fa-meh-o\"></i>\r\n            </span>&nbsp;\r\n            <span rv-text=\"feedback.global.incorrect\"></span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-6 col-md-6\">\r\n          <div class=\"alert alert-warning align-2-item\" role=\"alert\" rv-show=\"showFeedback.empty\">\r\n            <span>\r\n              <i class=\"fa fa-2x fa-meh-o\"></i>&nbsp;</span>\r\n            <span rv-text=\"feedback.global.empty\"></span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n  </main>\r\n</div>";
+module.exports = "<!-- Engine Renderer Template -->\r\n<!-- Top level div handler to embed test engine into rendering app -->\r\n<div class=\"mcq-body\" id=\"mcq-engine\">\r\n  <main rv-addclass='content.theme'>\r\n    <section class=\"instructions\" rv-each-instruction=\"content.instructions\">\r\n      <p class=\"instruction\" rv-text=\"instruction\"></p>\r\n    </section>\r\n    <section class=\"interactions mt-md\" rv-unless=\"content.stimuli.0\">\r\n      <section class=\"interaction\" rv-id=\"interaction.id\" rv-each-interaction=\"content.interactions\">\r\n        <p class=\"question-text\" rv-text=\"interaction.questiontext\"></p>\r\n        <!-- prompt Will be shown only if prompt text is available for interaction /-->\r\n        <p class=\"prompt\"></p>\r\n        <ul class=\"options list-unstyled nested-list\" id=\"mcq-mr\" rv-if=\"interaction.MCQMR\">\r\n          <li class=\"line-item option\" rv-each-optionitem=\"interaction.options | propertyList\">\r\n            <label class=\"line-item-label checkbox input-label align-2-item\" rv-for=\"%optionitem%   | idcreator 'option'\">\r\n              <span class=\"pull-left\">\r\n                <i></i>\r\n              </span>\r\n              <span class='option-content' rv-text=\"optionitem.value\">{optionitem.value}</span>\r\n            </label>\r\n            <input class=\"option option-value mcq-option option-input\" rv-id=\"%optionitem%   | idcreator 'option'\" type=\"checkbox\" rv-name=\"optionitem.key\"\r\n              rv-id=\"optionitem.key\" data-val=\"{optionitem.key}\" autocomplete=\"off\" />\r\n          </li>\r\n        </ul>\r\n        <ul class=\"options list-unstyled nested-list\" id=\"mcq-sr\" rv-if=\"interaction.MCQSR\">\r\n          <li class=\"line-item enabled\" rv-each-element=\"interaction.options | propertyList\">\r\n            <label class=\"line-item-label radio radio-lg\" rv-for=\"element.key\">\r\n              <span>\r\n                <i></i>\r\n              </span>\r\n              <span class=\"content option-content\" rv-text=\"element.value\"></span>\r\n            </label>\r\n            <input type=\"radio\" name=\"optionsRadios\" class=\"mcq-option\" rv-id=\"element.key\" rv-value=\"element.value\">\r\n          </li>\r\n        </ul>\r\n      </section>\r\n    </section>\r\n    <section class=\"question\" rv-if=\"content.stimuli.0\">\r\n      <div class=\"row\">\r\n        <div class=\"col-xs-12 col-md-4\" rv-if=\"content.stimuli.0\">\r\n          <section class=\"stimuli\">\r\n            <figure class=\"img-thumbnail\" rv-each-stimuli=\"content.stimuli\">\r\n              <img rv-src=\"stimuli.src\" class=\"img-responsive\">\r\n            </figure>\r\n          </section>\r\n        </div>\r\n        <div class=\"col-xs-12 col-sm-6 col-md-8\">\r\n          <section class=\"interactions mt-md\">\r\n            <section class=\"interaction\" rv-id=\"interaction.id\" rv-each-interaction=\"content.interactions\">\r\n              <p class=\"question-text\" rv-text=\"interaction.questiontext\"></p>\r\n              <!-- prompt Will be shown only if prompt text is available for interaction /-->\r\n              <p class=\"prompt\"></p>\r\n              <ul class=\"options list-unstyled nested-list\" id=\"mcq-mr\" rv-if=\"interaction.MCQMR\">\r\n                <li class=\"line-item option\" rv-each-optionitem=\"interaction.options | propertyList\">\r\n                  <label class=\"line-item-label checkbox input-label align-2-item\" rv-for=\"%optionitem%   | idcreator 'option'\">\r\n                    <span class=\"pull-left\">\r\n                      <i></i>\r\n                    </span>\r\n                    <span class='option-content' rv-text=\"optionitem.value\">{optionitem.value}</span>\r\n                  </label>\r\n                  <input class=\"option option-value mcq-option option-input\" rv-id=\"%optionitem%   | idcreator 'option'\" type=\"checkbox\" rv-name=\"optionitem.key\"\r\n                    rv-id=\"optionitem.key\" data-val=\"{optionitem.key}\" autocomplete=\"off\" />\r\n                </li>\r\n              </ul>\r\n              <ul class=\"options list-unstyled nested-list\" id=\"mcq-sr\" rv-if=\"interaction.MCQSR\">\r\n                <li class=\"line-item enabled\" rv-each-element=\"interaction.options | propertyList\">\r\n                  <label class=\"line-item-label radio radio-lg\" rv-for=\"element.key\">\r\n                    <span>\r\n                      <i></i>\r\n                    </span>\r\n                    <span class=\"content option-content\" rv-text=\"element.value\"></span>\r\n                  </label>\r\n                  <input type=\"radio\" name=\"optionsRadios\" class=\"mcq-option\" rv-id=\"element.key\" rv-value=\"element.value\">\r\n                </li>\r\n              </ul>\r\n            </section>\r\n          </section>\r\n        </div>\r\n      </div>\r\n    </section>\r\n    <section class=\"feedback\">\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-12 col-md-12\">\r\n          <div class=\"alert alert-success align-2-item\" role=\"alert\" rv-show=\"showFeedback.feedbackState.correct\">\r\n            <span>\r\n              <i class=\"fa fa-2x fa-smile-o\"></i>&nbsp;</span>\r\n            <span rv-text=\"feedback.global.correct\"></span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-12 col-md-12\">\r\n          <div class=\"alert alert-danger align-2-item\" role=\"alert\" rv-show=\"showFeedback.feedbackState.incorrect\">\r\n            <span>\r\n              <i class=\"fa fa-2x fa-meh-o\"></i>\r\n            </span>&nbsp;\r\n            <span rv-text=\"feedback.global.incorrect\"></span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-sm-6 col-md-6\">\r\n          <div class=\"alert alert-warning align-2-item\" role=\"alert\" rv-show=\"showFeedback.feedbackState.empty\">\r\n            <span>\r\n              <i class=\"fa fa-2x fa-meh-o\"></i>&nbsp;</span>\r\n            <span rv-text=\"feedback.global.empty\"></span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n  </main>\r\n</div>";
 
 /***/ }),
 /* 14 */
@@ -12282,7 +12313,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(5)(content, options);
+var update = __webpack_require__(6)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -12302,12 +12333,12 @@ if(false) {
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(4)(undefined);
+exports = module.exports = __webpack_require__(5)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "/*******************************************************\r\n * \r\n * ----------------------\r\n * Engine Renderer Styles\r\n * ----------------------\r\n *\r\n * These styles do not include any product-specific branding\r\n * and/or layout / design. They represent minimal structural\r\n * SCSS which is necessary for a default rendering of an\r\n * DND2 activity\r\n *\r\n * The styles are linked/depending on the presence of\r\n * certain elements (classes / ids / tags) in the DOM (as would\r\n * be injected via a valid DND2 layout HTML and/or dynamically\r\n * created by the DND2 engine JS)\r\n *\r\n *\r\n *******************************************************/\nmain {\n  margin: 20px;\n  font-size: 1.3em; }\n\n.instructions {\n  color: #5c5c5c;\n  font-style: italic; }\n\n.color-lightgray {\n  color: #5c5c5c; }\n\n.mt-md {\n  margin-top: 20px; }\n\nul {\n  list-style: none; }\n\n.option-content {\n  color: #494949;\n  font-weight: 500;\n  margin: 0 0 0 10px; }\n\n.question-text {\n  color: #414040;\n  padding-bottom: 10px;\n  font-weight: 700; }\n\n.mcq-option {\n  position: absolute;\n  left: -999px; }\n\n#mcq-sr {\n  position: relative; }\n  #mcq-sr li {\n    background-color: #f7fbff;\n    padding-left: 10px;\n    position: static;\n    border: 1px solid #dddddd;\n    margin-top: 15px; }\n    #mcq-sr li:hover {\n      background: #fdf9e6;\n      cursor: pointer; }\n    #mcq-sr li.highlight {\n      background-color: #f7fbff;\n      border-radius: 6px;\n      border-bottom: 1px solid #dddddd; }\n      #mcq-sr li.highlight i {\n        border-color: #3276b1; }\n        #mcq-sr li.highlight i:after {\n          opacity: 1; }\n    #mcq-sr li i {\n      height: 2.6em;\n      width: 2.6em;\n      border-radius: 50%;\n      display: block;\n      outline: 0;\n      border: 1px solid #bdbdbd;\n      background: #ffffff;\n      padding: 10px;\n      position: relative; }\n      #mcq-sr li i:after {\n        background-color: #3276b1;\n        content: '';\n        border-radius: 50%;\n        height: 1.7em;\n        width: 1.7em;\n        top: .41em;\n        left: .40em;\n        position: absolute;\n        opacity: 0; }\n    #mcq-sr li .radio {\n      font-size: 1em;\n      color: #3b3b3b;\n      cursor: pointer;\n      text-align: left;\n      display: flex;\n      align-items: center; }\n      #mcq-sr li .radio input {\n        position: absolute;\n        left: -9999px; }\n      #mcq-sr li .radio .option-value {\n        position: static !important; }\n        #mcq-sr li .radio .option-value .input-option {\n          width: 80%; }\n      #mcq-sr li .radio .correct-answer {\n        font-weight: 700; }\n      #mcq-sr li .radio div.option-value {\n        display: inline-block; }\n    #mcq-sr li.wrong i {\n      border-color: red; }\n      #mcq-sr li.wrong i:after {\n        opacity: 0.7;\n        background-color: #ffffff;\n        content: \"\\F00D\";\n        color: red;\n        font-family: fontawesome;\n        font-size: 1.5em;\n        position: absolute;\n        left: 0.46em;\n        top: 0.10em;\n        font-weight: 400;\n        font-style: normal;\n        height: 1em;\n        width: 1em; }\n    #mcq-sr li.correct i {\n      border-color: green; }\n      #mcq-sr li.correct i:after {\n        opacity: 0.7;\n        content: \"\\F00C\";\n        color: green;\n        background-color: #ffffff;\n        font-family: fontawesome;\n        font-size: 1.4em;\n        position: absolute;\n        left: 0.41em;\n        top: 0.20em;\n        font-weight: 400;\n        font-style: normal;\n        height: 1.2em;\n        width: 1.2em; }\n  #mcq-sr ul li .optionlabel {\n    width: 100%; }\n\n#mcq-mr {\n  position: relative; }\n  #mcq-mr li {\n    min-height: 2.8em;\n    background-color: #f7fbff;\n    padding-left: 10px;\n    position: static;\n    border: 1px solid #dddddd;\n    margin-top: 15px; }\n    #mcq-mr li:hover {\n      background: #fdf9e6;\n      cursor: pointer; }\n    #mcq-mr li.highlight {\n      background-color: #f7fbff;\n      border-radius: 6px;\n      border-bottom: 1px solid #dddddd; }\n      #mcq-mr li.highlight i {\n        border-color: #3276b1; }\n        #mcq-mr li.highlight i:after {\n          opacity: 1; }\n    #mcq-mr li i {\n      height: 2.6em;\n      width: 2.6em;\n      border-radius: 0;\n      position: relative;\n      top: 0;\n      left: 0;\n      display: block;\n      outline: 0;\n      border: 1px solid #bdbdbd;\n      background: #ffffff; }\n      #mcq-mr li i:after {\n        background-color: #3276b1;\n        content: '';\n        border-radius: 0;\n        height: 1.6em;\n        width: 1.6em;\n        top: .45em;\n        left: .45em;\n        position: absolute;\n        opacity: 0; }\n    #mcq-mr li .checkbox {\n      font-size: 1em;\n      line-height: 2em;\n      color: #3b3b3b;\n      cursor: pointer; }\n      #mcq-mr li .checkbox input {\n        position: absolute;\n        left: -999px; }\n    #mcq-mr li.wrong i {\n      border-color: red; }\n      #mcq-mr li.wrong i:after {\n        opacity: 0.7;\n        background-color: #ffffff;\n        content: \"\\F00D\";\n        color: red;\n        font-family: fontawesome;\n        font-size: 1.8em;\n        position: absolute;\n        left: 0.31em;\n        top: 0.11em;\n        font-weight: 400;\n        font-style: normal;\n        height: 1em;\n        width: 1em; }\n    #mcq-mr li.correct i {\n      border-color: green; }\n      #mcq-mr li.correct i:after {\n        opacity: 0.7;\n        background-color: #ffffff;\n        content: \"\\F00C\";\n        color: green;\n        font-family: fontawesome;\n        font-size: 1.8em;\n        position: absolute;\n        left: 0.21em;\n        top: 0.11em;\n        font-weight: 400;\n        font-style: normal;\n        height: 1em;\n        width: 1em; }\n\n.feedback .alert-sucess {\n  background-color: #f2fdee; }\n\n.feedback .alert-danger {\n  background-color: #fdeeee; }\n\n.align-2-item {\n  display: flex;\n  align-items: center; }\n\n.disable-li-hover {\n  cursor: default; }\n  .disable-li-hover:hover {\n    background-color: #f7fbff !important;\n    cursor: default !important; }\n\nli:hover {\n  background: #fdf9e6; }\n\nli:hover {\n  background: #fdf9e6; }\n\n@media screen and (min-width: 1005px) {\n  .stimuli {\n    margin: 20px 0 0 0; } }\n\n@media screen and (max-width: 1000px) {\n  .stimuli {\n    padding: 0 0 0 0; } }\n\n.main-dark {\n  background-color: #222222; }\n  .main-dark .instructions {\n    color: #ffffff; }\n  .main-dark .question-text {\n    color: #ffffff; }\n  .main-dark .option-content {\n    color: #eae9e9; }\n  .main-dark .feedback .alert-success {\n    background-color: #363636;\n    color: #40fd21;\n    border: 1px solid #494949; }\n  .main-dark .feedback .alert-danger {\n    background-color: #363636;\n    color: #ff3b3b;\n    border: 1px solid #494949; }\n  .main-dark #mcq-sr li {\n    background-color: #363636;\n    border: 1px solid #494949; }\n    .main-dark #mcq-sr li:hover {\n      background: #1d1d1d;\n      cursor: pointer; }\n    .main-dark #mcq-sr li.highlight {\n      background-color: black;\n      border-bottom: 1px solid #494949;\n      color: #1d1d1d; }\n      .main-dark #mcq-sr li.highlight i {\n        border: 1px solid #44bafe; }\n      .main-dark #mcq-sr li.highlight:after span {\n        color: #eae9e9; }\n    .main-dark #mcq-sr li i {\n      border: 1px solid #5c5c5c;\n      background: #363636; }\n      .main-dark #mcq-sr li i:after {\n        background-color: #44bafe;\n        border: 1px solid #44bafe; }\n    .main-dark #mcq-sr li .radio {\n      color: #eae9e9; }\n    .main-dark #mcq-sr li.wrong i:after {\n      color: #ff3b3b;\n      background: #363636;\n      border: none; }\n    .main-dark #mcq-sr li.correct i:after {\n      color: #40fd21;\n      background: #363636;\n      border: none; }\n  .main-dark #mcq-mr li {\n    background-color: #363636;\n    border: 1px solid #5c5c5c; }\n    .main-dark #mcq-mr li:hover {\n      background: #1d1d1d; }\n    .main-dark #mcq-mr li.highlight {\n      background-color: black;\n      border-bottom: 1px solid #494949;\n      color: #1d1d1d; }\n      .main-dark #mcq-mr li.highlight i {\n        border: 1px solid #44bafe; }\n    .main-dark #mcq-mr li i {\n      border: 1px solid #5c5c5c;\n      background: #363636; }\n      .main-dark #mcq-mr li i:after {\n        background-color: #44bafe;\n        border: 1px solid #44bafe; }\n    .main-dark #mcq-mr li .checkbox {\n      color: #6e6c6c; }\n    .main-dark #mcq-mr li.wrong i:after {\n      background: #363636;\n      color: #ff3b3b;\n      border: none; }\n    .main-dark #mcq-mr li.correct i:after {\n      background: #363636;\n      color: #40fd21;\n      border: none; }\n  .main-dark li:hover {\n    background: #1d1d1d; }\n  .main-dark .disable-li-hover:hover {\n    background-color: #363636 !important; }\n\n.align-2-item {\n  display: flex;\n  align-items: center; }\n\n.disable-li-hover {\n  cursor: default; }\n\n.main-light {\n  background-color: #f6f6f6; }\n  .main-light .instructions {\n    color: #535353; }\n  .main-light .question-text {\n    color: #535353; }\n  .main-light .option-content {\n    color: #3b3b3b; }\n  .main-light .feedback .alert-success {\n    background-color: #f2fdee;\n    border: 1px solid #dbdbdb;\n    color: #188d2c; }\n  .main-light .feedback .alert-danger {\n    background-color: #fdeeee;\n    border: 1px solid #ffe0e0;\n    color: #e30e0e; }\n  .main-light #mcq-sr li {\n    background-color: #ffffff;\n    border: 1px solid #dbdbdb; }\n    .main-light #mcq-sr li:hover {\n      background: #f2fef4;\n      cursor: pointer; }\n    .main-light #mcq-sr li.highlight {\n      background-color: #f2fef4;\n      border-radius: 6px;\n      border-bottom: 1px solid #dbdbdb; }\n      .main-light #mcq-sr li.highlight i {\n        border-color: #2e9940; }\n    .main-light #mcq-sr li i {\n      border: 1px solid #dbdbdb;\n      background: #ffffff; }\n      .main-light #mcq-sr li i:after {\n        background-color: #44bafe; }\n    .main-light #mcq-sr li .radio {\n      color: #ffffff; }\n  .main-light #mcq-sr.wrong i {\n    border-color: #e30e0e; }\n    .main-light #mcq-sr.wrong i:after {\n      background-color: #ffffff;\n      color: #e30e0e; }\n  .main-light #mcq-sr.correct i {\n    border-color: #188d2c; }\n    .main-light #mcq-sr.correct i:after {\n      color: #188d2c;\n      background-color: #ffffff; }\n  .main-light #mcq-mr li {\n    background-color: #ffffff;\n    border: 1px solid #dbdbdb; }\n    .main-light #mcq-mr li:hover {\n      background: #f2fef4; }\n    .main-light #mcq-mr li.highlight {\n      background-color: #f2fef4;\n      border-radius: 6px;\n      border-bottom: 1px solid #dbdbdb; }\n      .main-light #mcq-mr li.highlight i {\n        border-color: #2e9940; }\n    .main-light #mcq-mr li i {\n      border: 1px solid #dbdbdb;\n      background: #ffffff; }\n      .main-light #mcq-mr li i:after {\n        background-color: #44bfae; }\n    .main-light #mcq-mr li .checkbox {\n      color: #3b3b3b; }\n    .main-light #mcq-mr li.wrong i {\n      border-color: #e30e01; }\n      .main-light #mcq-mr li.wrong i:after {\n        background-color: #ffffff;\n        color: #e30e01;\n        border: none; }\n    .main-light #mcq-mr li.correct i {\n      border-color: #188d2c; }\n      .main-light #mcq-mr li.correct i:after {\n        background-color: #ffffff;\n        color: #188d2c;\n        border: none; }\n  .main-light li:hover {\n    background: #f2fef4; }\n  .main-light .disable-li-hover:hover {\n    background-color: #dbdbdb !important;\n    cursor: default !important; }\n\n.align-2-item {\n  display: flex;\n  align-items: center; }\n\n.disable-li-hover {\n  cursor: default; }\n", ""]);
+exports.push([module.i, "/*******************************************************\r\n * \r\n * ----------------------\r\n * Engine Renderer Styles\r\n * ----------------------\r\n *\r\n * These styles do not include any product-specific branding\r\n * and/or layout / design. They represent minimal structural\r\n * SCSS which is necessary for a default rendering of an\r\n * DND2 activity\r\n *\r\n * The styles are linked/depending on the presence of\r\n * certain elements (classes / ids / tags) in the DOM (as would\r\n * be injected via a valid DND2 layout HTML and/or dynamically\r\n * created by the DND2 engine JS)\r\n *\r\n *\r\n *******************************************************/\nmain {\n  margin: 20px;\n  font-size: 1.3em; }\n\n.instructions {\n  color: #5c5c5c;\n  font-style: italic; }\n\n.color-lightgray {\n  color: #5c5c5c; }\n\n.mt-md {\n  margin-top: 20px; }\n\nul {\n  list-style: none; }\n\n.option-content {\n  color: #494949;\n  font-weight: 500;\n  margin: 0 0 0 10px; }\n\n.question-text {\n  color: #414040;\n  padding-bottom: 10px;\n  font-weight: 700; }\n\n.mcq-option {\n  position: absolute;\n  left: -999px; }\n\n#mcq-sr {\n  position: relative; }\n  #mcq-sr li {\n    background-color: #f7fbff;\n    padding-left: 10px;\n    position: static;\n    border: 1px solid #dddddd;\n    margin-top: 15px; }\n    #mcq-sr li:hover {\n      background: #fdf9e6;\n      cursor: pointer; }\n    #mcq-sr li.highlight {\n      background-color: #f7fbff;\n      border-radius: 6px;\n      border-bottom: 1px solid #dddddd; }\n      #mcq-sr li.highlight i {\n        border-color: #3276b1; }\n        #mcq-sr li.highlight i:after {\n          opacity: 1; }\n    #mcq-sr li i {\n      height: 2.6em;\n      width: 2.6em;\n      border-radius: 50%;\n      display: block;\n      outline: 0;\n      border: 1px solid #bdbdbd;\n      background: #ffffff;\n      padding: 10px;\n      position: relative; }\n      #mcq-sr li i:after {\n        background-color: #3276b1;\n        content: '';\n        border-radius: 50%;\n        height: 1.7em;\n        width: 1.7em;\n        top: .41em;\n        left: .40em;\n        position: absolute;\n        opacity: 0; }\n    #mcq-sr li .radio {\n      font-size: 1em;\n      color: #3b3b3b;\n      cursor: pointer;\n      text-align: left;\n      display: flex;\n      align-items: center; }\n      #mcq-sr li .radio input {\n        position: absolute;\n        left: -9999px; }\n      #mcq-sr li .radio .option-value {\n        position: static !important; }\n        #mcq-sr li .radio .option-value .input-option {\n          width: 80%; }\n      #mcq-sr li .radio .correct-answer {\n        font-weight: 700; }\n      #mcq-sr li .radio div.option-value {\n        display: inline-block; }\n    #mcq-sr li.wrong i {\n      border-color: red; }\n      #mcq-sr li.wrong i:after {\n        opacity: 0.7;\n        background-color: #ffffff;\n        content: \"\\F00D\";\n        color: red;\n        font-family: fontawesome;\n        font-size: 1.5em;\n        position: absolute;\n        left: 0.46em;\n        top: 0.10em;\n        font-weight: 400;\n        font-style: normal;\n        height: 1em;\n        width: 1em; }\n    #mcq-sr li.correct i {\n      border-color: green; }\n      #mcq-sr li.correct i:after {\n        opacity: 0.7;\n        content: \"\\F00C\";\n        color: green;\n        background-color: #ffffff;\n        font-family: fontawesome;\n        font-size: 1.4em;\n        position: absolute;\n        left: 0.41em;\n        top: 0.20em;\n        font-weight: 400;\n        font-style: normal;\n        height: 1.2em;\n        width: 1.2em; }\n  #mcq-sr ul li .optionlabel {\n    width: 100%; }\n\n#mcq-mr {\n  position: relative; }\n  #mcq-mr li {\n    min-height: 2.8em;\n    background-color: #f7fbff;\n    padding-left: 10px;\n    position: static;\n    border: 1px solid #dddddd;\n    margin-top: 15px; }\n    #mcq-mr li:hover {\n      background: #fdf9e6;\n      cursor: pointer; }\n    #mcq-mr li.highlight {\n      background-color: #f7fbff;\n      border-radius: 6px;\n      border-bottom: 1px solid #dddddd; }\n      #mcq-mr li.highlight i {\n        border-color: #3276b1; }\n        #mcq-mr li.highlight i:after {\n          opacity: 1; }\n    #mcq-mr li i {\n      height: 2.6em;\n      width: 2.6em;\n      border-radius: 0;\n      position: relative;\n      top: 0;\n      left: 0;\n      display: block;\n      outline: 0;\n      border: 1px solid #bdbdbd;\n      background: #ffffff; }\n      #mcq-mr li i:after {\n        background-color: #3276b1;\n        content: '';\n        border-radius: 0;\n        height: 1.6em;\n        width: 1.6em;\n        top: .45em;\n        left: .45em;\n        position: absolute;\n        opacity: 0; }\n    #mcq-mr li .checkbox {\n      font-size: 1em;\n      line-height: 2em;\n      color: #3b3b3b;\n      cursor: pointer; }\n      #mcq-mr li .checkbox input {\n        position: absolute;\n        left: -999px; }\n    #mcq-mr li.wrong i {\n      border-color: red; }\n      #mcq-mr li.wrong i:after {\n        opacity: 0.7;\n        background-color: #ffffff;\n        content: \"\\F00D\";\n        color: red;\n        font-family: fontawesome;\n        font-size: 1.8em;\n        position: absolute;\n        left: 0.31em;\n        top: 0.11em;\n        font-weight: 400;\n        font-style: normal;\n        height: 1em;\n        width: 1em; }\n    #mcq-mr li.correct i {\n      border-color: green; }\n      #mcq-mr li.correct i:after {\n        opacity: 0.7;\n        background-color: #ffffff;\n        content: \"\\F00C\";\n        color: green;\n        font-family: fontawesome;\n        font-size: 1.8em;\n        position: absolute;\n        left: 0.21em;\n        top: 0.11em;\n        font-weight: 400;\n        font-style: normal;\n        height: 1em;\n        width: 1em; }\n\n.feedback .alert-sucess {\n  background-color: #f2fdee; }\n\n.feedback .alert-danger {\n  background-color: #fdeeee; }\n\n.align-2-item {\n  display: flex;\n  align-items: center; }\n\nli:hover {\n  background: #fdf9e6; }\n\nli:hover {\n  background: #fdf9e6; }\n\n.disable-li-hover {\n  cursor: default; }\n  .disable-li-hover:hover {\n    background-color: #f7fbff !important;\n    cursor: default !important; }\n\n@media screen and (min-width: 1005px) {\n  .stimuli {\n    margin: 20px 0 0 0; } }\n\n@media screen and (max-width: 1000px) {\n  .stimuli {\n    padding: 0 0 0 0; } }\n\n.main-dark {\n  background-color: #222222; }\n  .main-dark .instructions {\n    color: #ffffff; }\n  .main-dark .question-text {\n    color: #ffffff; }\n  .main-dark .option-content {\n    color: #eae9e9; }\n  .main-dark .feedback .alert-success {\n    background-color: #363636;\n    color: #40fd21;\n    border: 1px solid #494949; }\n  .main-dark .feedback .alert-danger {\n    background-color: #363636;\n    color: #ff3b3b;\n    border: 1px solid #494949; }\n  .main-dark #mcq-sr li {\n    background-color: #363636;\n    border: 1px solid #494949; }\n    .main-dark #mcq-sr li:hover {\n      background: #1d1d1d;\n      cursor: pointer; }\n    .main-dark #mcq-sr li.highlight {\n      background-color: black;\n      border-bottom: 1px solid #494949;\n      color: #1d1d1d; }\n      .main-dark #mcq-sr li.highlight i {\n        border: 1px solid #44bafe; }\n      .main-dark #mcq-sr li.highlight:after span {\n        color: #eae9e9; }\n    .main-dark #mcq-sr li i {\n      border: 1px solid #5c5c5c;\n      background: #363636; }\n      .main-dark #mcq-sr li i:after {\n        background-color: #44bafe;\n        border: 1px solid #44bafe; }\n    .main-dark #mcq-sr li .radio {\n      color: #eae9e9; }\n    .main-dark #mcq-sr li.wrong i:after {\n      color: #ff3b3b;\n      background: #363636;\n      border: none; }\n    .main-dark #mcq-sr li.correct i:after {\n      color: #40fd21;\n      background: #363636;\n      border: none; }\n  .main-dark #mcq-mr li {\n    background-color: #363636;\n    border: 1px solid #5c5c5c; }\n    .main-dark #mcq-mr li:hover {\n      background: #1d1d1d; }\n    .main-dark #mcq-mr li.highlight {\n      background-color: black;\n      border-bottom: 1px solid #494949;\n      color: #1d1d1d; }\n      .main-dark #mcq-mr li.highlight i {\n        border: 1px solid #44bafe; }\n    .main-dark #mcq-mr li i {\n      border: 1px solid #5c5c5c;\n      background: #363636; }\n      .main-dark #mcq-mr li i:after {\n        background-color: #44bafe;\n        border: 1px solid #44bafe; }\n    .main-dark #mcq-mr li .checkbox {\n      color: #6e6c6c; }\n    .main-dark #mcq-mr li.wrong i:after {\n      background: #363636;\n      color: #ff3b3b;\n      border: none; }\n    .main-dark #mcq-mr li.correct i:after {\n      background: #363636;\n      color: #40fd21;\n      border: none; }\n  .main-dark li:hover {\n    background: #1d1d1d; }\n  .main-dark .disable-li-hover:hover {\n    background-color: #363636 !important; }\n\n.align-2-item {\n  display: flex;\n  align-items: center; }\n\n.disable-li-hover {\n  cursor: default; }\n\n.main-light {\n  background-color: #f6f6f6; }\n  .main-light .instructions {\n    color: #535353; }\n  .main-light .question-text {\n    color: #535353; }\n  .main-light .option-content {\n    color: #3b3b3b; }\n  .main-light .feedback .alert-success {\n    background-color: #f2fdee;\n    border: 1px solid #dbdbdb;\n    color: #188d2c; }\n  .main-light .feedback .alert-danger {\n    background-color: #fdeeee;\n    border: 1px solid #ffe0e0;\n    color: #e30e0e; }\n  .main-light #mcq-sr li {\n    background-color: #ffffff;\n    border: 1px solid #dbdbdb; }\n    .main-light #mcq-sr li:hover {\n      background: #f2fef4;\n      cursor: pointer; }\n    .main-light #mcq-sr li.highlight {\n      background-color: #f2fef4;\n      border-radius: 6px;\n      border-bottom: 1px solid #dbdbdb; }\n      .main-light #mcq-sr li.highlight i {\n        border-color: #2e9940; }\n    .main-light #mcq-sr li i {\n      border: 1px solid #dbdbdb;\n      background: #ffffff; }\n      .main-light #mcq-sr li i:after {\n        background-color: #44bafe; }\n    .main-light #mcq-sr li .radio {\n      color: #ffffff; }\n  .main-light #mcq-sr.wrong i {\n    border-color: #e30e0e; }\n    .main-light #mcq-sr.wrong i:after {\n      background-color: #ffffff;\n      color: #e30e0e; }\n  .main-light #mcq-sr.correct i {\n    border-color: #188d2c; }\n    .main-light #mcq-sr.correct i:after {\n      color: #188d2c;\n      background-color: #ffffff; }\n  .main-light #mcq-mr li {\n    background-color: #ffffff;\n    border: 1px solid #dbdbdb; }\n    .main-light #mcq-mr li:hover {\n      background: #f2fef4; }\n    .main-light #mcq-mr li.highlight {\n      background-color: #f2fef4;\n      border-radius: 6px;\n      border-bottom: 1px solid #dbdbdb; }\n      .main-light #mcq-mr li.highlight i {\n        border-color: #2e9940; }\n    .main-light #mcq-mr li i {\n      border: 1px solid #dbdbdb;\n      background: #ffffff; }\n      .main-light #mcq-mr li i:after {\n        background-color: #44bfae; }\n    .main-light #mcq-mr li .checkbox {\n      color: #3b3b3b; }\n    .main-light #mcq-mr li.wrong i {\n      border-color: #e30e01; }\n      .main-light #mcq-mr li.wrong i:after {\n        background-color: #ffffff;\n        color: #e30e01;\n        border: none; }\n    .main-light #mcq-mr li.correct i {\n      border-color: #188d2c; }\n      .main-light #mcq-mr li.correct i:after {\n        background-color: #ffffff;\n        color: #188d2c;\n        border: none; }\n  .main-light li:hover {\n    background: #f2fef4; }\n  .main-light .disable-li-hover:hover {\n    background-color: #dbdbdb !important;\n    cursor: default !important; }\n\n.align-2-item {\n  display: flex;\n  align-items: center; }\n\n.disable-li-hover {\n  cursor: default; }\n", ""]);
 
 // exports
 
@@ -12369,9 +12400,11 @@ class McqEvents {
             let currentTarget = event.currentTarget;
             let currentInteractionId = currentTarget.parentElement.parentElement.getAttribute('id');
 
+            console.log('Called handleButton');
             $('#mcq-sr li').removeClass('highlight');
             $(currentTarget).addClass('highlight');
             this.McqInstance.userAnswers[currentInteractionId] = $(event.currentTarget).children('input').attr('id');
+            console.log(JSON.stringify(this.McqInstance.userAnswers, null, 4));
             this.mcqResponseProcessor.savePartial(currentInteractionId, this.McqInstance);
         };
 

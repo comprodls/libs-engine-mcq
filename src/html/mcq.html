@@ -81,7 +81,7 @@
     <section class="feedback">
       <div class="row">
         <div class="col-sm-12 col-md-12">
-          <div class="alert alert-success align-2-item" role="alert" rv-show="showFeedback.correct">
+          <div class="alert alert-success align-2-item" role="alert" rv-show="showFeedback.feedbackState.correct">
             <span>
               <i class="fa fa-2x fa-smile-o"></i>&nbsp;</span>
             <span rv-text="feedback.global.correct"></span>
@@ -90,7 +90,7 @@
       </div>
       <div class="row">
         <div class="col-sm-12 col-md-12">
-          <div class="alert alert-danger align-2-item" role="alert" rv-show="showFeedback.incorrect">
+          <div class="alert alert-danger align-2-item" role="alert" rv-show="showFeedback.feedbackState.incorrect">
             <span>
               <i class="fa fa-2x fa-meh-o"></i>
             </span>&nbsp;
@@ -100,7 +100,7 @@
       </div>
       <div class="row">
         <div class="col-sm-6 col-md-6">
-          <div class="alert alert-warning align-2-item" role="alert" rv-show="showFeedback.empty">
+          <div class="alert alert-warning align-2-item" role="alert" rv-show="showFeedback.feedbackState.empty">
             <span>
               <i class="fa fa-2x fa-meh-o"></i>&nbsp;</span>
             <span rv-text="feedback.global.empty"></span>

@@ -259,20 +259,22 @@ ul {
     align-items: center;
 }
 
+
+
+li:hover {
+    background: $color_early_dawn_approx;
+}
+
+li:hover {
+    background: $color_early_dawn_approx;
+}
+
 .disable-li-hover {
     cursor: default;
     &:hover {
         background-color: $color_zircon_approx !important;
         cursor: default !important;
     }
-}
-
-li:hover {
-    background: $color_early_dawn_approx;
-}
-
-li:hover {
-    background: $color_early_dawn_approx;
 }
 
 @media screen and (min-width: 1005px) {

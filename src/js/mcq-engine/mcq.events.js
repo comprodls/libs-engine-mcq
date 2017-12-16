@@ -50,9 +50,11 @@ bindEvents() {
          let currentTarget = event.currentTarget;
          let currentInteractionId = currentTarget.parentElement.parentElement.getAttribute('id');
 
+         console.log('Called handleButton');
          $('#mcq-sr li').removeClass('highlight');
          $(currentTarget).addClass('highlight');
          this.McqInstance.userAnswers[currentInteractionId] = $(event.currentTarget).children('input').attr('id');
+         console.log(JSON.stringify(this.McqInstance.userAnswers, null, 4));
          this.mcqResponseProcessor
          .savePartial(currentInteractionId, this.McqInstance);
      };

@@ -9,6 +9,7 @@ const load = Symbol('loadMCQ');
 const transform = Symbol('transformMCQ');
 const renderView = Symbol('renderMCQ');
 const bindEvents = Symbol('bindEvents');
+let mcqModelAndView = null;
 
 class mcq {
      /**  ENGINE-SHELL CONSTRUCTOR FUNCTION
@@ -23,13 +24,13 @@ class mcq {
      *   @param {Function} callback - To inform the shell that init is complete.
      */
     constructor(elRoot, params, adaptor, htmlLayout, jsonContentObj, callback) {
-    adaptor.sendStatement(adaptor.getId(), generateStatement('started'));
+    adaptor.sendStatement(adaptor.getId(), generateStatement(Constants.STATEMENT_STARTED));
       this.elRoot = elRoot;
       this.params = params;
       this.adaptor = adaptor;
       this.theme = htmlLayout;
       this.content = jsonContentObj;
-      this.userAnswers = [];
+      this.userAnswers = {};
       this[load]();
       if (callback) {
           callback({backgroundColor: Constants.LAYOUT_COLOR.BG[htmlLayout]});
@@ -48,7 +49,7 @@ class mcq {
         this.mcqModel = mcqTransformer.transform();
     }
     [renderView]() {
-        let mcqModelAndView = new McqModelAndView(this.mcqModel);
+        mcqModelAndView = new McqModelAndView(this.mcqModel);
         let htmltemplate = mcqModelAndView.template;
 
         $(this.elRoot).html(htmltemplate);
@@ -88,6 +89,7 @@ class mcq {
         $('input[class^=mcqsroption]').attr('disabled', true);
 
         $('li[class^=line-item]').hover(function () {
+            $(this).removeClass('enabled');
             $(this).addClass('disable-li-hover');
         });
         $('label[class^=line-item-label]').hover(function () {
@@ -110,11 +112,23 @@ class mcq {
     }
 
     resetAnswers() {
-        console.log('reset called');
+        this.userAnswers = [];
+        mcqModelAndView.resetView();
     }
 
     clearGrades() {
-        console.log('clear grades called');
+        let keys = Object.keys(this.userAnswers);
+
+        $('#mcq-sr li').removeClass('correct');
+        $('#mcq-sr li').removeClass('wrong');
+        $('#mcq-sr li').addClass('enabled');
+        $('#mcq-sr label').removeClass('disable-li-hover');
+        $('#mcq-sr li').removeClass('disable-li-hover');
+        $('#' + this.userAnswers[keys]).closest('li').addClass('highlight');
+        mcqModelAndView.clearGrades();
+
+        console.log(JSON.stringify(this.userAnswers, null, 4));
+        console.log(this.userAnswers[0] + ' clear grades called');
     }
 }
 

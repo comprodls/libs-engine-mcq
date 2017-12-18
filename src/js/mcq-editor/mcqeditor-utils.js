@@ -1,5 +1,4 @@
 /* global $ */
-/* global jQuery */
 
 var activityAdaptor;
 var __state = {
@@ -10,6 +9,10 @@ var __enableFeedback = { hide: false };
 let __editedJsonContent;
 let mcqTemplateRef = require('../../html/mcqEditor.html');
 
+require('jquery');
+require('jquery-ui-dist');
+require('vendor');
+require('../../scss/mcq-editor.scss');
 /* let mediaConfiguration = null;
 
 mediaConfiguration = {
@@ -35,12 +38,8 @@ mediaConfiguration = {
       }
     }
   };*/
-require('../../scss/mcq-editor.scss');
-require('jquery');
-require('jquery-ui-dist');
-require('vendor');
-
 import rivets from 'rivets';
+import jQuery from 'jquery';
 
 const interactionReferenceString = 'http://www.comprodls.com/m1.0/interaction/mcq';
 

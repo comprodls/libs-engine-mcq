@@ -94,7 +94,7 @@ const config = {
     }
   },
   plugins: plugins,
-  externals: { jquery: 'jQuery', 'jquery-ui-dist': 'jquery-ui-dist', 'vendor': 'vendor' } // in order to avoid bundling of modules in node_modules folder  
+  externals: { jquery: 'jquery', 'jquery-ui-dist': 'jquery-ui-dist', 'vendor': 'vendor' } // in order to avoid bundling of modules in node_modules folder  
 };
 
 module.exports = config;

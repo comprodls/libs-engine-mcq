@@ -38,6 +38,7 @@ mediaConfiguration = {
 require('../../scss/mcq-editor.scss');
 require('jquery');
 require('jquery-ui-dist');
+require('vendor');
 
 import rivets from 'rivets';
 
@@ -73,12 +74,12 @@ let __interactionTags = [];
 let __finalJSONContent = {};
 let uniqueId;
 let __feedbackPresets = [{ key: 'correct', value: 'Show when Correct', showDropdown: true, order: 1 },
-                            { key: 'incorrect', value: 'Show when Incorrect', showDropdown: true, order: 2 },
-                            { key: 'generic', value: 'Show Always', showDropdown: true, order: 100 }];
+{ key: 'incorrect', value: 'Show when Incorrect', showDropdown: true, order: 2 },
+{ key: 'generic', value: 'Show Always', showDropdown: true, order: 100 }];
 
 let __mediaPresets = [{ key: 'audio', value: 'Audio', showDropdown: true, active: 'disabled', order: 1 },
-                        { key: 'image', value: 'Image', showDropdown: true, active: 'enabled', order: 2 },
-                        { key: 'video', value: 'Video', showDropdown: true, active: 'disabled', order: 100 }];
+{ key: 'image', value: 'Image', showDropdown: true, active: 'enabled', order: 2 },
+{ key: 'video', value: 'Video', showDropdown: true, active: 'disabled', order: 100 }];
 
 export function setJsonContent(_jsonContent) {
     __editedJsonContent = _jsonContent;

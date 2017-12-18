@@ -1,4 +1,9 @@
 /* global $ */
+
+require('jquery');
+require('jquery-ui-dist');
+require('vendor');
+
 import rivets from 'rivets';
 import mcqTemplateRef from '../../html/mcq.html';
 import '../../scss/mcq.scss';
@@ -30,7 +35,7 @@ export const Constants = {
     STATEMENT_SUBMITTED: 'submitted'
 };
 
-export let InteractionIds = [];
+//export let InteractionIds = [];
 
 class McqModelAndView {
     constructor(model) {
@@ -50,9 +55,9 @@ class McqModelAndView {
 
     clearGrades() {
         this.model.feedbackState = {
-                'correct': false,
-                'incorrect': false,
-                'empty': false
+            'correct': false,
+            'incorrect': false,
+            'empty': false
         };
     }
 

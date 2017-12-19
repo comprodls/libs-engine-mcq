@@ -48,22 +48,25 @@
         .radio {
             color: $white;
             }
-        }
+        
         &.wrong i {
             border-color: $color_monza_approx;
-            &:after {
-                background-color: $white;
-                color: $color_monza_approx;
-            }
         }
+        &.wrong i:after {
+            color: $color_monza_approx;
+            background: $white;
+            border-color: $color_monza_approx;
+        }
+
         &.correct i {
             border-color: $color_forest_green_approx;
-            &:after {
-                color: $color_forest_green_approx;
-                background-color: $white;
-            }
         }
-    }
+        &.correct i:after {
+            color: $color_forest_green_approx;
+            background: $white;
+        }
+    } 
+}
 
 #mcq-mr {
     li {
@@ -95,7 +98,7 @@
             &:after {
                 background-color: $white;
                 color: $color_red_approx;
-                border: none;
+                //border: none;
             }
         }
         &.correct i {
@@ -103,7 +106,7 @@
             &:after {
                 background-color: $white;
                 color: $color_forest_green_approx;
-                border: none;
+                //border: none;
             }
         }
     }

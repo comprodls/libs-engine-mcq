@@ -88,6 +88,9 @@ $font_1: fontawesome;
     .ml-xxl {
         margin-left: 60px;
     }
+    .mr-xs {
+        margin-right: 5px;
+    }
     .ml-sm {
         margin-left: 15px;
     }
@@ -445,5 +448,26 @@ $font_1: fontawesome;
 .nounderline {
     text-decoration: none;
     outline: none;    
+}
+.preview-empty {
+    min-height: 200px;
+    margin: 0 auto;
+    //background-color: #eee;
+    position: relative;
+}
+.flex-center {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
 }
 }

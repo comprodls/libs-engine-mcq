@@ -1,15 +1,20 @@
 {
-  "name": "libs-engine-mcq-es6",
+  "name": "libs-engine-mcq",
   "version": "0.0.1",
   "description": "MCQ Engine with node v8, webpack and es6",
   "main": "dist/dnd2.js",
   "engines": {
     "node": ">=8.0"
   },
+  "config": {
+    "host": "0.0.0.0",
+    "port": "8080"
+  },
   "scripts": {
     "build": "webpack --env build",
     "dev": "webpack --progress --colors --watch --env dev",
-    "server": "webpack-dev-server"
+    "winserver": "webpack-dev-server --host %npm_package_config_host% --port %npm_package_config_port%",
+    "server": "webpack-dev-server --host $npm_package_config_host --port $npm_package_config_port"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

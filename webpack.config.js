@@ -94,11 +94,7 @@ const config = {
     }
   },
   plugins: plugins,
-<<<<<<< .mine
   externals: { jquery: 'jquery', 'jquery-ui-dist': 'jquery-ui-dist', 'vendor': 'vendor' } // in order to avoid bundling of modules in node_modules folder  
-=======
-  externals: [nodeExternals({ whitelist: ['sightglass', 'rivets', 'jquery', 'jquery-ui-dist','bootpag' ] })] // in order to avoid bundling of modules in node_modules folder  
->>>>>>> .theirs
 };
 
 module.exports = config;

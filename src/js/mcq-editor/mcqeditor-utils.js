@@ -730,7 +730,7 @@ export function initializeRivets() {
         var basepath = __assetBasePath;
         var returnUrl = null;
 
-        if (url.indexOf('http' === -1)) {
+        if (url && url.indexOf('http' === -1)) {
             returnUrl = basepath + url;
         } else {
             returnUrl = url;

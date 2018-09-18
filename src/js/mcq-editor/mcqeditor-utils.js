@@ -740,7 +740,11 @@ export function initializeRivets() {
     };
 
     rivets.formatters.assetname = function (url) {
-        let name = url.substring(url.lastIndexOf('/') + 1);
+        let name = '';
+
+        if (url) {
+            name = url.substring(url.lastIndexOf('/') + 1);
+        }
 
         return name;
     };

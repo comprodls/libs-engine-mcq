@@ -659,8 +659,8 @@ function __finalizeAssets(args) {
         processedAssets.forEach(function (element) {
 
             __editedJsonContent.content.stimulus.push({
-                'tag': element.type,
-                'url': element.path
+                'tag': element[0].type,
+                'url': element[0].path
             });
         });
         __editedJsonContent.editMedia = false;

@@ -641,7 +641,8 @@ function __createAssetsObj(data, key) {
             {
                 'type': data.tag,
                 'id': data._id,
-                'filename': data.filename
+                'filename': data.filename,
+                'url': data.url
             }
         ]
     };
@@ -657,10 +658,13 @@ function __finalizeAssets(args) {
         __imageSelected.processedAssets = processedAssets;
         processedAssets.forEach(function (element) {
 
-            __editedJsonContent.content.stimulus.push({
-                'tag': element.type,
-                'url': element.path
-            });
+            var imageData = {
+                'image': element[0].path,
+                'tag': element[0].type,
+                'url': element[0].path
+            };
+
+            __editedJsonContent.content.stimulus.push(imageData);
         });
         __editedJsonContent.editMedia = false;
         __imageSelected.stimulus = [];

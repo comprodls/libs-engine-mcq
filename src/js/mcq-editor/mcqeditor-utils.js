@@ -641,7 +641,8 @@ function __createAssetsObj(data, key) {
             {
                 'type': data.tag,
                 'id': data._id,
-                'filename': data.filename
+                'filename': data.filename,
+                'url': data.url
             }
         ]
     };
